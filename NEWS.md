@@ -1,6 +1,6 @@
 # Changelog
 
-## georgiacivicdata 0.1.0 (unreleased)
+## georgiacivicdata 0.1.0
 
 First version: the Python counterpart of the R package georgiacivicdata.
 

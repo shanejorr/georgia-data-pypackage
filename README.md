@@ -37,17 +37,22 @@ functions, without the `gcd_` prefix.
 
 ## Installation
 
-The package is not on PyPI yet. Install the development version from
-GitHub:
+Install the package from PyPI:
 
 ```bash
-pip install "georgiacivicdata @ git+https://github.com/shanejorr/georgia-data-pypackage"
+pip install georgiacivicdata
 ```
 
 Extras add Polars and geopandas:
 
 ```bash
-pip install "georgiacivicdata[polars,geo] @ git+https://github.com/shanejorr/georgia-data-pypackage"
+pip install "georgiacivicdata[polars,geo]"
+```
+
+Or install the development version from GitHub:
+
+```bash
+pip install "georgiacivicdata @ git+https://github.com/shanejorr/georgia-data-pypackage"
 ```
 
 ## Example: graduation rates in Fulton County
