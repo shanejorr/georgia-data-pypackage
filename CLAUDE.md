@@ -13,9 +13,18 @@ and district boundaries, and point and address lookups.
 - It mirrors the R package in `~/projects/georgia-data-rpackage`
   (`georgiacivicdata` on CRAN-to-be): the same exported functions, without
   the `gcd_` prefix (`gcd.rows()` for `gcd_rows()`), the same arguments and
-  the same output columns. When behavior changes in one, change the other,
-  or record why they differ (see "Python and R differ" below). The R
-  package's `notes/function-design.md` is the design, with its reasoning.
+  the same output columns. The R package's `notes/function-design.md` is
+  the design, with its reasoning.
+- **Keep the two packages in parity, in both directions.** When this
+  package changes or adds functionality (a new function, argument, column
+  or behavior), the R package must get the same change, and when the R
+  package changes or adds functionality, this package must follow. The
+  only exceptions are the deliberate ones recorded in "Python and R
+  differ" below; add any new one there with its reason. Because the R
+  package is never edited from here, end any change here that the R
+  package lacks by telling Shane exactly what the R package needs, and
+  before working on a feature, check the R package for changes this
+  package has not caught up with yet.
 - The API's own guide is `~/projects/georgia-data/src/api/CLAUDE.md`
   (routes, parameters, errors, rate limits, privacy rules). Read it, and the
   code under `~/projects/georgia-data/src/api/`, for exact response shapes.
