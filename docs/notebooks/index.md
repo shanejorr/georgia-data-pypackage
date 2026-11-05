@@ -39,8 +39,7 @@ With `georgiacivicdata` you can:
 - Look up the schools zoned for any Georgia address.
 
 There is no API key and nothing to configure. The same functions exist in
-the [R package](https://georgiacivicdata.org/r/), with a `gcd_` prefix
-([Coming from R](coming-from-r.md)).
+the [R package](https://georgiacivicdata.org/r/), with a `gcd_` prefix.
 
 :::{tip}
 **For LLM agents:** every page of this site has a Markdown version. Add
@@ -315,7 +314,6 @@ The package code is MIT-licensed.
 articles/get-started
 reference
 articles/index
-coming-from-r
 agents
 news
 ```

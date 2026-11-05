@@ -51,11 +51,6 @@ GUIDES = [
         "School zones and places",
         "maps, zone status and locating points and addresses",
     ),
-    (
-        "coming-from-r",
-        "Coming from R",
-        "the R and Python functions side by side, and how they differ",
-    ),
     ("agents", "For LLM agents", "the Markdown pages and llms.txt"),
     ("reference", "Reference", "every function, grouped by task"),
     ("articles/index", "Articles", "the list of worked examples"),
