@@ -213,6 +213,10 @@ file.
   `uv run python docs/precompile.py` locally (it calls the live API), and
   commit the executed `docs/articles/<name>.ipynb`. Sphinx never executes
   notebooks.
+- **Never print a whole data frame or table in the docs.** Every output
+  that shows one (a data frame, a Series, a `groupby().size()`, a
+  crosstab) shows at most its first 5 rows: end the expression with
+  `.head()`, or filter it to 5 rows or fewer first.
 - Deployed by `.github/workflows/docs.yml` to the `gh-pages` branch, GitHub
   Pages at `https://shanejorr.github.io/georgia-data-pypackage/`, served at
   `https://georgiacivicdata.org/py/` through a rewrite in the main site

@@ -74,7 +74,13 @@ don't:
 
 ```{code-cell} ipython3
 status = gcd.school_zone_status(district="Atlanta Public Schools")
-status.groupby(["zone_status", "no_zone_category"], dropna=False).size()
+status["zone_status"].value_counts()
+```
+
+The schools with no zone, by reason:
+
+```{code-cell} ipython3
+status.loc[status["zone_status"] == "no_zone", "no_zone_category"].value_counts().head()
 ```
 
 ```{code-cell} ipython3
@@ -125,11 +131,11 @@ landmarks = pd.DataFrame(
     }
 )
 places = gcd.locate(lat=landmarks["lat"], lon=landmarks["lon"], id=landmarks["landmark"])
-places[["id", "geographic_type", "geographic_id", "geographic_name", "grades"]]
+places[["id", "geographic_type", "geographic_id", "geographic_name", "grades"]].head()
 ```
 
-The output is long: filter it to the rows you need, such as
-`places[places["geographic_type"] == "high_school"]`. A school's
+The output is long (`head()` shows its first five rows): filter it to the
+rows you need, such as `places[places["geographic_type"] == "high_school"]`. A school's
 `geographic_id` is its `"DISTRICT-SCHOOL"` code, the form `gcd.rows()` takes
 as `school_id`.
 
@@ -156,7 +162,7 @@ addresses or a data frame with `street`, `city`, `state` and `zip`:
 
 ```{code-cell} ipython3
 capitol = gcd.locate(address="206 Washington St SW, Atlanta, GA 30334")
-capitol[["match_status", "matched_address", "geographic_type", "geographic_name", "grades"]]
+capitol[["match_status", "matched_address", "geographic_type", "geographic_name", "grades"]].head()
 ```
 
 The same lookup for several buildings, from a data frame with one column per

@@ -116,11 +116,19 @@ columns with each one's type, role (a year, a place, a demographic group, or
 a measured value), and unit.
 
 ```{code-cell} ipython3
-gcd.columns("graduation_rate_4_year_cohort")[["column", "type", "role", "unit"]]
+cols = gcd.columns("graduation_rate_4_year_cohort")[["column", "type", "role", "unit"]]
+cols.head()
 ```
 
-Each row is one year, one place and one demographic group. The value we want
-is `graduation_rate`, a proportion on the 0-1 scale, so 0.9 means 90%.
+Each row is one year, one place and one demographic group. The measured
+values are the columns whose role is `metric`:
+
+```{code-cell} ipython3
+cols[cols["role"] == "metric"]
+```
+
+The value we want is `graduation_rate`, a proportion on the 0-1 scale, so
+0.9 means 90%.
 
 `gcd.describe()` prints the rest of the dataset's documentation: its source,
 the years and detail levels it covers, and notes on how to use it. Those
@@ -148,10 +156,10 @@ grads = gcd.rows(
     demographic=["all", "black", "hispanic", "white"],
     year=range(2011, 2026),
 )
-grads
+grads.head()
 ```
 
-Each place comes back with both its code and its name, and each demographic
+`grads.head()` shows the first five rows. Each place comes back with both its code and its name, and each demographic
 code with a readable label. The API also sends advisories, shown as
 `GCDAdvisory` warnings. Here they warn that the `all` total sits beside the
 subgroups, so never add a total to its subgroups. A missing value usually
@@ -213,7 +221,8 @@ Lookup tables help you:
 - Add attributes the datasets don't carry, then filter or group by them.
 - Map schools with their coordinates.
 
-Here are the active high schools in Fulton County with their locale:
+Here are the first five active high schools in Fulton County with their
+locale:
 
 ```{code-cell} ipython3
 gcd.dimension(
@@ -222,7 +231,7 @@ gcd.dimension(
     school_level="high",
     active=True,
     columns=["district_code", "school_code", "school_name", "locale"],
-)
+).head()
 ```
 
 To compare graduation rates by locale, merge the locale into school-level
@@ -277,10 +286,12 @@ Data API.
 
 ```{code-cell} ipython3
 # The Georgia State Capitol
-gcd.locate(address="206 Washington St SW, Atlanta, GA 30334")[
-    ["geographic_type", "geographic_id", "geographic_name", "grades"]
-]
+capitol = gcd.locate(address="206 Washington St SW, Atlanta, GA 30334")
+capitol[["geographic_type", "geographic_id", "geographic_name", "grades"]].head()
 ```
+
+The first five rows are shown; the rest are the zoned middle and high
+schools.
 
 ## Data license and citation
 

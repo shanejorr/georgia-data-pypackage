@@ -135,7 +135,7 @@ pooled = (
     .assign(infant_mortality=lambda d: 1000 * d["deaths"] / d["births"])
 )
 
-pooled.sort_values("births", ascending=False).head(10)
+pooled.sort_values("births", ascending=False).head()
 ```
 
 ```{code-cell} ipython3

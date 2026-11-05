@@ -49,7 +49,7 @@ catalog.groupby(["main_topic", "kind"]).size()
 ```
 
 ```{code-cell} ipython3
-gcd.datasets(main_topic="education", level="districts", year=2025)[["name", "title"]]
+gcd.datasets(main_topic="education", level="districts", year=2025)[["name", "title"]].head()
 ```
 
 ## Read a dataset's notes
@@ -149,7 +149,7 @@ small = gcd.rows(
     year=2024,
     detail="districts",
 )
-small[["demographic", "num_graduates", "num_cohort", "graduation_rate"]]
+small[["demographic", "num_graduates", "num_cohort", "graduation_rate"]].head()
 ```
 
 The advisories are `GCDAdvisory` warnings. They stay with the result in
@@ -193,7 +193,10 @@ When a filter returns nothing, `gcd.values()` shows which combinations exist
 under the other filters, with row counts, without downloading rows:
 
 ```{code-cell} ipython3
-gcd.values("ccrpi_content_mastery", ["grade_cluster", "subject"], year=2025, detail="districts")
+combos = gcd.values(
+    "ccrpi_content_mastery", ["grade_cluster", "subject"], year=2025, detail="districts"
+)
+combos.head()
 ```
 
 ## Lookup tables
