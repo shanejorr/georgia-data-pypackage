@@ -10,7 +10,6 @@ Every page of this site has a Markdown twin: add `.md` to its address (`.../arti
 - [Get started](https://georgiacivicdata.org/py/articles/get-started.md): the catalog, names and filters, and the rules of the data
 - [Analyzing Georgia data](https://georgiacivicdata.org/py/articles/analysis.md): joining two datasets and pooling rates from counts
 - [School zones and places](https://georgiacivicdata.org/py/articles/school-zones.md): maps, zone status and locating points and addresses
-- [Coming from R](https://georgiacivicdata.org/py/coming-from-r.md): the R and Python functions side by side, and how they differ
 - [For LLM agents](https://georgiacivicdata.org/py/agents.md): the Markdown pages and llms.txt
 - [Reference](https://georgiacivicdata.org/py/reference.md): every function, grouped by task
 - [Articles](https://georgiacivicdata.org/py/articles/index.md): the list of worked examples
