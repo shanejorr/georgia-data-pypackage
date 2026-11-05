@@ -1,0 +1,43 @@
+# Build the documentation site (HTML, Markdown twins, llms.txt) and deploy it
+# to the gh-pages branch. GitHub Pages serves it at
+# https://shanejorr.github.io/georgia-data-pypackage/, and the main site
+# serves that at https://georgiacivicdata.org/py/ through a rewrite.
+#
+# The articles are executed notebooks committed to the repo
+# (docs/precompile.py), so this build never calls the API.
+name: Docs
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    # Only restrict concurrency for non-PR jobs
+    concurrency:
+      group: docs-${{ github.event_name != 'pull_request' || github.run_id }}
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10
+        with:
+          python-version: "3.14"
+      - run: uv sync --all-extras --locked
+      - name: Build the site
+        run: uv run python docs/build.py --strict
+      - name: Deploy to GitHub Pages
+        if: github.event_name != 'pull_request'
+        uses: JamesIves/github-pages-deploy-action@fa24774553152dd7873cd16ebd8d959b010c5445 # v4.9.0
+        with:
+          clean: true
+          branch: gh-pages
+          folder: docs/_build/html

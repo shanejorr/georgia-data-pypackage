@@ -104,6 +104,8 @@ exclude_also = ["if TYPE_CHECKING:", "@overload", "raise NotImplementedError"]
 line-length = 100
 target-version = "py310"
 src = ["src", "tests"]
+# Executed notebooks are generated from docs/notebooks/*.md by docs/precompile.py.
+extend-exclude = ["docs/index.ipynb", "docs/articles/*.ipynb"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF", "C4", "PIE", "PT", "RET", "N"]
@@ -112,7 +114,7 @@ ignore = ["RET504", "SIM108", "B905"]
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["N802", "PT011", "E501"]
 "src/georgiacivicdata/_places.py" = ["RUF001"]
-"docs/**" = ["E402", "B018"]
+"docs/**" = ["E402", "B018", "E501"]
 
 [tool.mypy]
 python_version = "3.10"

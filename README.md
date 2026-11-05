@@ -63,7 +63,7 @@ gcd.search("high school graduation", n=5)[["name", "title", "year_min", "year_ma
 
 # 2. Learn what is in it
 gcd.columns("graduation_rate_4_year_cohort")[["column", "type", "role", "unit"]]
-gcd.describe("graduation_rate_4_year_cohort")   # source, years, notes
+gcd.describe("graduation_rate_4_year_cohort")  # source, years, notes
 
 # 3. Get the rows: names turn into codes for you
 grads = gcd.rows(

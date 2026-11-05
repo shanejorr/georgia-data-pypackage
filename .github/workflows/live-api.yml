@@ -1,0 +1,29 @@
+# Weekly end-to-end tests against the production Georgia Civic Data API.
+#
+# The regular CI replays recorded responses and never calls the API; this
+# runs tests/test_live.py (GCD_LIVE_TESTS=true) once a week, or on demand,
+# to catch API changes without adding traffic to the platform's usage
+# metric on every push.
+name: Live API
+
+on:
+  schedule:
+    - cron: "37 9 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  live-api:
+    runs-on: ubuntu-latest
+    env:
+      GCD_LIVE_TESTS: "true"
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10
+        with:
+          python-version: "3.14"
+      - run: uv sync --all-extras --locked --no-default-groups --group test
+      - name: Run the live tests
+        run: uv run pytest tests/test_live.py -v

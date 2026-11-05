@@ -1,0 +1,64 @@
+/* Georgia Civic Data brand colours, matching the R package site. */
+html[data-theme="light"] {
+  --pst-color-primary: #82171e;
+  --pst-color-secondary: #505a6d;
+  --pst-color-link: #9d202a;
+  --pst-color-link-hover: #82171e;
+  --pst-color-text-base: #131826;
+  --pst-color-accent: #9d202a;
+}
+
+html[data-theme="dark"] {
+  --pst-color-primary: #e8808a;
+  --pst-color-secondary: #a8b1c2;
+  --pst-color-link: #f09aa2;
+  --pst-color-link-hover: #ffc2c7;
+  --pst-color-accent: #f09aa2;
+}
+
+html {
+  --pst-font-family-base: "Inter", system-ui, sans-serif;
+  --pst-font-family-heading: "Figtree", "Inter", system-ui, sans-serif;
+  --pst-font-family-monospace: "JetBrains Mono", ui-monospace, monospace;
+}
+
+.bd-header.navbar,
+html[data-theme="dark"] .bd-header.navbar {
+  background: #82171e !important;
+}
+
+.bd-header .navbar-header-items__end .btn,
+.bd-header .navbar-nav .dropdown-toggle {
+  color: #ffffff !important;
+}
+
+.bd-header .navbar-nav .nav-link,
+.bd-header .navbar-brand,
+.bd-header .navbar-brand .title,
+.bd-header .navbar-icon-links .nav-link,
+.bd-header .theme-switch-button,
+.bd-header .search-button {
+  color: #ffffff !important;
+}
+
+.bd-header .navbar-nav .current > .nav-link {
+  border-bottom-color: #ffffff;
+}
+
+.markdown-link {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.data-license {
+  font-size: 0.85rem;
+}
+
+/* Wide tables from notebooks scroll instead of overflowing. */
+div.cell_output table {
+  font-size: 0.85rem;
+}
+
+div.cell_output .output {
+  overflow-x: auto;
+}
