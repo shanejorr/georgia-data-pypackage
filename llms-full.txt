@@ -104,28 +104,35 @@ columns with each one's type, role (a year, a place, a demographic group, or
 a measured value), and unit.
 
 ```python
-gcd.columns("graduation_rate_4_year_cohort")[["column", "type", "role", "unit"]]
+cols = gcd.columns("graduation_rate_4_year_cohort")[["column", "type", "role", "unit"]]
+cols.head()
 ```
 
 ```text
-                  column     type            role        unit
-0                   year  integer            year        <NA>
-1          district_code   string     fk_district        <NA>
-2          district_name   string           label        <NA>
-3     district_census_id   string           label        <NA>
-4          district_type   string           label        <NA>
-5            school_code   string       fk_school        <NA>
-6            school_name   string           label        <NA>
-7            demographic   string  fk_demographic        <NA>
-8      demographic_label   string           label        <NA>
-9   demographic_category   string           label        <NA>
-10         num_graduates  integer          metric       count
-11            num_cohort  integer          metric       count
-12       graduation_rate   number          metric  proportion
+               column     type         role  unit
+0                year  integer         year  <NA>
+1       district_code   string  fk_district  <NA>
+2       district_name   string        label  <NA>
+3  district_census_id   string        label  <NA>
+4       district_type   string        label  <NA>
 ```
 
-Each row is one year, one place and one demographic group. The value we want
-is `graduation_rate`, a proportion on the 0-1 scale, so 0.9 means 90%.
+Each row is one year, one place and one demographic group. The measured
+values are the columns whose role is `metric`:
+
+```python
+cols[cols["role"] == "metric"]
+```
+
+```text
+             column     type    role        unit
+10    num_graduates  integer  metric       count
+11       num_cohort  integer  metric       count
+12  graduation_rate   number  metric  proportion
+```
+
+The value we want is `graduation_rate`, a proportion on the 0-1 scale, so
+0.9 means 90%.
 
 `gcd.describe()` prints the rest of the dataset's documentation: its source,
 the years and detail levels it covers, and notes on how to use it. Those
@@ -153,7 +160,7 @@ grads = gcd.rows(
     demographic=["all", "black", "hispanic", "white"],
     year=range(2011, 2026),
 )
-grads
+grads.head()
 ```
 
 ```text
@@ -163,134 +170,24 @@ GCDAdvisory: `district_census_id` is a 5-digit Census school-district code, NOT 
 ```
 
 ```text
-    year district_code  district_name district_census_id district_type  ... demographic_label  \
-0   2011           660  Fulton County              02280      standard  ...               All   
-1   2011           660  Fulton County              02280      standard  ...             Black   
-2   2011           660  Fulton County              02280      standard  ...          Hispanic   
-3   2011           660  Fulton County              02280      standard  ...             White   
-4   2012           660  Fulton County              02280      standard  ...               All   
-5   2012           660  Fulton County              02280      standard  ...             Black   
-6   2012           660  Fulton County              02280      standard  ...          Hispanic   
-7   2012           660  Fulton County              02280      standard  ...             White   
-8   2013           660  Fulton County              02280      standard  ...               All   
-9   2013           660  Fulton County              02280      standard  ...             Black   
-10  2013           660  Fulton County              02280      standard  ...          Hispanic   
-11  2013           660  Fulton County              02280      standard  ...             White   
-12  2014           660  Fulton County              02280      standard  ...               All   
-13  2014           660  Fulton County              02280      standard  ...             Black   
-14  2014           660  Fulton County              02280      standard  ...          Hispanic   
-15  2014           660  Fulton County              02280      standard  ...             White   
-16  2015           660  Fulton County              02280      standard  ...               All   
-17  2015           660  Fulton County              02280      standard  ...             Black   
-18  2015           660  Fulton County              02280      standard  ...          Hispanic   
-19  2015           660  Fulton County              02280      standard  ...             White   
-20  2016           660  Fulton County              02280      standard  ...               All   
-21  2016           660  Fulton County              02280      standard  ...             Black   
-22  2016           660  Fulton County              02280      standard  ...          Hispanic   
-23  2016           660  Fulton County              02280      standard  ...             White   
-24  2017           660  Fulton County              02280      standard  ...               All   
-25  2017           660  Fulton County              02280      standard  ...             Black   
-26  2017           660  Fulton County              02280      standard  ...          Hispanic   
-27  2017           660  Fulton County              02280      standard  ...             White   
-28  2018           660  Fulton County              02280      standard  ...               All   
-29  2018           660  Fulton County              02280      standard  ...             Black   
-30  2018           660  Fulton County              02280      standard  ...          Hispanic   
-31  2018           660  Fulton County              02280      standard  ...             White   
-32  2019           660  Fulton County              02280      standard  ...               All   
-33  2019           660  Fulton County              02280      standard  ...             Black   
-34  2019           660  Fulton County              02280      standard  ...          Hispanic   
-35  2019           660  Fulton County              02280      standard  ...             White   
-36  2020           660  Fulton County              02280      standard  ...               All   
-37  2020           660  Fulton County              02280      standard  ...             Black   
-38  2020           660  Fulton County              02280      standard  ...          Hispanic   
-39  2020           660  Fulton County              02280      standard  ...             White   
-40  2021           660  Fulton County              02280      standard  ...               All   
-41  2021           660  Fulton County              02280      standard  ...             Black   
-42  2021           660  Fulton County              02280      standard  ...          Hispanic   
-43  2021           660  Fulton County              02280      standard  ...             White   
-44  2022           660  Fulton County              02280      standard  ...               All   
-45  2022           660  Fulton County              02280      standard  ...             Black   
-46  2022           660  Fulton County              02280      standard  ...          Hispanic   
-47  2022           660  Fulton County              02280      standard  ...             White   
-48  2023           660  Fulton County              02280      standard  ...               All   
-49  2023           660  Fulton County              02280      standard  ...             Black   
-50  2023           660  Fulton County              02280      standard  ...          Hispanic   
-51  2023           660  Fulton County              02280      standard  ...             White   
-52  2024           660  Fulton County              02280      standard  ...               All   
-53  2024           660  Fulton County              02280      standard  ...             Black   
-54  2024           660  Fulton County              02280      standard  ...          Hispanic   
-55  2024           660  Fulton County              02280      standard  ...             White   
-56  2025           660  Fulton County              02280      standard  ...               All   
-57  2025           660  Fulton County              02280      standard  ...             Black   
-58  2025           660  Fulton County              02280      standard  ...          Hispanic   
-59  2025           660  Fulton County              02280      standard  ...             White   
+   year district_code  district_name district_census_id district_type  ... demographic_label  \
+0  2011           660  Fulton County              02280      standard  ...               All   
+1  2011           660  Fulton County              02280      standard  ...             Black   
+2  2011           660  Fulton County              02280      standard  ...          Hispanic   
+3  2011           660  Fulton County              02280      standard  ...             White   
+4  2012           660  Fulton County              02280      standard  ...               All   
 
-   demographic_category num_graduates  num_cohort  graduation_rate  
-0             aggregate          5396        7703           0.7005  
-1                  race          2057        3536           0.5817  
-2                  race           364         671           0.5425  
-3                  race          2343        2707           0.8655  
-4             aggregate          5233        <NA>           0.7134  
-5                  race          1876        <NA>           0.5629  
-6                  race           329        <NA>           0.5117  
-7                  race          2338        <NA>           0.9066  
-8             aggregate          5483        <NA>           0.7550  
-9                  race          2005        <NA>           0.6330  
-10                 race           423        <NA>           0.5930  
-11                 race          2355        <NA>           0.9100  
-12            aggregate          5610        <NA>           0.7870  
-13                 race          2007        <NA>           0.6770  
-14                 race           454        <NA>           0.6210  
-15                 race          2393        <NA>           0.9220  
-16            aggregate          6061        <NA>           0.8528  
-17                 race          2356        <NA>           0.7814  
-18                 race           500        <NA>           0.7299  
-19                 race          2391        <NA>           0.9391  
-20            aggregate          6213        <NA>           0.8662  
-21                 race          2570        <NA>           0.8133  
-22                 race           547        <NA>           0.7534  
-23                 race          2214        <NA>           0.9482  
-24            aggregate          6406        7379           0.8681  
-25                 race          2603        3212           0.8104  
-26                 race           624         836           0.7464  
-27                 race          2379        2488           0.9562  
-28            aggregate          6708        7731           0.8677  
-29                 race          2666        3335           0.7994  
-30                 race           734         939           0.7817  
-31                 race          2322        2426           0.9571  
-32            aggregate          6859        7863           0.8723  
-33                 race          2786        3430           0.8122  
-34                 race           817        1008           0.8105  
-35                 race          2300        2417           0.9516  
-36            aggregate          6565        7682           0.8546  
-37                 race          2524        3225           0.7826  
-38                 race           859        1109           0.7746  
-39                 race          2239        2355           0.9507  
-40            aggregate          6648        7579           0.8772  
-41                 race          2488        3069           0.8107  
-42                 race           857        1085           0.7899  
-43                 race          2280        2367           0.9632  
-44            aggregate          6782        7598           0.8926  
-45                 race          2595        3124           0.8307  
-46                 race           917        1094           0.8382  
-47                 race          2179        2249           0.9689  
-48            aggregate          6815        7547           0.9030  
-49                 race          2634        3038           0.8670  
-50                 race           926        1134           0.8166  
-51                 race          2118        2195           0.9649  
-52            aggregate          6977        7695           0.9067  
-53                 race          2828        3278           0.8627  
-54                 race          1023        1175           0.8706  
-55                 race          2015        2085           0.9664  
-56            aggregate          7294        7934           0.9193  
-57                 race          2962        3385           0.8750  
-58                 race          1091        1226           0.8899  
-59                 race          2012        2067           0.9734  
+  demographic_category num_graduates  num_cohort  graduation_rate  
+0            aggregate          5396        7703           0.7005  
+1                 race          2057        3536           0.5817  
+2                 race           364         671           0.5425  
+3                 race          2343        2707           0.8655  
+4            aggregate          5233        <NA>           0.7134  
 
-[60 rows x 11 columns]
+[5 rows x 11 columns]
 ```
 
-Each place comes back with both its code and its name, and each demographic
+`grads.head()` shows the first five rows. Each place comes back with both its code and its name, and each demographic
 code with a readable label. The API also sends advisories, shown as
 `GCDAdvisory` warnings. Here they warn that the `all` total sits beside the
 subgroups, so never add a total to its subgroups. A missing value usually
@@ -371,7 +268,8 @@ Lookup tables help you:
 - Add attributes the datasets don't carry, then filter or group by them.
 - Map schools with their coordinates.
 
-Here are the active high schools in Fulton County with their locale:
+Here are the first five active high schools in Fulton County with their
+locale:
 
 ```python
 gcd.dimension(
@@ -380,33 +278,16 @@ gcd.dimension(
     school_level="high",
     active=True,
     columns=["district_code", "school_code", "school_name", "locale"],
-)
+).head()
 ```
 
 ```text
-   district_code school_code                             school_name  locale
-0            660        0106                      Milton High School  suburb
-1            660        0118        Hapeville Charter Career Academy  suburb
-2            660        0119                   Cambridge High School  suburb
-3            660        0176                    Banneker High School  suburb
-4            660        0191                     Roswell High School    city
-5            660        0198                  Centennial High School    city
-6            660        0203                   Northview High School  suburb
-7            660        0205                  Alpharetta High School    city
-8            660        0291                   Creekside High School  suburb
-9            660        0386                Independence High School    city
-10           660        0392               Chattahoochee High School  suburb
-11           660        0691                  Tri-Cities High School  suburb
-12           660        0910                 Johns Creek High School  suburb
-13           660        1110             Langston Hughes High School   rural
-14           660        1320                     Skyview High School  suburb
-15           660        1322                      Innovation Academy    city
-16           660        1323                   Global Impact Academy  suburb
-17           660        1325    Fulton Academy Of Virtual Excellence    city
-18           660        1326         Promise Career Institute School  suburb
-19           660        3066  Riverwood International Charter School    city
-20           660        4062               North Springs High School    city
-21           660        5069                    Westlake High School  suburb
+  district_code school_code                       school_name  locale
+0           660        0106                Milton High School  suburb
+1           660        0118  Hapeville Charter Career Academy  suburb
+2           660        0119             Cambridge High School  suburb
+3           660        0176              Banneker High School  suburb
+4           660        0191               Roswell High School    city
 ```
 
 To compare graduation rates by locale, merge the locale into school-level
@@ -471,9 +352,8 @@ Data API.
 
 ```python
 # The Georgia State Capitol
-gcd.locate(address="206 Washington St SW, Atlanta, GA 30334")[
-    ["geographic_type", "geographic_id", "geographic_name", "grades"]
-]
+capitol = gcd.locate(address="206 Washington St SW, Atlanta, GA 30334")
+capitol[["geographic_type", "geographic_id", "geographic_name", "grades"]].head()
 ```
 
 ```text
@@ -487,9 +367,10 @@ GCDAdvisory: A zone is the default assignment, not the only option: a Georgia st
 2        block_group  131210035001  Block Group 1, Census Tract 35, Fulton Co...   <NA>
 3    school_district           761                        Atlanta Public Schools   <NA>
 4  elementary_school      761-0199                  Centennial Academy (Charter)    K-5
-5      middle_school      761-0199                  Centennial Academy (Charter)    6-8
-6        high_school      761-4560                           Midtown High School   9-12
 ```
+
+The first five rows are shown; the rest are the zoned middle and high
+schools.
 
 ## Data license and citation
 
@@ -560,62 +441,16 @@ dtype: int64
 ```
 
 ```python
-gcd.datasets(main_topic="education", level="districts", year=2025)[["name", "title"]]
+gcd.datasets(main_topic="education", level="districts", year=2025)[["name", "title"]].head()
 ```
 
 ```text
-                                            name                                         title
-0                          ccrpi_content_mastery                         CCRPI Content Mastery
-1                          ccrpi_graduation_rate                  High School Graduation Rates
-2                                 ccrpi_progress                                CCRPI Progress
-3                                ccrpi_readiness                               CCRPI Readiness
-4                     ccrpi_scoring_by_component                   CCRPI Scores and Components
-5                            enrollment_by_grade   Enrollment by Grade Level (Fall and Spring)
-6         enrollment_march_gender_race_ethnicity           March Enrollment by Race and Gender
-7                  enrollment_october_disability    Special Education Enrollment by Disability
-8       enrollment_october_gender_race_ethnicity         October Enrollment by Race and Gender
-9                             free_reduced_lunch      Free and Reduced-Price Lunch Eligibility
-10              georgia_milestones_end_of_course  Georgia Milestones End-of-Course (EOC) Re...
-11               georgia_milestones_end_of_grade  Georgia Milestones End-of-Grade (EOG) Res...
-12          pathway_completion_advanced_academic  Pathway Completer Graduation Rate: Advanc...
-13                       pathway_completion_ctae       Pathway Completer Graduation Rate: CTAE
-14                  pathway_completion_fine_arts  Pathway Completer Graduation Rate: Fine Arts
-15             pathway_completion_world_language  Pathway Completer Graduation Rate: World ...
-16                                    act_scores             ACT College Readiness Test Scores
-17                     advanced_placement_scores           Advanced Placement (AP) Exam Scores
-18                                    attendance    Student Attendance and Chronic Absenteeism
-19              certified_personnel_compensation  Certified Personnel Compensation (Salarie...
-20               certified_personnel_composition  Certified Personnel Composition (Staff Ch...
-21                certified_personnel_experience       Certified Personnel Years of Experience
-22                          direct_certification    Direct Certification for Free School Meals
-23                             dropout_rate_7_12                      Grade 7-12 Dropout Rates
-24                             dropout_rate_9_12                     Grades 9-12 Dropout Rates
-25  educator_qualifications_emergency_and_pro...               Emergency-Credentialed Teachers
-26  educator_qualifications_inexperienced_tea...            Inexperienced Teachers and Leaders
-27  educator_qualifications_out_of_field_teac...                         Out-of-Field Teachers
-28                     english_learner_exit_rate             English Learner Program Exit Rate
-29                 enrollment_demographic_shares                 Enrollment Demographic Shares
-30              enrollment_program_participation              Enrollment Program Participation
-31              financial_efficiency_star_rating       Financial Efficiency Star Rating (FESR)
-32                  georgia_alternate_assessment            Georgia Alternate Assessment (GAA)
-33  georgia_milestones_end_of_course_by_grade...  Georgia Milestones End-of-Course (EOC) Re...
-34       georgia_milestones_end_of_course_lexile  Georgia Milestones EOC Lexile Reading Scores
-35  georgia_milestones_end_of_grade_by_grade_...  Georgia Milestones End-of-Grade Assessmen...
-36        georgia_milestones_end_of_grade_lexile  Georgia Milestones End-of-Grade Lexile Re...
-37                 graduation_rate_4_year_cohort              Four-Year Cohort Graduation Rate
-38                        high_school_completers                        High School Completers
-39                       hope_eligible_graduates                       HOPE-Eligible Graduates
-40                              k12_expenditures        K-12 Expenditures by Spending Function
-41                                  k12_revenues               K-12 Revenues by Funding Source
-42                         per_pupil_expenditure                  Per-Pupil Expenditure (FESR)
-43                             retained_students            Retained (Held-Back) K-12 Students
-44                         salaries_and_benefits                District Salaries and Benefits
-45                            sat_scores_highest            SAT Scores (Highest Section Score)
-46                             sat_scores_recent       SAT Scores (Most Recent Administration)
-47                         student_mobility_rate                        Student Mobility Rates
-48             state_charter_academic_comparison             State Charter Academic Comparison
-49     state_charter_accountability_designations     State Charter Accountability Designations
-50           state_charter_financial_performance           State Charter Financial Performance
+                         name                         title
+0       ccrpi_content_mastery         CCRPI Content Mastery
+1       ccrpi_graduation_rate  High School Graduation Rates
+2              ccrpi_progress                CCRPI Progress
+3             ccrpi_readiness               CCRPI Readiness
+4  ccrpi_scoring_by_component   CCRPI Scores and Components
 ```
 
 ## Read a dataset's notes
@@ -810,7 +645,7 @@ small = gcd.rows(
     year=2024,
     detail="districts",
 )
-small[["demographic", "num_graduates", "num_cohort", "graduation_rate"]]
+small[["demographic", "num_graduates", "num_cohort", "graduation_rate"]].head()
 ```
 
 ```text
@@ -820,25 +655,12 @@ GCDAdvisory: `district_census_id` is a 5-digit Census school-district code, NOT 
 ```
 
 ```text
-                       demographic  num_graduates  num_cohort  graduation_rate
-0                      active_duty           <NA>        <NA>              NaN
-1                              all            225         240           0.9375
-2           asian_pacific_islander           <NA>        <NA>              NaN
-3                            black             57          62           0.9194
-4       economically_disadvantaged            225         240           0.9375
-5                 english_learners             13          14           0.9286
-6                           female            111         114           0.9737
-7                      foster_care           <NA>        <NA>              NaN
-8                         hispanic             42          44           0.9545
-9                         homeless           <NA>        <NA>              NaN
-10                            male            114         126           0.9048
-11                         migrant             18          20           0.9000
-12                     multiracial           <NA>        <NA>              NaN
-13                 native_american           <NA>        <NA>              NaN
-14  not_economically_disadvantaged           <NA>        <NA>              NaN
-15      students_with_disabilities             25          31           0.8065
-16   students_without_disabilities            200         209           0.9570
-17                           white            119         127           0.9370
+                  demographic  num_graduates  num_cohort  graduation_rate
+0                 active_duty           <NA>        <NA>              NaN
+1                         all            225         240           0.9375
+2      asian_pacific_islander           <NA>        <NA>              NaN
+3                       black             57          62           0.9194
+4  economically_disadvantaged            225         240           0.9375
 ```
 
 The advisories are `GCDAdvisory` warnings. They stay with the result in
@@ -894,22 +716,19 @@ When a filter returns nothing, `gcd.values()` shows which combinations exist
 under the other filters, with row counts, without downloading rows:
 
 ```python
-gcd.values("ccrpi_content_mastery", ["grade_cluster", "subject"], year=2025, detail="districts")
+combos = gcd.values(
+    "ccrpi_content_mastery", ["grade_cluster", "subject"], year=2025, detail="districts"
+)
+combos.head()
 ```
 
 ```text
-   grade_cluster                subject  n_rows
-0     elementary  english_language_arts    2340
-1     elementary            mathematics    2340
-2     elementary                science    2340
-3           high  english_language_arts    2340
-4           high            mathematics    2340
-5           high                science    2340
-6           high         social_studies    2340
-7         middle  english_language_arts    2340
-8         middle            mathematics    2340
-9         middle                science    2340
-10        middle         social_studies    2340
+  grade_cluster                subject  n_rows
+0    elementary  english_language_arts    2340
+1    elementary            mathematics    2340
+2    elementary                science    2340
+3          high  english_language_arts    2340
+4          high            mathematics    2340
 ```
 
 ## Lookup tables
@@ -972,7 +791,7 @@ Metadata (the catalog, schemas and lookup tables) is cached for the Python
 session. Rows can also be cached on disk, if you ask:
 
 ```python
-gcd.set_option("cache", True)   # or cache=True in gcd.rows()
+gcd.set_option("cache", True)  # or cache=True in gcd.rows()
 ```
 
 Cached responses are kept with their `ETag` in the user cache folder, and
@@ -1137,21 +956,16 @@ pooled = (
     .assign(infant_mortality=lambda d: 1000 * d["deaths"] / d["births"])
 )
 
-pooled.sort_values("births", ascending=False).head(10)
+pooled.sort_values("births", ascending=False).head()
 ```
 
 ```text
-    county_fips county_name  deaths  births  infant_mortality
-66        13135    Gwinnett     323   56843          5.682318
-59        13121      Fulton     389   56491          6.886053
-43        13089      DeKalb     299   49609          6.027132
-32        13067        Cobb     229   43244          5.295532
-30        13063     Clayton     177   19212          9.212992
-24        13051     Chatham     133   17899          7.430583
-27        13057    Cherokee      59   15278          3.861762
-68        13139        Hall      76   13787          5.512439
-120       13245    Richmond     135   13110         10.297483
-74        13151       Henry      77   13077          5.888201
+   county_fips county_name  deaths  births  infant_mortality
+66       13135    Gwinnett     323   56843          5.682318
+59       13121      Fulton     389   56491          6.886053
+43       13089      DeKalb     299   49609          6.027132
+32       13067        Cobb     229   43244          5.295532
+30       13063     Clayton     177   19212          9.212992
 ```
 
 ```python
@@ -1388,18 +1202,30 @@ don't:
 
 ```python
 status = gcd.school_zone_status(district="Atlanta Public Schools")
-status.groupby(["zone_status", "no_zone_category"], dropna=False).size()
+status["zone_status"].value_counts()
 ```
 
 ```text
-zone_status  no_zone_category        
-no_zone      alternative                  1
-             charter                     16
-             closed_or_consolidated       2
-             magnet_or_choice             3
-             residential_or_treatment     1
-zoned        <NA>                        64
-dtype: int64
+zone_status
+zoned      64
+no_zone    23
+Name: count, dtype: int64[pyarrow]
+```
+
+The schools with no zone, by reason:
+
+```python
+status.loc[status["zone_status"] == "no_zone", "no_zone_category"].value_counts().head()
+```
+
+```text
+no_zone_category
+charter                     16
+magnet_or_choice             3
+closed_or_consolidated       2
+residential_or_treatment     1
+alternative                  1
+Name: count, dtype: int64[pyarrow]
 ```
 
 ```python
@@ -1476,7 +1302,7 @@ landmarks = pd.DataFrame(
     }
 )
 places = gcd.locate(lat=landmarks["lat"], lon=landmarks["lon"], id=landmarks["landmark"])
-places[["id", "geographic_type", "geographic_id", "geographic_name", "grades"]]
+places[["id", "geographic_type", "geographic_id", "geographic_name", "grades"]].head()
 ```
 
 ```text
@@ -1484,69 +1310,23 @@ GCDAdvisory: A zone is the default assignment, not the only option: a Georgia st
 ```
 
 ```text
-                           id    geographic_type geographic_id  \
-0       Georgia State Capitol             county         13121   
-1       Georgia State Capitol              tract   13121003500   
-2       Georgia State Capitol        block_group  131210035001   
-3       Georgia State Capitol    school_district           761   
-4       Georgia State Capitol  elementary_school      761-0199   
-5       Georgia State Capitol      middle_school      761-0199   
-6       Georgia State Capitol        high_school      761-4560   
-7         Stone Mountain Park             county         13089   
-8         Stone Mountain Park              tract   13089021915   
-9         Stone Mountain Park        block_group  130890219153   
-10        Stone Mountain Park    school_district           644   
-11        Stone Mountain Park  elementary_school      644-2068   
-12        Stone Mountain Park      middle_school      644-0506   
-13        Stone Mountain Park        high_school      644-0276   
-14      Okefenokee Swamp Park             county         13299   
-15      Okefenokee Swamp Park              tract   13299950900   
-16      Okefenokee Swamp Park        block_group  132999509003   
-17      Okefenokee Swamp Park    school_district           748   
-18      Okefenokee Swamp Park  elementary_school      748-3050   
-19      Okefenokee Swamp Park      middle_school      748-0295   
-20      Okefenokee Swamp Park        high_school      748-0195   
-21  Appling County Courthouse             county         13001   
-22  Appling County Courthouse              tract   13001950301   
-23  Appling County Courthouse        block_group  130019503012   
-24  Appling County Courthouse    school_district           601   
-25  Appling County Courthouse  elementary_school          <NA>   
-26  Appling County Courthouse      middle_school      601-0195   
-27  Appling County Courthouse        high_school      601-0103   
+                      id    geographic_type geographic_id  \
+0  Georgia State Capitol             county         13121   
+1  Georgia State Capitol              tract   13121003500   
+2  Georgia State Capitol        block_group  131210035001   
+3  Georgia State Capitol    school_district           761   
+4  Georgia State Capitol  elementary_school      761-0199   
 
-                                        geographic_name grades  
-0                                                Fulton   <NA>  
-1                                       Census Tract 35   <NA>  
-2         Block Group 1, Census Tract 35, Fulton County   <NA>  
-3                                Atlanta Public Schools   <NA>  
-4                          Centennial Academy (Charter)    K-5  
-5                          Centennial Academy (Charter)    6-8  
-6                                   Midtown High School   9-12  
-7                                                DeKalb   <NA>  
-8                                   Census Tract 219.15   <NA>  
-9     Block Group 3, Census Tract 219.15, DeKalb County   <NA>  
-10                                        DeKalb County   <NA>  
-11                     Stone Mountain Elementary School    K-5  
-12                         Stone Mountain Middle School    6-8  
-13                           Stone Mountain High School   9-12  
-14                                                 Ware   <NA>  
-15                                    Census Tract 9509   <NA>  
-16        Block Group 3, Census Tract 9509, Ware County   <NA>  
-17                                          Ware County   <NA>  
-18                     Memorial Drive Elementary School    K-5  
-19                               Waycross Middle School    6-8  
-20                              Ware County High School   9-12  
-21                                              Appling   <NA>  
-22                                 Census Tract 9503.01   <NA>  
-23  Block Group 2, Census Tract 9503.01, Appling County   <NA>  
-24                                       Appling County   <NA>  
-25                                                 <NA>   <NA>  
-26                         Appling County Middle School    6-8  
-27                           Appling County High School   9-12  
+                                 geographic_name grades  
+0                                         Fulton   <NA>  
+1                                Census Tract 35   <NA>  
+2  Block Group 1, Census Tract 35, Fulton County   <NA>  
+3                         Atlanta Public Schools   <NA>  
+4                   Centennial Academy (Charter)    K-5  
 ```
 
-The output is long: filter it to the rows you need, such as
-`places[places["geographic_type"] == "high_school"]`. A school's
+The output is long (`head()` shows its first five rows): filter it to the
+rows you need, such as `places[places["geographic_type"] == "high_school"]`. A school's
 `geographic_id` is its `"DISTRICT-SCHOOL"` code, the form `gcd.rows()` takes
 as `school_id`.
 
@@ -1587,11 +1367,7 @@ addresses or a data frame with `street`, `city`, `state` and `zip`:
 
 ```python
 capitol = gcd.locate(address="206 Washington St SW, Atlanta, GA 30334")
-capitol[["match_status", "matched_address", "geographic_type", "geographic_name", "grades"]]
-```
-
-```text
-i The server is busy (HTTP 502); retrying shortly.
+capitol[["match_status", "matched_address", "geographic_type", "geographic_name", "grades"]].head()
 ```
 
 ```text
@@ -1601,8 +1377,6 @@ i The server is busy (HTTP 502); retrying shortly.
 2        match  206 WASHINGTON ST SW, ATLANTA, GA, 30334        block_group   
 3        match  206 WASHINGTON ST SW, ATLANTA, GA, 30334    school_district   
 4        match  206 WASHINGTON ST SW, ATLANTA, GA, 30334  elementary_school   
-5        match  206 WASHINGTON ST SW, ATLANTA, GA, 30334      middle_school   
-6        match  206 WASHINGTON ST SW, ATLANTA, GA, 30334        high_school   
 
                                  geographic_name grades  
 0                                         Fulton   <NA>  
@@ -1610,8 +1384,6 @@ i The server is busy (HTTP 502); retrying shortly.
 2  Block Group 1, Census Tract 35, Fulton County   <NA>  
 3                         Atlanta Public Schools   <NA>  
 4                   Centennial Academy (Charter)    K-5  
-5                   Centennial Academy (Charter)    6-8  
-6                            Midtown High School   9-12  
 ```
 
 The same lookup for several buildings, from a data frame with one column per

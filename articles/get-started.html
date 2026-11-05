@@ -509,7 +509,7 @@ dtype: int64
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gcd</span><span class="o">.</span><span class="n">datasets</span><span class="p">(</span><span class="n">main_topic</span><span class="o">=</span><span class="s2">"education"</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="s2">"districts"</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="mi">2025</span><span class="p">)[[</span><span class="s2">"name"</span><span class="p">,</span> <span class="s2">"title"</span><span class="p">]]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gcd</span><span class="o">.</span><span class="n">datasets</span><span class="p">(</span><span class="n">main_topic</span><span class="o">=</span><span class="s2">"education"</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="s2">"districts"</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="mi">2025</span><span class="p">)[[</span><span class="s2">"name"</span><span class="p">,</span> <span class="s2">"title"</span><span class="p">]]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -561,236 +561,6 @@ dtype: int64
       <th>4</th>
       <td>ccrpi_scoring_by_component</td>
       <td>CCRPI Scores and Components</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>enrollment_by_grade</td>
-      <td>Enrollment by Grade Level (Fall and Spring)</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>enrollment_march_gender_race_ethnicity</td>
-      <td>March Enrollment by Race and Gender</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>enrollment_october_disability</td>
-      <td>Special Education Enrollment by Disability</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>enrollment_october_gender_race_ethnicity</td>
-      <td>October Enrollment by Race and Gender</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>free_reduced_lunch</td>
-      <td>Free and Reduced-Price Lunch Eligibility</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>georgia_milestones_end_of_course</td>
-      <td>Georgia Milestones End-of-Course (EOC) Re...</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>georgia_milestones_end_of_grade</td>
-      <td>Georgia Milestones End-of-Grade (EOG) Res...</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>pathway_completion_advanced_academic</td>
-      <td>Pathway Completer Graduation Rate: Advanc...</td>
-    </tr>
-    <tr>
-      <th>13</th>
-      <td>pathway_completion_ctae</td>
-      <td>Pathway Completer Graduation Rate: CTAE</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>pathway_completion_fine_arts</td>
-      <td>Pathway Completer Graduation Rate: Fine Arts</td>
-    </tr>
-    <tr>
-      <th>15</th>
-      <td>pathway_completion_world_language</td>
-      <td>Pathway Completer Graduation Rate: World ...</td>
-    </tr>
-    <tr>
-      <th>16</th>
-      <td>act_scores</td>
-      <td>ACT College Readiness Test Scores</td>
-    </tr>
-    <tr>
-      <th>17</th>
-      <td>advanced_placement_scores</td>
-      <td>Advanced Placement (AP) Exam Scores</td>
-    </tr>
-    <tr>
-      <th>18</th>
-      <td>attendance</td>
-      <td>Student Attendance and Chronic Absenteeism</td>
-    </tr>
-    <tr>
-      <th>19</th>
-      <td>certified_personnel_compensation</td>
-      <td>Certified Personnel Compensation (Salarie...</td>
-    </tr>
-    <tr>
-      <th>20</th>
-      <td>certified_personnel_composition</td>
-      <td>Certified Personnel Composition (Staff Ch...</td>
-    </tr>
-    <tr>
-      <th>21</th>
-      <td>certified_personnel_experience</td>
-      <td>Certified Personnel Years of Experience</td>
-    </tr>
-    <tr>
-      <th>22</th>
-      <td>direct_certification</td>
-      <td>Direct Certification for Free School Meals</td>
-    </tr>
-    <tr>
-      <th>23</th>
-      <td>dropout_rate_7_12</td>
-      <td>Grade 7-12 Dropout Rates</td>
-    </tr>
-    <tr>
-      <th>24</th>
-      <td>dropout_rate_9_12</td>
-      <td>Grades 9-12 Dropout Rates</td>
-    </tr>
-    <tr>
-      <th>25</th>
-      <td>educator_qualifications_emergency_and_pro...</td>
-      <td>Emergency-Credentialed Teachers</td>
-    </tr>
-    <tr>
-      <th>26</th>
-      <td>educator_qualifications_inexperienced_tea...</td>
-      <td>Inexperienced Teachers and Leaders</td>
-    </tr>
-    <tr>
-      <th>27</th>
-      <td>educator_qualifications_out_of_field_teac...</td>
-      <td>Out-of-Field Teachers</td>
-    </tr>
-    <tr>
-      <th>28</th>
-      <td>english_learner_exit_rate</td>
-      <td>English Learner Program Exit Rate</td>
-    </tr>
-    <tr>
-      <th>29</th>
-      <td>enrollment_demographic_shares</td>
-      <td>Enrollment Demographic Shares</td>
-    </tr>
-    <tr>
-      <th>30</th>
-      <td>enrollment_program_participation</td>
-      <td>Enrollment Program Participation</td>
-    </tr>
-    <tr>
-      <th>31</th>
-      <td>financial_efficiency_star_rating</td>
-      <td>Financial Efficiency Star Rating (FESR)</td>
-    </tr>
-    <tr>
-      <th>32</th>
-      <td>georgia_alternate_assessment</td>
-      <td>Georgia Alternate Assessment (GAA)</td>
-    </tr>
-    <tr>
-      <th>33</th>
-      <td>georgia_milestones_end_of_course_by_grade...</td>
-      <td>Georgia Milestones End-of-Course (EOC) Re...</td>
-    </tr>
-    <tr>
-      <th>34</th>
-      <td>georgia_milestones_end_of_course_lexile</td>
-      <td>Georgia Milestones EOC Lexile Reading Scores</td>
-    </tr>
-    <tr>
-      <th>35</th>
-      <td>georgia_milestones_end_of_grade_by_grade_...</td>
-      <td>Georgia Milestones End-of-Grade Assessmen...</td>
-    </tr>
-    <tr>
-      <th>36</th>
-      <td>georgia_milestones_end_of_grade_lexile</td>
-      <td>Georgia Milestones End-of-Grade Lexile Re...</td>
-    </tr>
-    <tr>
-      <th>37</th>
-      <td>graduation_rate_4_year_cohort</td>
-      <td>Four-Year Cohort Graduation Rate</td>
-    </tr>
-    <tr>
-      <th>38</th>
-      <td>high_school_completers</td>
-      <td>High School Completers</td>
-    </tr>
-    <tr>
-      <th>39</th>
-      <td>hope_eligible_graduates</td>
-      <td>HOPE-Eligible Graduates</td>
-    </tr>
-    <tr>
-      <th>40</th>
-      <td>k12_expenditures</td>
-      <td>K-12 Expenditures by Spending Function</td>
-    </tr>
-    <tr>
-      <th>41</th>
-      <td>k12_revenues</td>
-      <td>K-12 Revenues by Funding Source</td>
-    </tr>
-    <tr>
-      <th>42</th>
-      <td>per_pupil_expenditure</td>
-      <td>Per-Pupil Expenditure (FESR)</td>
-    </tr>
-    <tr>
-      <th>43</th>
-      <td>retained_students</td>
-      <td>Retained (Held-Back) K-12 Students</td>
-    </tr>
-    <tr>
-      <th>44</th>
-      <td>salaries_and_benefits</td>
-      <td>District Salaries and Benefits</td>
-    </tr>
-    <tr>
-      <th>45</th>
-      <td>sat_scores_highest</td>
-      <td>SAT Scores (Highest Section Score)</td>
-    </tr>
-    <tr>
-      <th>46</th>
-      <td>sat_scores_recent</td>
-      <td>SAT Scores (Most Recent Administration)</td>
-    </tr>
-    <tr>
-      <th>47</th>
-      <td>student_mobility_rate</td>
-      <td>Student Mobility Rates</td>
-    </tr>
-    <tr>
-      <th>48</th>
-      <td>state_charter_academic_comparison</td>
-      <td>State Charter Academic Comparison</td>
-    </tr>
-    <tr>
-      <th>49</th>
-      <td>state_charter_accountability_designations</td>
-      <td>State Charter Accountability Designations</td>
-    </tr>
-    <tr>
-      <th>50</th>
-      <td>state_charter_financial_performance</td>
-      <td>State Charter Financial Performance</td>
     </tr>
   </tbody>
 </table>
@@ -1187,7 +957,7 @@ suppressed values:</p>
     <span class="n">year</span><span class="o">=</span><span class="mi">2024</span><span class="p">,</span>
     <span class="n">detail</span><span class="o">=</span><span class="s2">"districts"</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">small</span><span class="p">[[</span><span class="s2">"demographic"</span><span class="p">,</span> <span class="s2">"num_graduates"</span><span class="p">,</span> <span class="s2">"num_cohort"</span><span class="p">,</span> <span class="s2">"graduation_rate"</span><span class="p">]]</span>
+<span class="n">small</span><span class="p">[[</span><span class="s2">"demographic"</span><span class="p">,</span> <span class="s2">"num_graduates"</span><span class="p">,</span> <span class="s2">"num_cohort"</span><span class="p">,</span> <span class="s2">"graduation_rate"</span><span class="p">]]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1257,97 +1027,6 @@ GCDAdvisory: `district_census_id` is a 5-digit Census school-district code, NOT 
       <td>240</td>
       <td>0.9375</td>
     </tr>
-    <tr>
-      <th>5</th>
-      <td>english_learners</td>
-      <td>13</td>
-      <td>14</td>
-      <td>0.9286</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>female</td>
-      <td>111</td>
-      <td>114</td>
-      <td>0.9737</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>foster_care</td>
-      <td>&lt;NA&gt;</td>
-      <td>&lt;NA&gt;</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>hispanic</td>
-      <td>42</td>
-      <td>44</td>
-      <td>0.9545</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>homeless</td>
-      <td>&lt;NA&gt;</td>
-      <td>&lt;NA&gt;</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>male</td>
-      <td>114</td>
-      <td>126</td>
-      <td>0.9048</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>migrant</td>
-      <td>18</td>
-      <td>20</td>
-      <td>0.9000</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>multiracial</td>
-      <td>&lt;NA&gt;</td>
-      <td>&lt;NA&gt;</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>13</th>
-      <td>native_american</td>
-      <td>&lt;NA&gt;</td>
-      <td>&lt;NA&gt;</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>not_economically_disadvantaged</td>
-      <td>&lt;NA&gt;</td>
-      <td>&lt;NA&gt;</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>15</th>
-      <td>students_with_disabilities</td>
-      <td>25</td>
-      <td>31</td>
-      <td>0.8065</td>
-    </tr>
-    <tr>
-      <th>16</th>
-      <td>students_without_disabilities</td>
-      <td>200</td>
-      <td>209</td>
-      <td>0.9570</td>
-    </tr>
-    <tr>
-      <th>17</th>
-      <td>white</td>
-      <td>119</td>
-      <td>127</td>
-      <td>0.9370</td>
-    </tr>
   </tbody>
 </table>
 </div></div></div>
@@ -1412,7 +1091,10 @@ dtype: int64
 under the other filters, with row counts, without downloading rows:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gcd</span><span class="o">.</span><span class="n">values</span><span class="p">(</span><span class="s2">"ccrpi_content_mastery"</span><span class="p">,</span> <span class="p">[</span><span class="s2">"grade_cluster"</span><span class="p">,</span> <span class="s2">"subject"</span><span class="p">],</span> <span class="n">year</span><span class="o">=</span><span class="mi">2025</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="s2">"districts"</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">combos</span> <span class="o">=</span> <span class="n">gcd</span><span class="o">.</span><span class="n">values</span><span class="p">(</span>
+    <span class="s2">"ccrpi_content_mastery"</span><span class="p">,</span> <span class="p">[</span><span class="s2">"grade_cluster"</span><span class="p">,</span> <span class="s2">"subject"</span><span class="p">],</span> <span class="n">year</span><span class="o">=</span><span class="mi">2025</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="s2">"districts"</span>
+<span class="p">)</span>
+<span class="n">combos</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1469,42 +1151,6 @@ under the other filters, with row counts, without downloading rows:</p>
       <th>4</th>
       <td>high</td>
       <td>mathematics</td>
-      <td>2340</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>high</td>
-      <td>science</td>
-      <td>2340</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>high</td>
-      <td>social_studies</td>
-      <td>2340</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>middle</td>
-      <td>english_language_arts</td>
-      <td>2340</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>middle</td>
-      <td>mathematics</td>
-      <td>2340</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>middle</td>
-      <td>science</td>
-      <td>2340</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>middle</td>
-      <td>social_studies</td>
       <td>2340</td>
     </tr>
   </tbody>
@@ -1575,7 +1221,7 @@ attributes.</p>
 <h2>Caching<a class="headerlink" href="#caching" title="Link to this heading">#</a></h2>
 <p>Metadata (the catalog, schemas and lookup tables) is cached for the Python
 session. Rows can also be cached on disk, if you ask:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gcd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">"cache"</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>   <span class="c1"># or cache=True in gcd.rows()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gcd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">"cache"</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>  <span class="c1"># or cache=True in gcd.rows()</span>
 </pre></div>
 </div>
 <p>Cached responses are kept with their <code class="docutils literal notranslate"><span class="pre">ETag</span></code> in the user cache folder, and

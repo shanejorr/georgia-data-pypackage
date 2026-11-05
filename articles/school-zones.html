@@ -544,19 +544,34 @@ don't:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">status</span> <span class="o">=</span> <span class="n">gcd</span><span class="o">.</span><span class="n">school_zone_status</span><span class="p">(</span><span class="n">district</span><span class="o">=</span><span class="s2">"Atlanta Public Schools"</span><span class="p">)</span>
-<span class="n">status</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">"zone_status"</span><span class="p">,</span> <span class="s2">"no_zone_category"</span><span class="p">],</span> <span class="n">dropna</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+<span class="n">status</span><span class="p">[</span><span class="s2">"zone_status"</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>zone_status  no_zone_category        
-no_zone      alternative                  1
-             charter                     16
-             closed_or_consolidated       2
-             magnet_or_choice             3
-             residential_or_treatment     1
-zoned        &lt;NA&gt;                        64
-dtype: int64
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>zone_status
+zoned      64
+no_zone    23
+Name: count, dtype: int64[pyarrow]
+</pre></div>
+</div>
+</div>
+</div>
+<p>The schools with no zone, by reason:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">status</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">status</span><span class="p">[</span><span class="s2">"zone_status"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"no_zone"</span><span class="p">,</span> <span class="s2">"no_zone_category"</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>no_zone_category
+charter                     16
+magnet_or_choice             3
+closed_or_consolidated       2
+residential_or_treatment     1
+alternative                  1
+Name: count, dtype: int64[pyarrow]
 </pre></div>
 </div>
 </div>
@@ -741,7 +756,7 @@ each falls in, one row per place.</p>
     <span class="p">}</span>
 <span class="p">)</span>
 <span class="n">places</span> <span class="o">=</span> <span class="n">gcd</span><span class="o">.</span><span class="n">locate</span><span class="p">(</span><span class="n">lat</span><span class="o">=</span><span class="n">landmarks</span><span class="p">[</span><span class="s2">"lat"</span><span class="p">],</span> <span class="n">lon</span><span class="o">=</span><span class="n">landmarks</span><span class="p">[</span><span class="s2">"lon"</span><span class="p">],</span> <span class="nb">id</span><span class="o">=</span><span class="n">landmarks</span><span class="p">[</span><span class="s2">"landmark"</span><span class="p">])</span>
-<span class="n">places</span><span class="p">[[</span><span class="s2">"id"</span><span class="p">,</span> <span class="s2">"geographic_type"</span><span class="p">,</span> <span class="s2">"geographic_id"</span><span class="p">,</span> <span class="s2">"geographic_name"</span><span class="p">,</span> <span class="s2">"grades"</span><span class="p">]]</span>
+<span class="n">places</span><span class="p">[[</span><span class="s2">"id"</span><span class="p">,</span> <span class="s2">"geographic_type"</span><span class="p">,</span> <span class="s2">"geographic_id"</span><span class="p">,</span> <span class="s2">"geographic_name"</span><span class="p">,</span> <span class="s2">"grades"</span><span class="p">]]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -815,196 +830,12 @@ each falls in, one row per place.</p>
       <td>Centennial Academy (Charter)</td>
       <td>K-5</td>
     </tr>
-    <tr>
-      <th>5</th>
-      <td>Georgia State Capitol</td>
-      <td>middle_school</td>
-      <td>761-0199</td>
-      <td>Centennial Academy (Charter)</td>
-      <td>6-8</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>Georgia State Capitol</td>
-      <td>high_school</td>
-      <td>761-4560</td>
-      <td>Midtown High School</td>
-      <td>9-12</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>Stone Mountain Park</td>
-      <td>county</td>
-      <td>13089</td>
-      <td>DeKalb</td>
-      <td>&lt;NA&gt;</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>Stone Mountain Park</td>
-      <td>tract</td>
-      <td>13089021915</td>
-      <td>Census Tract 219.15</td>
-      <td>&lt;NA&gt;</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>Stone Mountain Park</td>
-      <td>block_group</td>
-      <td>130890219153</td>
-      <td>Block Group 3, Census Tract 219.15, DeKalb County</td>
-      <td>&lt;NA&gt;</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>Stone Mountain Park</td>
-      <td>school_district</td>
-      <td>644</td>
-      <td>DeKalb County</td>
-      <td>&lt;NA&gt;</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>Stone Mountain Park</td>
-      <td>elementary_school</td>
-      <td>644-2068</td>
-      <td>Stone Mountain Elementary School</td>
-      <td>K-5</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>Stone Mountain Park</td>
-      <td>middle_school</td>
-      <td>644-0506</td>
-      <td>Stone Mountain Middle School</td>
-      <td>6-8</td>
-    </tr>
-    <tr>
-      <th>13</th>
-      <td>Stone Mountain Park</td>
-      <td>high_school</td>
-      <td>644-0276</td>
-      <td>Stone Mountain High School</td>
-      <td>9-12</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>Okefenokee Swamp Park</td>
-      <td>county</td>
-      <td>13299</td>
-      <td>Ware</td>
-      <td>&lt;NA&gt;</td>
-    </tr>
-    <tr>
-      <th>15</th>
-      <td>Okefenokee Swamp Park</td>
-      <td>tract</td>
-      <td>13299950900</td>
-      <td>Census Tract 9509</td>
-      <td>&lt;NA&gt;</td>
-    </tr>
-    <tr>
-      <th>16</th>
-      <td>Okefenokee Swamp Park</td>
-      <td>block_group</td>
-      <td>132999509003</td>
-      <td>Block Group 3, Census Tract 9509, Ware County</td>
-      <td>&lt;NA&gt;</td>
-    </tr>
-    <tr>
-      <th>17</th>
-      <td>Okefenokee Swamp Park</td>
-      <td>school_district</td>
-      <td>748</td>
-      <td>Ware County</td>
-      <td>&lt;NA&gt;</td>
-    </tr>
-    <tr>
-      <th>18</th>
-      <td>Okefenokee Swamp Park</td>
-      <td>elementary_school</td>
-      <td>748-3050</td>
-      <td>Memorial Drive Elementary School</td>
-      <td>K-5</td>
-    </tr>
-    <tr>
-      <th>19</th>
-      <td>Okefenokee Swamp Park</td>
-      <td>middle_school</td>
-      <td>748-0295</td>
-      <td>Waycross Middle School</td>
-      <td>6-8</td>
-    </tr>
-    <tr>
-      <th>20</th>
-      <td>Okefenokee Swamp Park</td>
-      <td>high_school</td>
-      <td>748-0195</td>
-      <td>Ware County High School</td>
-      <td>9-12</td>
-    </tr>
-    <tr>
-      <th>21</th>
-      <td>Appling County Courthouse</td>
-      <td>county</td>
-      <td>13001</td>
-      <td>Appling</td>
-      <td>&lt;NA&gt;</td>
-    </tr>
-    <tr>
-      <th>22</th>
-      <td>Appling County Courthouse</td>
-      <td>tract</td>
-      <td>13001950301</td>
-      <td>Census Tract 9503.01</td>
-      <td>&lt;NA&gt;</td>
-    </tr>
-    <tr>
-      <th>23</th>
-      <td>Appling County Courthouse</td>
-      <td>block_group</td>
-      <td>130019503012</td>
-      <td>Block Group 2, Census Tract 9503.01, Appling County</td>
-      <td>&lt;NA&gt;</td>
-    </tr>
-    <tr>
-      <th>24</th>
-      <td>Appling County Courthouse</td>
-      <td>school_district</td>
-      <td>601</td>
-      <td>Appling County</td>
-      <td>&lt;NA&gt;</td>
-    </tr>
-    <tr>
-      <th>25</th>
-      <td>Appling County Courthouse</td>
-      <td>elementary_school</td>
-      <td>&lt;NA&gt;</td>
-      <td>&lt;NA&gt;</td>
-      <td>&lt;NA&gt;</td>
-    </tr>
-    <tr>
-      <th>26</th>
-      <td>Appling County Courthouse</td>
-      <td>middle_school</td>
-      <td>601-0195</td>
-      <td>Appling County Middle School</td>
-      <td>6-8</td>
-    </tr>
-    <tr>
-      <th>27</th>
-      <td>Appling County Courthouse</td>
-      <td>high_school</td>
-      <td>601-0103</td>
-      <td>Appling County High School</td>
-      <td>9-12</td>
-    </tr>
   </tbody>
 </table>
 </div></div></div>
 </div>
-<p>The output is long: filter it to the rows you need, such as
-<code class="docutils literal notranslate"><span class="pre">places[places[&quot;geographic_type&quot;]</span> <span class="pre">==</span> <span class="pre">&quot;high_school&quot;]</span></code>. A school's
+<p>The output is long (<code class="docutils literal notranslate"><span class="pre">head()</span></code> shows its first five rows): filter it to the
+rows you need, such as <code class="docutils literal notranslate"><span class="pre">places[places[&quot;geographic_type&quot;]</span> <span class="pre">==</span> <span class="pre">&quot;high_school&quot;]</span></code>. A school's
 <code class="docutils literal notranslate"><span class="pre">geographic_id</span></code> is its <code class="docutils literal notranslate"><span class="pre">&quot;DISTRICT-SCHOOL&quot;</span></code> code, the form <code class="docutils literal notranslate"><span class="pre">gcd.rows()</span></code> takes
 as <code class="docutils literal notranslate"><span class="pre">school_id</span></code>.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">note</span></code> column explains any row that is missing or needs care, such as a
@@ -1079,14 +910,11 @@ addresses or a data frame with <code class="docutils literal notranslate"><span 
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">capitol</span> <span class="o">=</span> <span class="n">gcd</span><span class="o">.</span><span class="n">locate</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="s2">"206 Washington St SW, Atlanta, GA 30334"</span><span class="p">)</span>
-<span class="n">capitol</span><span class="p">[[</span><span class="s2">"match_status"</span><span class="p">,</span> <span class="s2">"matched_address"</span><span class="p">,</span> <span class="s2">"geographic_type"</span><span class="p">,</span> <span class="s2">"geographic_name"</span><span class="p">,</span> <span class="s2">"grades"</span><span class="p">]]</span>
+<span class="n">capitol</span><span class="p">[[</span><span class="s2">"match_status"</span><span class="p">,</span> <span class="s2">"matched_address"</span><span class="p">,</span> <span class="s2">"geographic_type"</span><span class="p">,</span> <span class="s2">"geographic_name"</span><span class="p">,</span> <span class="s2">"grades"</span><span class="p">]]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>i The server is busy (HTTP 502); retrying shortly.
-</pre></div>
-</div>
 <div class="output text_html"><div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -1152,22 +980,6 @@ addresses or a data frame with <code class="docutils literal notranslate"><span 
       <td>elementary_school</td>
       <td>Centennial Academy (Charter)</td>
       <td>K-5</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>match</td>
-      <td>206 WASHINGTON ST SW, ATLANTA, GA, 30334</td>
-      <td>middle_school</td>
-      <td>Centennial Academy (Charter)</td>
-      <td>6-8</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>match</td>
-      <td>206 WASHINGTON ST SW, ATLANTA, GA, 30334</td>
-      <td>high_school</td>
-      <td>Midtown High School</td>
-      <td>9-12</td>
     </tr>
   </tbody>
 </table>

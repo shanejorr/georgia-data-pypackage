@@ -58,18 +58,30 @@ don't:
 
 ```python
 status = gcd.school_zone_status(district="Atlanta Public Schools")
-status.groupby(["zone_status", "no_zone_category"], dropna=False).size()
+status["zone_status"].value_counts()
 ```
 
 ```text
-zone_status  no_zone_category        
-no_zone      alternative                  1
-             charter                     16
-             closed_or_consolidated       2
-             magnet_or_choice             3
-             residential_or_treatment     1
-zoned        <NA>                        64
-dtype: int64
+zone_status
+zoned      64
+no_zone    23
+Name: count, dtype: int64[pyarrow]
+```
+
+The schools with no zone, by reason:
+
+```python
+status.loc[status["zone_status"] == "no_zone", "no_zone_category"].value_counts().head()
+```
+
+```text
+no_zone_category
+charter                     16
+magnet_or_choice             3
+closed_or_consolidated       2
+residential_or_treatment     1
+alternative                  1
+Name: count, dtype: int64[pyarrow]
 ```
 
 ```python
@@ -146,7 +158,7 @@ landmarks = pd.DataFrame(
     }
 )
 places = gcd.locate(lat=landmarks["lat"], lon=landmarks["lon"], id=landmarks["landmark"])
-places[["id", "geographic_type", "geographic_id", "geographic_name", "grades"]]
+places[["id", "geographic_type", "geographic_id", "geographic_name", "grades"]].head()
 ```
 
 ```text
@@ -154,69 +166,23 @@ GCDAdvisory: A zone is the default assignment, not the only option: a Georgia st
 ```
 
 ```text
-                           id    geographic_type geographic_id  \
-0       Georgia State Capitol             county         13121   
-1       Georgia State Capitol              tract   13121003500   
-2       Georgia State Capitol        block_group  131210035001   
-3       Georgia State Capitol    school_district           761   
-4       Georgia State Capitol  elementary_school      761-0199   
-5       Georgia State Capitol      middle_school      761-0199   
-6       Georgia State Capitol        high_school      761-4560   
-7         Stone Mountain Park             county         13089   
-8         Stone Mountain Park              tract   13089021915   
-9         Stone Mountain Park        block_group  130890219153   
-10        Stone Mountain Park    school_district           644   
-11        Stone Mountain Park  elementary_school      644-2068   
-12        Stone Mountain Park      middle_school      644-0506   
-13        Stone Mountain Park        high_school      644-0276   
-14      Okefenokee Swamp Park             county         13299   
-15      Okefenokee Swamp Park              tract   13299950900   
-16      Okefenokee Swamp Park        block_group  132999509003   
-17      Okefenokee Swamp Park    school_district           748   
-18      Okefenokee Swamp Park  elementary_school      748-3050   
-19      Okefenokee Swamp Park      middle_school      748-0295   
-20      Okefenokee Swamp Park        high_school      748-0195   
-21  Appling County Courthouse             county         13001   
-22  Appling County Courthouse              tract   13001950301   
-23  Appling County Courthouse        block_group  130019503012   
-24  Appling County Courthouse    school_district           601   
-25  Appling County Courthouse  elementary_school          <NA>   
-26  Appling County Courthouse      middle_school      601-0195   
-27  Appling County Courthouse        high_school      601-0103   
+                      id    geographic_type geographic_id  \
+0  Georgia State Capitol             county         13121   
+1  Georgia State Capitol              tract   13121003500   
+2  Georgia State Capitol        block_group  131210035001   
+3  Georgia State Capitol    school_district           761   
+4  Georgia State Capitol  elementary_school      761-0199   
 
-                                        geographic_name grades  
-0                                                Fulton   <NA>  
-1                                       Census Tract 35   <NA>  
-2         Block Group 1, Census Tract 35, Fulton County   <NA>  
-3                                Atlanta Public Schools   <NA>  
-4                          Centennial Academy (Charter)    K-5  
-5                          Centennial Academy (Charter)    6-8  
-6                                   Midtown High School   9-12  
-7                                                DeKalb   <NA>  
-8                                   Census Tract 219.15   <NA>  
-9     Block Group 3, Census Tract 219.15, DeKalb County   <NA>  
-10                                        DeKalb County   <NA>  
-11                     Stone Mountain Elementary School    K-5  
-12                         Stone Mountain Middle School    6-8  
-13                           Stone Mountain High School   9-12  
-14                                                 Ware   <NA>  
-15                                    Census Tract 9509   <NA>  
-16        Block Group 3, Census Tract 9509, Ware County   <NA>  
-17                                          Ware County   <NA>  
-18                     Memorial Drive Elementary School    K-5  
-19                               Waycross Middle School    6-8  
-20                              Ware County High School   9-12  
-21                                              Appling   <NA>  
-22                                 Census Tract 9503.01   <NA>  
-23  Block Group 2, Census Tract 9503.01, Appling County   <NA>  
-24                                       Appling County   <NA>  
-25                                                 <NA>   <NA>  
-26                         Appling County Middle School    6-8  
-27                           Appling County High School   9-12  
+                                 geographic_name grades  
+0                                         Fulton   <NA>  
+1                                Census Tract 35   <NA>  
+2  Block Group 1, Census Tract 35, Fulton County   <NA>  
+3                         Atlanta Public Schools   <NA>  
+4                   Centennial Academy (Charter)    K-5  
 ```
 
-The output is long: filter it to the rows you need, such as
-`places[places["geographic_type"] == "high_school"]`. A school's
+The output is long (`head()` shows its first five rows): filter it to the
+rows you need, such as `places[places["geographic_type"] == "high_school"]`. A school's
 `geographic_id` is its `"DISTRICT-SCHOOL"` code, the form `gcd.rows()` takes
 as `school_id`.
 
@@ -257,11 +223,7 @@ addresses or a data frame with `street`, `city`, `state` and `zip`:
 
 ```python
 capitol = gcd.locate(address="206 Washington St SW, Atlanta, GA 30334")
-capitol[["match_status", "matched_address", "geographic_type", "geographic_name", "grades"]]
-```
-
-```text
-i The server is busy (HTTP 502); retrying shortly.
+capitol[["match_status", "matched_address", "geographic_type", "geographic_name", "grades"]].head()
 ```
 
 ```text
@@ -271,8 +233,6 @@ i The server is busy (HTTP 502); retrying shortly.
 2        match  206 WASHINGTON ST SW, ATLANTA, GA, 30334        block_group   
 3        match  206 WASHINGTON ST SW, ATLANTA, GA, 30334    school_district   
 4        match  206 WASHINGTON ST SW, ATLANTA, GA, 30334  elementary_school   
-5        match  206 WASHINGTON ST SW, ATLANTA, GA, 30334      middle_school   
-6        match  206 WASHINGTON ST SW, ATLANTA, GA, 30334        high_school   
 
                                  geographic_name grades  
 0                                         Fulton   <NA>  
@@ -280,8 +240,6 @@ i The server is busy (HTTP 502); retrying shortly.
 2  Block Group 1, Census Tract 35, Fulton County   <NA>  
 3                         Atlanta Public Schools   <NA>  
 4                   Centennial Academy (Charter)    K-5  
-5                   Centennial Academy (Charter)    6-8  
-6                            Midtown High School   9-12  
 ```
 
 The same lookup for several buildings, from a data frame with one column per

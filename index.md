@@ -102,28 +102,35 @@ columns with each one's type, role (a year, a place, a demographic group, or
 a measured value), and unit.
 
 ```python
-gcd.columns("graduation_rate_4_year_cohort")[["column", "type", "role", "unit"]]
+cols = gcd.columns("graduation_rate_4_year_cohort")[["column", "type", "role", "unit"]]
+cols.head()
 ```
 
 ```text
-                  column     type            role        unit
-0                   year  integer            year        <NA>
-1          district_code   string     fk_district        <NA>
-2          district_name   string           label        <NA>
-3     district_census_id   string           label        <NA>
-4          district_type   string           label        <NA>
-5            school_code   string       fk_school        <NA>
-6            school_name   string           label        <NA>
-7            demographic   string  fk_demographic        <NA>
-8      demographic_label   string           label        <NA>
-9   demographic_category   string           label        <NA>
-10         num_graduates  integer          metric       count
-11            num_cohort  integer          metric       count
-12       graduation_rate   number          metric  proportion
+               column     type         role  unit
+0                year  integer         year  <NA>
+1       district_code   string  fk_district  <NA>
+2       district_name   string        label  <NA>
+3  district_census_id   string        label  <NA>
+4       district_type   string        label  <NA>
 ```
 
-Each row is one year, one place and one demographic group. The value we want
-is `graduation_rate`, a proportion on the 0-1 scale, so 0.9 means 90%.
+Each row is one year, one place and one demographic group. The measured
+values are the columns whose role is `metric`:
+
+```python
+cols[cols["role"] == "metric"]
+```
+
+```text
+             column     type    role        unit
+10    num_graduates  integer  metric       count
+11       num_cohort  integer  metric       count
+12  graduation_rate   number  metric  proportion
+```
+
+The value we want is `graduation_rate`, a proportion on the 0-1 scale, so
+0.9 means 90%.
 
 `gcd.describe()` prints the rest of the dataset's documentation: its source,
 the years and detail levels it covers, and notes on how to use it. Those
@@ -151,7 +158,7 @@ grads = gcd.rows(
     demographic=["all", "black", "hispanic", "white"],
     year=range(2011, 2026),
 )
-grads
+grads.head()
 ```
 
 ```text
@@ -161,134 +168,24 @@ GCDAdvisory: `district_census_id` is a 5-digit Census school-district code, NOT 
 ```
 
 ```text
-    year district_code  district_name district_census_id district_type  ... demographic_label  \
-0   2011           660  Fulton County              02280      standard  ...               All   
-1   2011           660  Fulton County              02280      standard  ...             Black   
-2   2011           660  Fulton County              02280      standard  ...          Hispanic   
-3   2011           660  Fulton County              02280      standard  ...             White   
-4   2012           660  Fulton County              02280      standard  ...               All   
-5   2012           660  Fulton County              02280      standard  ...             Black   
-6   2012           660  Fulton County              02280      standard  ...          Hispanic   
-7   2012           660  Fulton County              02280      standard  ...             White   
-8   2013           660  Fulton County              02280      standard  ...               All   
-9   2013           660  Fulton County              02280      standard  ...             Black   
-10  2013           660  Fulton County              02280      standard  ...          Hispanic   
-11  2013           660  Fulton County              02280      standard  ...             White   
-12  2014           660  Fulton County              02280      standard  ...               All   
-13  2014           660  Fulton County              02280      standard  ...             Black   
-14  2014           660  Fulton County              02280      standard  ...          Hispanic   
-15  2014           660  Fulton County              02280      standard  ...             White   
-16  2015           660  Fulton County              02280      standard  ...               All   
-17  2015           660  Fulton County              02280      standard  ...             Black   
-18  2015           660  Fulton County              02280      standard  ...          Hispanic   
-19  2015           660  Fulton County              02280      standard  ...             White   
-20  2016           660  Fulton County              02280      standard  ...               All   
-21  2016           660  Fulton County              02280      standard  ...             Black   
-22  2016           660  Fulton County              02280      standard  ...          Hispanic   
-23  2016           660  Fulton County              02280      standard  ...             White   
-24  2017           660  Fulton County              02280      standard  ...               All   
-25  2017           660  Fulton County              02280      standard  ...             Black   
-26  2017           660  Fulton County              02280      standard  ...          Hispanic   
-27  2017           660  Fulton County              02280      standard  ...             White   
-28  2018           660  Fulton County              02280      standard  ...               All   
-29  2018           660  Fulton County              02280      standard  ...             Black   
-30  2018           660  Fulton County              02280      standard  ...          Hispanic   
-31  2018           660  Fulton County              02280      standard  ...             White   
-32  2019           660  Fulton County              02280      standard  ...               All   
-33  2019           660  Fulton County              02280      standard  ...             Black   
-34  2019           660  Fulton County              02280      standard  ...          Hispanic   
-35  2019           660  Fulton County              02280      standard  ...             White   
-36  2020           660  Fulton County              02280      standard  ...               All   
-37  2020           660  Fulton County              02280      standard  ...             Black   
-38  2020           660  Fulton County              02280      standard  ...          Hispanic   
-39  2020           660  Fulton County              02280      standard  ...             White   
-40  2021           660  Fulton County              02280      standard  ...               All   
-41  2021           660  Fulton County              02280      standard  ...             Black   
-42  2021           660  Fulton County              02280      standard  ...          Hispanic   
-43  2021           660  Fulton County              02280      standard  ...             White   
-44  2022           660  Fulton County              02280      standard  ...               All   
-45  2022           660  Fulton County              02280      standard  ...             Black   
-46  2022           660  Fulton County              02280      standard  ...          Hispanic   
-47  2022           660  Fulton County              02280      standard  ...             White   
-48  2023           660  Fulton County              02280      standard  ...               All   
-49  2023           660  Fulton County              02280      standard  ...             Black   
-50  2023           660  Fulton County              02280      standard  ...          Hispanic   
-51  2023           660  Fulton County              02280      standard  ...             White   
-52  2024           660  Fulton County              02280      standard  ...               All   
-53  2024           660  Fulton County              02280      standard  ...             Black   
-54  2024           660  Fulton County              02280      standard  ...          Hispanic   
-55  2024           660  Fulton County              02280      standard  ...             White   
-56  2025           660  Fulton County              02280      standard  ...               All   
-57  2025           660  Fulton County              02280      standard  ...             Black   
-58  2025           660  Fulton County              02280      standard  ...          Hispanic   
-59  2025           660  Fulton County              02280      standard  ...             White   
+   year district_code  district_name district_census_id district_type  ... demographic_label  \
+0  2011           660  Fulton County              02280      standard  ...               All   
+1  2011           660  Fulton County              02280      standard  ...             Black   
+2  2011           660  Fulton County              02280      standard  ...          Hispanic   
+3  2011           660  Fulton County              02280      standard  ...             White   
+4  2012           660  Fulton County              02280      standard  ...               All   
 
-   demographic_category num_graduates  num_cohort  graduation_rate  
-0             aggregate          5396        7703           0.7005  
-1                  race          2057        3536           0.5817  
-2                  race           364         671           0.5425  
-3                  race          2343        2707           0.8655  
-4             aggregate          5233        <NA>           0.7134  
-5                  race          1876        <NA>           0.5629  
-6                  race           329        <NA>           0.5117  
-7                  race          2338        <NA>           0.9066  
-8             aggregate          5483        <NA>           0.7550  
-9                  race          2005        <NA>           0.6330  
-10                 race           423        <NA>           0.5930  
-11                 race          2355        <NA>           0.9100  
-12            aggregate          5610        <NA>           0.7870  
-13                 race          2007        <NA>           0.6770  
-14                 race           454        <NA>           0.6210  
-15                 race          2393        <NA>           0.9220  
-16            aggregate          6061        <NA>           0.8528  
-17                 race          2356        <NA>           0.7814  
-18                 race           500        <NA>           0.7299  
-19                 race          2391        <NA>           0.9391  
-20            aggregate          6213        <NA>           0.8662  
-21                 race          2570        <NA>           0.8133  
-22                 race           547        <NA>           0.7534  
-23                 race          2214        <NA>           0.9482  
-24            aggregate          6406        7379           0.8681  
-25                 race          2603        3212           0.8104  
-26                 race           624         836           0.7464  
-27                 race          2379        2488           0.9562  
-28            aggregate          6708        7731           0.8677  
-29                 race          2666        3335           0.7994  
-30                 race           734         939           0.7817  
-31                 race          2322        2426           0.9571  
-32            aggregate          6859        7863           0.8723  
-33                 race          2786        3430           0.8122  
-34                 race           817        1008           0.8105  
-35                 race          2300        2417           0.9516  
-36            aggregate          6565        7682           0.8546  
-37                 race          2524        3225           0.7826  
-38                 race           859        1109           0.7746  
-39                 race          2239        2355           0.9507  
-40            aggregate          6648        7579           0.8772  
-41                 race          2488        3069           0.8107  
-42                 race           857        1085           0.7899  
-43                 race          2280        2367           0.9632  
-44            aggregate          6782        7598           0.8926  
-45                 race          2595        3124           0.8307  
-46                 race           917        1094           0.8382  
-47                 race          2179        2249           0.9689  
-48            aggregate          6815        7547           0.9030  
-49                 race          2634        3038           0.8670  
-50                 race           926        1134           0.8166  
-51                 race          2118        2195           0.9649  
-52            aggregate          6977        7695           0.9067  
-53                 race          2828        3278           0.8627  
-54                 race          1023        1175           0.8706  
-55                 race          2015        2085           0.9664  
-56            aggregate          7294        7934           0.9193  
-57                 race          2962        3385           0.8750  
-58                 race          1091        1226           0.8899  
-59                 race          2012        2067           0.9734  
+  demographic_category num_graduates  num_cohort  graduation_rate  
+0            aggregate          5396        7703           0.7005  
+1                 race          2057        3536           0.5817  
+2                 race           364         671           0.5425  
+3                 race          2343        2707           0.8655  
+4            aggregate          5233        <NA>           0.7134  
 
-[60 rows x 11 columns]
+[5 rows x 11 columns]
 ```
 
-Each place comes back with both its code and its name, and each demographic
+`grads.head()` shows the first five rows. Each place comes back with both its code and its name, and each demographic
 code with a readable label. The API also sends advisories, shown as
 `GCDAdvisory` warnings. Here they warn that the `all` total sits beside the
 subgroups, so never add a total to its subgroups. A missing value usually
@@ -369,7 +266,8 @@ Lookup tables help you:
 - Add attributes the datasets don't carry, then filter or group by them.
 - Map schools with their coordinates.
 
-Here are the active high schools in Fulton County with their locale:
+Here are the first five active high schools in Fulton County with their
+locale:
 
 ```python
 gcd.dimension(
@@ -378,33 +276,16 @@ gcd.dimension(
     school_level="high",
     active=True,
     columns=["district_code", "school_code", "school_name", "locale"],
-)
+).head()
 ```
 
 ```text
-   district_code school_code                             school_name  locale
-0            660        0106                      Milton High School  suburb
-1            660        0118        Hapeville Charter Career Academy  suburb
-2            660        0119                   Cambridge High School  suburb
-3            660        0176                    Banneker High School  suburb
-4            660        0191                     Roswell High School    city
-5            660        0198                  Centennial High School    city
-6            660        0203                   Northview High School  suburb
-7            660        0205                  Alpharetta High School    city
-8            660        0291                   Creekside High School  suburb
-9            660        0386                Independence High School    city
-10           660        0392               Chattahoochee High School  suburb
-11           660        0691                  Tri-Cities High School  suburb
-12           660        0910                 Johns Creek High School  suburb
-13           660        1110             Langston Hughes High School   rural
-14           660        1320                     Skyview High School  suburb
-15           660        1322                      Innovation Academy    city
-16           660        1323                   Global Impact Academy  suburb
-17           660        1325    Fulton Academy Of Virtual Excellence    city
-18           660        1326         Promise Career Institute School  suburb
-19           660        3066  Riverwood International Charter School    city
-20           660        4062               North Springs High School    city
-21           660        5069                    Westlake High School  suburb
+  district_code school_code                       school_name  locale
+0           660        0106                Milton High School  suburb
+1           660        0118  Hapeville Charter Career Academy  suburb
+2           660        0119             Cambridge High School  suburb
+3           660        0176              Banneker High School  suburb
+4           660        0191               Roswell High School    city
 ```
 
 To compare graduation rates by locale, merge the locale into school-level
@@ -469,9 +350,8 @@ Data API.
 
 ```python
 # The Georgia State Capitol
-gcd.locate(address="206 Washington St SW, Atlanta, GA 30334")[
-    ["geographic_type", "geographic_id", "geographic_name", "grades"]
-]
+capitol = gcd.locate(address="206 Washington St SW, Atlanta, GA 30334")
+capitol[["geographic_type", "geographic_id", "geographic_name", "grades"]].head()
 ```
 
 ```text
@@ -485,9 +365,10 @@ GCDAdvisory: A zone is the default assignment, not the only option: a Georgia st
 2        block_group  131210035001  Block Group 1, Census Tract 35, Fulton Co...   <NA>
 3    school_district           761                        Atlanta Public Schools   <NA>
 4  elementary_school      761-0199                  Centennial Academy (Charter)    K-5
-5      middle_school      761-0199                  Centennial Academy (Charter)    6-8
-6        high_school      761-4560                           Midtown High School   9-12
 ```
+
+The first five rows are shown; the rest are the zoned middle and high
+schools.
 
 ## Data license and citation
 

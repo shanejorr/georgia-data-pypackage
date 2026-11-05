@@ -795,7 +795,7 @@ its deaths over the sum of its births, not the average of its yearly rates:</p>
     <span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">infant_mortality</span><span class="o">=</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="mi">1000</span> <span class="o">*</span> <span class="n">d</span><span class="p">[</span><span class="s2">"deaths"</span><span class="p">]</span> <span class="o">/</span> <span class="n">d</span><span class="p">[</span><span class="s2">"births"</span><span class="p">])</span>
 <span class="p">)</span>
 
-<span class="n">pooled</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">"births"</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">pooled</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">"births"</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -865,46 +865,6 @@ its deaths over the sum of its births, not the average of its yearly rates:</p>
       <td>177</td>
       <td>19212</td>
       <td>9.212992</td>
-    </tr>
-    <tr>
-      <th>24</th>
-      <td>13051</td>
-      <td>Chatham</td>
-      <td>133</td>
-      <td>17899</td>
-      <td>7.430583</td>
-    </tr>
-    <tr>
-      <th>27</th>
-      <td>13057</td>
-      <td>Cherokee</td>
-      <td>59</td>
-      <td>15278</td>
-      <td>3.861762</td>
-    </tr>
-    <tr>
-      <th>68</th>
-      <td>13139</td>
-      <td>Hall</td>
-      <td>76</td>
-      <td>13787</td>
-      <td>5.512439</td>
-    </tr>
-    <tr>
-      <th>120</th>
-      <td>13245</td>
-      <td>Richmond</td>
-      <td>135</td>
-      <td>13110</td>
-      <td>10.297483</td>
-    </tr>
-    <tr>
-      <th>74</th>
-      <td>13151</td>
-      <td>Henry</td>
-      <td>77</td>
-      <td>13077</td>
-      <td>5.888201</td>
     </tr>
   </tbody>
 </table>

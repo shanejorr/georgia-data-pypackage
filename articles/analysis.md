@@ -149,21 +149,16 @@ pooled = (
     .assign(infant_mortality=lambda d: 1000 * d["deaths"] / d["births"])
 )
 
-pooled.sort_values("births", ascending=False).head(10)
+pooled.sort_values("births", ascending=False).head()
 ```
 
 ```text
-    county_fips county_name  deaths  births  infant_mortality
-66        13135    Gwinnett     323   56843          5.682318
-59        13121      Fulton     389   56491          6.886053
-43        13089      DeKalb     299   49609          6.027132
-32        13067        Cobb     229   43244          5.295532
-30        13063     Clayton     177   19212          9.212992
-24        13051     Chatham     133   17899          7.430583
-27        13057    Cherokee      59   15278          3.861762
-68        13139        Hall      76   13787          5.512439
-120       13245    Richmond     135   13110         10.297483
-74        13151       Henry      77   13077          5.888201
+   county_fips county_name  deaths  births  infant_mortality
+66       13135    Gwinnett     323   56843          5.682318
+59       13121      Fulton     389   56491          6.886053
+43       13089      DeKalb     299   49609          6.027132
+32       13067        Cobb     229   43244          5.295532
+30       13063     Clayton     177   19212          9.212992
 ```
 
 ```python

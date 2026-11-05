@@ -582,7 +582,8 @@ columns with each one's type, role (a year, a place, a demographic group, or
 a measured value), and unit.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gcd</span><span class="o">.</span><span class="n">columns</span><span class="p">(</span><span class="s2">"graduation_rate_4_year_cohort"</span><span class="p">)[[</span><span class="s2">"column"</span><span class="p">,</span> <span class="s2">"type"</span><span class="p">,</span> <span class="s2">"role"</span><span class="p">,</span> <span class="s2">"unit"</span><span class="p">]]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cols</span> <span class="o">=</span> <span class="n">gcd</span><span class="o">.</span><span class="n">columns</span><span class="p">(</span><span class="s2">"graduation_rate_4_year_cohort"</span><span class="p">)[[</span><span class="s2">"column"</span><span class="p">,</span> <span class="s2">"type"</span><span class="p">,</span> <span class="s2">"role"</span><span class="p">,</span> <span class="s2">"unit"</span><span class="p">]]</span>
+<span class="n">cols</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -647,41 +648,44 @@ a measured value), and unit.</p>
       <td>label</td>
       <td>&lt;NA&gt;</td>
     </tr>
-    <tr>
-      <th>5</th>
-      <td>school_code</td>
-      <td>string</td>
-      <td>fk_school</td>
-      <td>&lt;NA&gt;</td>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Each row is one year, one place and one demographic group. The measured
+values are the columns whose role is <code class="docutils literal notranslate"><span class="pre">metric</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cols</span><span class="p">[</span><span class="n">cols</span><span class="p">[</span><span class="s2">"role"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"metric"</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>column</th>
+      <th>type</th>
+      <th>role</th>
+      <th>unit</th>
     </tr>
-    <tr>
-      <th>6</th>
-      <td>school_name</td>
-      <td>string</td>
-      <td>label</td>
-      <td>&lt;NA&gt;</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>demographic</td>
-      <td>string</td>
-      <td>fk_demographic</td>
-      <td>&lt;NA&gt;</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>demographic_label</td>
-      <td>string</td>
-      <td>label</td>
-      <td>&lt;NA&gt;</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>demographic_category</td>
-      <td>string</td>
-      <td>label</td>
-      <td>&lt;NA&gt;</td>
-    </tr>
+  </thead>
+  <tbody>
     <tr>
       <th>10</th>
       <td>num_graduates</td>
@@ -707,8 +711,8 @@ a measured value), and unit.</p>
 </table>
 </div></div></div>
 </div>
-<p>Each row is one year, one place and one demographic group. The value we want
-is <code class="docutils literal notranslate"><span class="pre">graduation_rate</span></code>, a proportion on the 0-1 scale, so 0.9 means 90%.</p>
+<p>The value we want is <code class="docutils literal notranslate"><span class="pre">graduation_rate</span></code>, a proportion on the 0-1 scale, so
+0.9 means 90%.</p>
 <p><code class="docutils literal notranslate"><span class="pre">gcd.describe()</span></code> prints the rest of the dataset's documentation: its source,
 the years and detail levels it covers, and notes on how to use it. Those
 notes matter here. Georgia changed how it calculates the graduation rate in
@@ -736,7 +740,7 @@ per school.</p></li>
     <span class="n">demographic</span><span class="o">=</span><span class="p">[</span><span class="s2">"all"</span><span class="p">,</span> <span class="s2">"black"</span><span class="p">,</span> <span class="s2">"hispanic"</span><span class="p">,</span> <span class="s2">"white"</span><span class="p">],</span>
     <span class="n">year</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">2011</span><span class="p">,</span> <span class="mi">2026</span><span class="p">),</span>
 <span class="p">)</span>
-<span class="n">grads</span>
+<span class="n">grads</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -848,782 +852,12 @@ GCDAdvisory: `district_census_id` is a 5-digit Census school-district code, NOT 
       <td>&lt;NA&gt;</td>
       <td>0.7134</td>
     </tr>
-    <tr>
-      <th>5</th>
-      <td>2012</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>Black</td>
-      <td>race</td>
-      <td>1876</td>
-      <td>&lt;NA&gt;</td>
-      <td>0.5629</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>2012</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>Hispanic</td>
-      <td>race</td>
-      <td>329</td>
-      <td>&lt;NA&gt;</td>
-      <td>0.5117</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>2012</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>White</td>
-      <td>race</td>
-      <td>2338</td>
-      <td>&lt;NA&gt;</td>
-      <td>0.9066</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>2013</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>All</td>
-      <td>aggregate</td>
-      <td>5483</td>
-      <td>&lt;NA&gt;</td>
-      <td>0.7550</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>2013</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>Black</td>
-      <td>race</td>
-      <td>2005</td>
-      <td>&lt;NA&gt;</td>
-      <td>0.6330</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>2013</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>Hispanic</td>
-      <td>race</td>
-      <td>423</td>
-      <td>&lt;NA&gt;</td>
-      <td>0.5930</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>2013</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>White</td>
-      <td>race</td>
-      <td>2355</td>
-      <td>&lt;NA&gt;</td>
-      <td>0.9100</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>2014</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>All</td>
-      <td>aggregate</td>
-      <td>5610</td>
-      <td>&lt;NA&gt;</td>
-      <td>0.7870</td>
-    </tr>
-    <tr>
-      <th>13</th>
-      <td>2014</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>Black</td>
-      <td>race</td>
-      <td>2007</td>
-      <td>&lt;NA&gt;</td>
-      <td>0.6770</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>2014</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>Hispanic</td>
-      <td>race</td>
-      <td>454</td>
-      <td>&lt;NA&gt;</td>
-      <td>0.6210</td>
-    </tr>
-    <tr>
-      <th>15</th>
-      <td>2014</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>White</td>
-      <td>race</td>
-      <td>2393</td>
-      <td>&lt;NA&gt;</td>
-      <td>0.9220</td>
-    </tr>
-    <tr>
-      <th>16</th>
-      <td>2015</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>All</td>
-      <td>aggregate</td>
-      <td>6061</td>
-      <td>&lt;NA&gt;</td>
-      <td>0.8528</td>
-    </tr>
-    <tr>
-      <th>17</th>
-      <td>2015</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>Black</td>
-      <td>race</td>
-      <td>2356</td>
-      <td>&lt;NA&gt;</td>
-      <td>0.7814</td>
-    </tr>
-    <tr>
-      <th>18</th>
-      <td>2015</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>Hispanic</td>
-      <td>race</td>
-      <td>500</td>
-      <td>&lt;NA&gt;</td>
-      <td>0.7299</td>
-    </tr>
-    <tr>
-      <th>19</th>
-      <td>2015</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>White</td>
-      <td>race</td>
-      <td>2391</td>
-      <td>&lt;NA&gt;</td>
-      <td>0.9391</td>
-    </tr>
-    <tr>
-      <th>20</th>
-      <td>2016</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>All</td>
-      <td>aggregate</td>
-      <td>6213</td>
-      <td>&lt;NA&gt;</td>
-      <td>0.8662</td>
-    </tr>
-    <tr>
-      <th>21</th>
-      <td>2016</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>Black</td>
-      <td>race</td>
-      <td>2570</td>
-      <td>&lt;NA&gt;</td>
-      <td>0.8133</td>
-    </tr>
-    <tr>
-      <th>22</th>
-      <td>2016</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>Hispanic</td>
-      <td>race</td>
-      <td>547</td>
-      <td>&lt;NA&gt;</td>
-      <td>0.7534</td>
-    </tr>
-    <tr>
-      <th>23</th>
-      <td>2016</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>White</td>
-      <td>race</td>
-      <td>2214</td>
-      <td>&lt;NA&gt;</td>
-      <td>0.9482</td>
-    </tr>
-    <tr>
-      <th>24</th>
-      <td>2017</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>All</td>
-      <td>aggregate</td>
-      <td>6406</td>
-      <td>7379</td>
-      <td>0.8681</td>
-    </tr>
-    <tr>
-      <th>25</th>
-      <td>2017</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>Black</td>
-      <td>race</td>
-      <td>2603</td>
-      <td>3212</td>
-      <td>0.8104</td>
-    </tr>
-    <tr>
-      <th>26</th>
-      <td>2017</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>Hispanic</td>
-      <td>race</td>
-      <td>624</td>
-      <td>836</td>
-      <td>0.7464</td>
-    </tr>
-    <tr>
-      <th>27</th>
-      <td>2017</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>White</td>
-      <td>race</td>
-      <td>2379</td>
-      <td>2488</td>
-      <td>0.9562</td>
-    </tr>
-    <tr>
-      <th>28</th>
-      <td>2018</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>All</td>
-      <td>aggregate</td>
-      <td>6708</td>
-      <td>7731</td>
-      <td>0.8677</td>
-    </tr>
-    <tr>
-      <th>29</th>
-      <td>2018</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>Black</td>
-      <td>race</td>
-      <td>2666</td>
-      <td>3335</td>
-      <td>0.7994</td>
-    </tr>
-    <tr>
-      <th>30</th>
-      <td>2018</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>Hispanic</td>
-      <td>race</td>
-      <td>734</td>
-      <td>939</td>
-      <td>0.7817</td>
-    </tr>
-    <tr>
-      <th>31</th>
-      <td>2018</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>White</td>
-      <td>race</td>
-      <td>2322</td>
-      <td>2426</td>
-      <td>0.9571</td>
-    </tr>
-    <tr>
-      <th>32</th>
-      <td>2019</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>All</td>
-      <td>aggregate</td>
-      <td>6859</td>
-      <td>7863</td>
-      <td>0.8723</td>
-    </tr>
-    <tr>
-      <th>33</th>
-      <td>2019</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>Black</td>
-      <td>race</td>
-      <td>2786</td>
-      <td>3430</td>
-      <td>0.8122</td>
-    </tr>
-    <tr>
-      <th>34</th>
-      <td>2019</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>Hispanic</td>
-      <td>race</td>
-      <td>817</td>
-      <td>1008</td>
-      <td>0.8105</td>
-    </tr>
-    <tr>
-      <th>35</th>
-      <td>2019</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>White</td>
-      <td>race</td>
-      <td>2300</td>
-      <td>2417</td>
-      <td>0.9516</td>
-    </tr>
-    <tr>
-      <th>36</th>
-      <td>2020</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>All</td>
-      <td>aggregate</td>
-      <td>6565</td>
-      <td>7682</td>
-      <td>0.8546</td>
-    </tr>
-    <tr>
-      <th>37</th>
-      <td>2020</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>Black</td>
-      <td>race</td>
-      <td>2524</td>
-      <td>3225</td>
-      <td>0.7826</td>
-    </tr>
-    <tr>
-      <th>38</th>
-      <td>2020</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>Hispanic</td>
-      <td>race</td>
-      <td>859</td>
-      <td>1109</td>
-      <td>0.7746</td>
-    </tr>
-    <tr>
-      <th>39</th>
-      <td>2020</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>White</td>
-      <td>race</td>
-      <td>2239</td>
-      <td>2355</td>
-      <td>0.9507</td>
-    </tr>
-    <tr>
-      <th>40</th>
-      <td>2021</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>All</td>
-      <td>aggregate</td>
-      <td>6648</td>
-      <td>7579</td>
-      <td>0.8772</td>
-    </tr>
-    <tr>
-      <th>41</th>
-      <td>2021</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>Black</td>
-      <td>race</td>
-      <td>2488</td>
-      <td>3069</td>
-      <td>0.8107</td>
-    </tr>
-    <tr>
-      <th>42</th>
-      <td>2021</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>Hispanic</td>
-      <td>race</td>
-      <td>857</td>
-      <td>1085</td>
-      <td>0.7899</td>
-    </tr>
-    <tr>
-      <th>43</th>
-      <td>2021</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>White</td>
-      <td>race</td>
-      <td>2280</td>
-      <td>2367</td>
-      <td>0.9632</td>
-    </tr>
-    <tr>
-      <th>44</th>
-      <td>2022</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>All</td>
-      <td>aggregate</td>
-      <td>6782</td>
-      <td>7598</td>
-      <td>0.8926</td>
-    </tr>
-    <tr>
-      <th>45</th>
-      <td>2022</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>Black</td>
-      <td>race</td>
-      <td>2595</td>
-      <td>3124</td>
-      <td>0.8307</td>
-    </tr>
-    <tr>
-      <th>46</th>
-      <td>2022</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>Hispanic</td>
-      <td>race</td>
-      <td>917</td>
-      <td>1094</td>
-      <td>0.8382</td>
-    </tr>
-    <tr>
-      <th>47</th>
-      <td>2022</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>White</td>
-      <td>race</td>
-      <td>2179</td>
-      <td>2249</td>
-      <td>0.9689</td>
-    </tr>
-    <tr>
-      <th>48</th>
-      <td>2023</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>All</td>
-      <td>aggregate</td>
-      <td>6815</td>
-      <td>7547</td>
-      <td>0.9030</td>
-    </tr>
-    <tr>
-      <th>49</th>
-      <td>2023</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>Black</td>
-      <td>race</td>
-      <td>2634</td>
-      <td>3038</td>
-      <td>0.8670</td>
-    </tr>
-    <tr>
-      <th>50</th>
-      <td>2023</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>Hispanic</td>
-      <td>race</td>
-      <td>926</td>
-      <td>1134</td>
-      <td>0.8166</td>
-    </tr>
-    <tr>
-      <th>51</th>
-      <td>2023</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>White</td>
-      <td>race</td>
-      <td>2118</td>
-      <td>2195</td>
-      <td>0.9649</td>
-    </tr>
-    <tr>
-      <th>52</th>
-      <td>2024</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>All</td>
-      <td>aggregate</td>
-      <td>6977</td>
-      <td>7695</td>
-      <td>0.9067</td>
-    </tr>
-    <tr>
-      <th>53</th>
-      <td>2024</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>Black</td>
-      <td>race</td>
-      <td>2828</td>
-      <td>3278</td>
-      <td>0.8627</td>
-    </tr>
-    <tr>
-      <th>54</th>
-      <td>2024</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>Hispanic</td>
-      <td>race</td>
-      <td>1023</td>
-      <td>1175</td>
-      <td>0.8706</td>
-    </tr>
-    <tr>
-      <th>55</th>
-      <td>2024</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>White</td>
-      <td>race</td>
-      <td>2015</td>
-      <td>2085</td>
-      <td>0.9664</td>
-    </tr>
-    <tr>
-      <th>56</th>
-      <td>2025</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>All</td>
-      <td>aggregate</td>
-      <td>7294</td>
-      <td>7934</td>
-      <td>0.9193</td>
-    </tr>
-    <tr>
-      <th>57</th>
-      <td>2025</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>Black</td>
-      <td>race</td>
-      <td>2962</td>
-      <td>3385</td>
-      <td>0.8750</td>
-    </tr>
-    <tr>
-      <th>58</th>
-      <td>2025</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>Hispanic</td>
-      <td>race</td>
-      <td>1091</td>
-      <td>1226</td>
-      <td>0.8899</td>
-    </tr>
-    <tr>
-      <th>59</th>
-      <td>2025</td>
-      <td>660</td>
-      <td>Fulton County</td>
-      <td>02280</td>
-      <td>standard</td>
-      <td>...</td>
-      <td>White</td>
-      <td>race</td>
-      <td>2012</td>
-      <td>2067</td>
-      <td>0.9734</td>
-    </tr>
   </tbody>
 </table>
-<p>60 rows × 11 columns</p>
+<p>5 rows × 11 columns</p>
 </div></div></div>
 </div>
-<p>Each place comes back with both its code and its name, and each demographic
+<p><code class="docutils literal notranslate"><span class="pre">grads.head()</span></code> shows the first five rows. Each place comes back with both its code and its name, and each demographic
 code with a readable label. The API also sends advisories, shown as
 <code class="docutils literal notranslate"><span class="pre">GCDAdvisory</span></code> warnings. Here they warn that the <code class="docutils literal notranslate"><span class="pre">all</span></code> total sits beside the
 subgroups, so never add a total to its subgroups. A missing value usually
@@ -1703,7 +937,8 @@ school in a district.</p></li>
 <li><p>Add attributes the datasets don't carry, then filter or group by them.</p></li>
 <li><p>Map schools with their coordinates.</p></li>
 </ul>
-<p>Here are the active high schools in Fulton County with their locale:</p>
+<p>Here are the first five active high schools in Fulton County with their
+locale:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gcd</span><span class="o">.</span><span class="n">dimension</span><span class="p">(</span>
@@ -1712,7 +947,7 @@ school in a district.</p></li>
     <span class="n">school_level</span><span class="o">=</span><span class="s2">"high"</span><span class="p">,</span>
     <span class="n">active</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">"district_code"</span><span class="p">,</span> <span class="s2">"school_code"</span><span class="p">,</span> <span class="s2">"school_name"</span><span class="p">,</span> <span class="s2">"locale"</span><span class="p">],</span>
-<span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1776,125 +1011,6 @@ school in a district.</p></li>
       <td>0191</td>
       <td>Roswell High School</td>
       <td>city</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>660</td>
-      <td>0198</td>
-      <td>Centennial High School</td>
-      <td>city</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>660</td>
-      <td>0203</td>
-      <td>Northview High School</td>
-      <td>suburb</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>660</td>
-      <td>0205</td>
-      <td>Alpharetta High School</td>
-      <td>city</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>660</td>
-      <td>0291</td>
-      <td>Creekside High School</td>
-      <td>suburb</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>660</td>
-      <td>0386</td>
-      <td>Independence High School</td>
-      <td>city</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>660</td>
-      <td>0392</td>
-      <td>Chattahoochee High School</td>
-      <td>suburb</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>660</td>
-      <td>0691</td>
-      <td>Tri-Cities High School</td>
-      <td>suburb</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>660</td>
-      <td>0910</td>
-      <td>Johns Creek High School</td>
-      <td>suburb</td>
-    </tr>
-    <tr>
-      <th>13</th>
-      <td>660</td>
-      <td>1110</td>
-      <td>Langston Hughes High School</td>
-      <td>rural</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>660</td>
-      <td>1320</td>
-      <td>Skyview High School</td>
-      <td>suburb</td>
-    </tr>
-    <tr>
-      <th>15</th>
-      <td>660</td>
-      <td>1322</td>
-      <td>Innovation Academy</td>
-      <td>city</td>
-    </tr>
-    <tr>
-      <th>16</th>
-      <td>660</td>
-      <td>1323</td>
-      <td>Global Impact Academy</td>
-      <td>suburb</td>
-    </tr>
-    <tr>
-      <th>17</th>
-      <td>660</td>
-      <td>1325</td>
-      <td>Fulton Academy Of Virtual Excellence</td>
-      <td>city</td>
-    </tr>
-    <tr>
-      <th>18</th>
-      <td>660</td>
-      <td>1326</td>
-      <td>Promise Career Institute School</td>
-      <td>suburb</td>
-    </tr>
-    <tr>
-      <th>19</th>
-      <td>660</td>
-      <td>3066</td>
-      <td>Riverwood International Charter School</td>
-      <td>city</td>
-    </tr>
-    <tr>
-      <th>20</th>
-      <td>660</td>
-      <td>4062</td>
-      <td>North Springs High School</td>
-      <td>city</td>
-    </tr>
-    <tr>
-      <th>21</th>
-      <td>660</td>
-      <td>5069</td>
-      <td>Westlake High School</td>
-      <td>suburb</td>
     </tr>
   </tbody>
 </table>
@@ -1968,9 +1084,8 @@ Data API.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The Georgia State Capitol</span>
-<span class="n">gcd</span><span class="o">.</span><span class="n">locate</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="s2">"206 Washington St SW, Atlanta, GA 30334"</span><span class="p">)[</span>
-    <span class="p">[</span><span class="s2">"geographic_type"</span><span class="p">,</span> <span class="s2">"geographic_id"</span><span class="p">,</span> <span class="s2">"geographic_name"</span><span class="p">,</span> <span class="s2">"grades"</span><span class="p">]</span>
-<span class="p">]</span>
+<span class="n">capitol</span> <span class="o">=</span> <span class="n">gcd</span><span class="o">.</span><span class="n">locate</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="s2">"206 Washington St SW, Atlanta, GA 30334"</span><span class="p">)</span>
+<span class="n">capitol</span><span class="p">[[</span><span class="s2">"geographic_type"</span><span class="p">,</span> <span class="s2">"geographic_id"</span><span class="p">,</span> <span class="s2">"geographic_name"</span><span class="p">,</span> <span class="s2">"grades"</span><span class="p">]]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -2038,24 +1153,12 @@ Data API.</p>
       <td>Centennial Academy (Charter)</td>
       <td>K-5</td>
     </tr>
-    <tr>
-      <th>5</th>
-      <td>middle_school</td>
-      <td>761-0199</td>
-      <td>Centennial Academy (Charter)</td>
-      <td>6-8</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>high_school</td>
-      <td>761-4560</td>
-      <td>Midtown High School</td>
-      <td>9-12</td>
-    </tr>
   </tbody>
 </table>
 </div></div></div>
 </div>
+<p>The first five rows are shown; the rest are the zoned middle and high
+schools.</p>
 </section>
 <section id="data-license-and-citation">
 <h2>Data license and citation<a class="headerlink" href="#data-license-and-citation" title="Link to this heading">#</a></h2>

@@ -33,62 +33,16 @@ dtype: int64
 ```
 
 ```python
-gcd.datasets(main_topic="education", level="districts", year=2025)[["name", "title"]]
+gcd.datasets(main_topic="education", level="districts", year=2025)[["name", "title"]].head()
 ```
 
 ```text
-                                            name                                         title
-0                          ccrpi_content_mastery                         CCRPI Content Mastery
-1                          ccrpi_graduation_rate                  High School Graduation Rates
-2                                 ccrpi_progress                                CCRPI Progress
-3                                ccrpi_readiness                               CCRPI Readiness
-4                     ccrpi_scoring_by_component                   CCRPI Scores and Components
-5                            enrollment_by_grade   Enrollment by Grade Level (Fall and Spring)
-6         enrollment_march_gender_race_ethnicity           March Enrollment by Race and Gender
-7                  enrollment_october_disability    Special Education Enrollment by Disability
-8       enrollment_october_gender_race_ethnicity         October Enrollment by Race and Gender
-9                             free_reduced_lunch      Free and Reduced-Price Lunch Eligibility
-10              georgia_milestones_end_of_course  Georgia Milestones End-of-Course (EOC) Re...
-11               georgia_milestones_end_of_grade  Georgia Milestones End-of-Grade (EOG) Res...
-12          pathway_completion_advanced_academic  Pathway Completer Graduation Rate: Advanc...
-13                       pathway_completion_ctae       Pathway Completer Graduation Rate: CTAE
-14                  pathway_completion_fine_arts  Pathway Completer Graduation Rate: Fine Arts
-15             pathway_completion_world_language  Pathway Completer Graduation Rate: World ...
-16                                    act_scores             ACT College Readiness Test Scores
-17                     advanced_placement_scores           Advanced Placement (AP) Exam Scores
-18                                    attendance    Student Attendance and Chronic Absenteeism
-19              certified_personnel_compensation  Certified Personnel Compensation (Salarie...
-20               certified_personnel_composition  Certified Personnel Composition (Staff Ch...
-21                certified_personnel_experience       Certified Personnel Years of Experience
-22                          direct_certification    Direct Certification for Free School Meals
-23                             dropout_rate_7_12                      Grade 7-12 Dropout Rates
-24                             dropout_rate_9_12                     Grades 9-12 Dropout Rates
-25  educator_qualifications_emergency_and_pro...               Emergency-Credentialed Teachers
-26  educator_qualifications_inexperienced_tea...            Inexperienced Teachers and Leaders
-27  educator_qualifications_out_of_field_teac...                         Out-of-Field Teachers
-28                     english_learner_exit_rate             English Learner Program Exit Rate
-29                 enrollment_demographic_shares                 Enrollment Demographic Shares
-30              enrollment_program_participation              Enrollment Program Participation
-31              financial_efficiency_star_rating       Financial Efficiency Star Rating (FESR)
-32                  georgia_alternate_assessment            Georgia Alternate Assessment (GAA)
-33  georgia_milestones_end_of_course_by_grade...  Georgia Milestones End-of-Course (EOC) Re...
-34       georgia_milestones_end_of_course_lexile  Georgia Milestones EOC Lexile Reading Scores
-35  georgia_milestones_end_of_grade_by_grade_...  Georgia Milestones End-of-Grade Assessmen...
-36        georgia_milestones_end_of_grade_lexile  Georgia Milestones End-of-Grade Lexile Re...
-37                 graduation_rate_4_year_cohort              Four-Year Cohort Graduation Rate
-38                        high_school_completers                        High School Completers
-39                       hope_eligible_graduates                       HOPE-Eligible Graduates
-40                              k12_expenditures        K-12 Expenditures by Spending Function
-41                                  k12_revenues               K-12 Revenues by Funding Source
-42                         per_pupil_expenditure                  Per-Pupil Expenditure (FESR)
-43                             retained_students            Retained (Held-Back) K-12 Students
-44                         salaries_and_benefits                District Salaries and Benefits
-45                            sat_scores_highest            SAT Scores (Highest Section Score)
-46                             sat_scores_recent       SAT Scores (Most Recent Administration)
-47                         student_mobility_rate                        Student Mobility Rates
-48             state_charter_academic_comparison             State Charter Academic Comparison
-49     state_charter_accountability_designations     State Charter Accountability Designations
-50           state_charter_financial_performance           State Charter Financial Performance
+                         name                         title
+0       ccrpi_content_mastery         CCRPI Content Mastery
+1       ccrpi_graduation_rate  High School Graduation Rates
+2              ccrpi_progress                CCRPI Progress
+3             ccrpi_readiness               CCRPI Readiness
+4  ccrpi_scoring_by_component   CCRPI Scores and Components
 ```
 
 ## Read a dataset's notes
@@ -283,7 +237,7 @@ small = gcd.rows(
     year=2024,
     detail="districts",
 )
-small[["demographic", "num_graduates", "num_cohort", "graduation_rate"]]
+small[["demographic", "num_graduates", "num_cohort", "graduation_rate"]].head()
 ```
 
 ```text
@@ -293,25 +247,12 @@ GCDAdvisory: `district_census_id` is a 5-digit Census school-district code, NOT 
 ```
 
 ```text
-                       demographic  num_graduates  num_cohort  graduation_rate
-0                      active_duty           <NA>        <NA>              NaN
-1                              all            225         240           0.9375
-2           asian_pacific_islander           <NA>        <NA>              NaN
-3                            black             57          62           0.9194
-4       economically_disadvantaged            225         240           0.9375
-5                 english_learners             13          14           0.9286
-6                           female            111         114           0.9737
-7                      foster_care           <NA>        <NA>              NaN
-8                         hispanic             42          44           0.9545
-9                         homeless           <NA>        <NA>              NaN
-10                            male            114         126           0.9048
-11                         migrant             18          20           0.9000
-12                     multiracial           <NA>        <NA>              NaN
-13                 native_american           <NA>        <NA>              NaN
-14  not_economically_disadvantaged           <NA>        <NA>              NaN
-15      students_with_disabilities             25          31           0.8065
-16   students_without_disabilities            200         209           0.9570
-17                           white            119         127           0.9370
+                  demographic  num_graduates  num_cohort  graduation_rate
+0                 active_duty           <NA>        <NA>              NaN
+1                         all            225         240           0.9375
+2      asian_pacific_islander           <NA>        <NA>              NaN
+3                       black             57          62           0.9194
+4  economically_disadvantaged            225         240           0.9375
 ```
 
 The advisories are `GCDAdvisory` warnings. They stay with the result in
@@ -367,22 +308,19 @@ When a filter returns nothing, `gcd.values()` shows which combinations exist
 under the other filters, with row counts, without downloading rows:
 
 ```python
-gcd.values("ccrpi_content_mastery", ["grade_cluster", "subject"], year=2025, detail="districts")
+combos = gcd.values(
+    "ccrpi_content_mastery", ["grade_cluster", "subject"], year=2025, detail="districts"
+)
+combos.head()
 ```
 
 ```text
-   grade_cluster                subject  n_rows
-0     elementary  english_language_arts    2340
-1     elementary            mathematics    2340
-2     elementary                science    2340
-3           high  english_language_arts    2340
-4           high            mathematics    2340
-5           high                science    2340
-6           high         social_studies    2340
-7         middle  english_language_arts    2340
-8         middle            mathematics    2340
-9         middle                science    2340
-10        middle         social_studies    2340
+  grade_cluster                subject  n_rows
+0    elementary  english_language_arts    2340
+1    elementary            mathematics    2340
+2    elementary                science    2340
+3          high  english_language_arts    2340
+4          high            mathematics    2340
 ```
 
 ## Lookup tables
@@ -445,7 +383,7 @@ Metadata (the catalog, schemas and lookup tables) is cached for the Python
 session. Rows can also be cached on disk, if you ask:
 
 ```python
-gcd.set_option("cache", True)   # or cache=True in gcd.rows()
+gcd.set_option("cache", True)  # or cache=True in gcd.rows()
 ```
 
 Cached responses are kept with their `ETag` in the user cache folder, and
