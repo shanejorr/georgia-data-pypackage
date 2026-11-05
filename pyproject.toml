@@ -9,7 +9,7 @@ description = "Access public data from Georgia Civic Data: education, Census, im
 readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]
-authors = [{ name = "Shane Orr", email = "shane.j.orr@gmail.com" }]
+authors = [{ name = "Shane Orr", email = "shane@georgiacivicdata.org" }]
 requires-python = ">=3.10"
 keywords = ["georgia", "open data", "education", "census", "school zones", "api client"]
 classifiers = [
