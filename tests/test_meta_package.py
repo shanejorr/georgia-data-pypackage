@@ -12,6 +12,9 @@ from georgiacivicdata._frames import attach
 from helpers import seed_grad_schema, seed_meta
 
 PACKAGE_DIR = Path(gcd.__file__).parent
+# The source tree (a git checkout or an unpacked sdist), found from this file,
+# not from the package: an installed package lives in site-packages.
+SOURCE_DIR = Path(__file__).resolve().parents[1]
 
 # Every export of the R package and its Python name.
 R_EXPORTS = {
@@ -112,6 +115,22 @@ def test_every_export_is_documented():
             assert "Examples" in doc, name
 
 
+def test_every_export_is_on_the_reference_page():
+    # docs/reference.md lists each export by hand in autosummary blocks; an
+    # export missing from it gets no reference page. The sdist has no docs.
+    path = SOURCE_DIR / "docs" / "reference.md"
+    if not path.exists():
+        pytest.skip("docs/reference.md is not in this source tree")
+    reference = path.read_text()
+    listed: list[str] = []
+    for block in re.findall(r"\.\. autosummary::\n(.*?)```", reference, flags=re.DOTALL):
+        listed += re.findall(r"^ +([A-Za-z_]\w*)$", block, flags=re.MULTILINE)
+    exports = set(gcd.__all__) - {"__version__"}
+    assert sorted(exports - set(listed)) == [], "add these to docs/reference.md"
+    assert sorted(set(listed) - exports) == [], "remove these from docs/reference.md"
+    assert len(listed) == len(set(listed)), "docs/reference.md lists a name twice"
+
+
 def test_table_functions_take_a_backend_argument():
     for name in (
         "datasets",
@@ -146,7 +165,7 @@ def test_sub_topic_is_never_mentioned_in_the_public_surface():
 
 
 def test_version_matches_the_project():
-    pyproject = (PACKAGE_DIR.parents[1] / "pyproject.toml").read_text()
+    pyproject = (SOURCE_DIR / "pyproject.toml").read_text()
     match = re.search(r'^version = "([^"]+)"', pyproject, flags=re.MULTILINE)
     assert match
     assert gcd.__version__ == match.group(1)
