@@ -1,0 +1,53 @@
+{
+    "results": [
+        {
+            "id": "1",
+            "year": 2027,
+            "grade": "09",
+            "tract_geoid": "13121003500",
+            "county_fips": "13121",
+            "district": {
+                "district_code": "761",
+                "district_name": "Atlanta Public Schools",
+                "district_census_id": "00120",
+                "nces_lea_id": "1300120",
+                "boundary_type": "unified"
+            },
+            "coverage_status": "zoned",
+            "coverage_reason": null,
+            "level_status": {
+                "high": "zoned"
+            },
+            "zones": [
+                {
+                    "district_code": "761",
+                    "school_code": "4560",
+                    "school_name": "Midtown High School",
+                    "nces_school_id": "130012000066",
+                    "zone_level": "high",
+                    "grade_low": "09",
+                    "grade_high": "12",
+                    "method": "official_gis",
+                    "accuracy_class": "authoritative_vector",
+                    "positional_rmse_m": null,
+                    "boundary_vintage": "APSBoundaries layers (elementary and middle last edited 2026-10-02, high 2026-10-01; against the copies retrieved 2026-09-28 the edits move small areas holding no 2020 residents); APS Forward 2040 zone changes take effect August 2027",
+                    "currency_status": "current_presumed",
+                    "currency_note": null,
+                    "source_url": "https://services1.arcgis.com/stuCU7Ai47X10WDV/ArcGIS/rest/services/APSBoundaries/FeatureServer/2",
+                    "source_publisher": "district",
+                    "retrieved_on": "2026-10-02",
+                    "geojson_url": "https://georgiacivicdata.org/api/v1/datasets/school_attendance_zones/rows?district_code=761&school_code=4560&zone_level=high&year=2027&format=geojson"
+                }
+            ],
+            "served_elsewhere": [
+
+            ],
+            "currency_warning": null,
+            "overlap_warning": null,
+            "note": "Not an official enrollment determination: attendance zones change, and these are reconstructed from published sources of varying currency and accuracy (see each zone's method, accuracy_class and currency_status). Confirm with the school district.",
+            "assignment_note": "A zone is the default assignment, not the only option: a Georgia student may attend another public school by transfer, or a charter, magnet or other choice school. See attendance_rules for the main ways.",
+            "block_group_geoid": "131210035001"
+        }
+    ],
+    "count": 1
+}

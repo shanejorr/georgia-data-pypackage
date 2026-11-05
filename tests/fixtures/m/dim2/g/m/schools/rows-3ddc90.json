@@ -1,0 +1,25 @@
+{
+    "data": [
+        {
+            "district_code": "634",
+            "school_code": "0282",
+            "school_name": "Eastside Elementary School"
+        },
+        {
+            "district_code": "638",
+            "school_code": "2052",
+            "school_name": "Eastside Elementary School"
+        }
+    ],
+    "pagination": {
+        "limit": 2,
+        "offset": 0,
+        "total": 8,
+        "returned": 2,
+        "has_more": true
+    },
+    "links": {
+        "self": "/api/v1/dimensions/schools/rows?q=eastside&columns=district_code%2Cschool_code%2Cschool_name&limit=2",
+        "next": "/api/v1/dimensions/schools/rows?q=eastside&columns=district_code%2Cschool_code%2Cschool_name&limit=2&offset=2"
+    }
+}

@@ -1,0 +1,1083 @@
+{
+    "name": "ccrpi_content_mastery",
+    "kind": "table",
+    "main_topic": "education",
+    "sub_topic": "georgiainsights",
+    "topic": "ccrpi_content_mastery",
+    "key": "education/georgiainsights/ccrpi_content_mastery",
+    "version": "2.1.0",
+    "year_min": 2012,
+    "year_max": 2025,
+    "year_gaps": [
+        2020
+    ],
+    "update_frequency": "annual",
+    "detail_levels": [
+        "districts",
+        "schools",
+        "states"
+    ],
+    "default_detail": "schools",
+    "grain": [
+        "year",
+        "district_code",
+        "school_code",
+        "demographic",
+        "grade_cluster",
+        "subject"
+    ],
+    "title": "CCRPI Content Mastery",
+    "summary": "Georgia student proficiency scores on state assessments (the CCRPI Content Mastery component) by subject, grade cluster, and demographic subgroup, 2012-2025.",
+    "description": "CCRPI Content Mastery measures student proficiency on Georgia state assessments in core academic subjects at the school, district, and (2014+) state level, broken out by demographic subgroup, grade cluster, and (2012-2017) assessment type. The primary `indicator_score` metric unifies four source labels across eras: Meets & Exceeds Rate (2012-2014, CRCT/EOCT), Weighted Proficiency Rate (2015-2017, EOG/EOC; exceeds 100 by design), Indicator Score (2018-2019, 2022-2025), and Achievement Rate (2021). 2021-2022 add four learner-band proportions with derived `_or_above` cumulatives; 2018-2019 and 2023-2025 add an improvement `indicator_target` and a color `ccrpi_flag`. 2020 is absent — Georgia paused CCRPI during COVID. This is the deep-dive into the Content Mastery component only (by demographic, subject, and assessment type); the overall CCRPI score and the side-by-side scorecard of all five rolled-up component scores live in the `ccrpi_scoring_by_component` topic (the CCRPI overview), which this topic does not duplicate.",
+    "explorer": true,
+    "search_aliases": {
+        "en": [
+            "academic achievement",
+            "test proficiency",
+            "reading and math proficiency",
+            "CRCT and EOCT results",
+            "proficient learners",
+            "state test scores",
+            "proficiency by subgroup",
+            "students in poverty"
+        ],
+        "es": [
+            "rendimiento académico",
+            "competencia en lectura",
+            "dominio de contenidos",
+            "exámenes estatales",
+            "pruebas estatales",
+            "nivel de competencia",
+            "calificaciones estatales",
+            "estudiantes en pobreza"
+        ]
+    },
+    "source": "Georgia Insights (GaDOE)",
+    "source_url": "https://georgiainsights.gadoe.org/data-downloads/",
+    "columns": [
+        {
+            "name": "year",
+            "type": "integer",
+            "role": "year",
+            "nullable": false,
+            "label": "Year",
+            "short_description": "",
+            "description": "Ending calendar year of the school year (2025 = 2024-2025). Sourced from the bronze `School Year` column, cross-checked against the filename year. 2020 does not exist (COVID pause).",
+            "valid_values": null,
+            "example": 2025,
+            "unit": null,
+            "value_min": null,
+            "value_max": null,
+            "null_meaning": null,
+            "key_metric_grain_contributor": false,
+            "metric_component": null
+        },
+        {
+            "name": "district_code",
+            "type": "string",
+            "role": "fk_district",
+            "nullable": true,
+            "label": "District Code",
+            "short_description": "",
+            "description": "3-digit GOSA district code (zero-padded) for standard districts; 7-digit code for state-charter systems; the allowlisted pseudo-district code `RTC` (Residential Treatment Center aggregate, 2015-2017 only). NULL for state-level rows. FK to districts dimension.",
+            "valid_values": null,
+            "example": "601",
+            "unit": null,
+            "value_min": null,
+            "value_max": null,
+            "null_meaning": null,
+            "key_metric_grain_contributor": false,
+            "metric_component": null
+        },
+        {
+            "name": "school_code",
+            "type": "string",
+            "role": "fk_school",
+            "nullable": true,
+            "label": "School Code",
+            "short_description": "",
+            "description": "4-digit GOSA school code (zero-padded; bronze strips leading zeros from some codes). NULL for district- and state-level rows. FK to schools dimension (composite key with district_code).",
+            "valid_values": null,
+            "example": "0182",
+            "unit": null,
+            "value_min": null,
+            "value_max": null,
+            "null_meaning": null,
+            "key_metric_grain_contributor": false,
+            "metric_component": null
+        },
+        {
+            "name": "demographic",
+            "type": "string",
+            "role": "fk_demographic",
+            "nullable": false,
+            "label": "Demographic",
+            "short_description": "Which student group the row covers - `all`, a race, or a special population (economically disadvantaged, English learners, students with disabilities).",
+            "description": "Canonical demographic code (FK to demographics dimension). `all` is the unfiltered total. Race uses the combined `asian_pacific_islander` bucket — the source publishes the explicit `Asian/Pacific Islander` label in every era and never separate Asian or Pacific Islander rows. Cross-era label spellings (`American Indian/Alaskan [Native]`, `Students With/with Disability`) fold into single canonical keys.",
+            "valid_values": [
+                "all",
+                "asian_pacific_islander",
+                "black",
+                "economically_disadvantaged",
+                "english_learners",
+                "hispanic",
+                "multiracial",
+                "native_american",
+                "students_with_disabilities",
+                "white"
+            ],
+            "example": "black",
+            "unit": null,
+            "value_min": null,
+            "value_max": null,
+            "null_meaning": null,
+            "key_metric_grain_contributor": true,
+            "metric_component": null
+        },
+        {
+            "name": "grade_cluster",
+            "type": "string",
+            "role": "categorical",
+            "nullable": false,
+            "label": "Grade Cluster",
+            "short_description": "Grade band the row covers: elementary, middle, or high.",
+            "description": "Grade cluster the row aggregates: `elementary`, `middle`, or `high` (bronze single-letter E/M/H expanded). A cluster of grades, not a single grade — distinct from `grade_level` per §16.",
+            "valid_values": [
+                "elementary",
+                "high",
+                "middle"
+            ],
+            "example": "elementary",
+            "unit": null,
+            "value_min": null,
+            "value_max": null,
+            "null_meaning": null,
+            "key_metric_grain_contributor": true,
+            "metric_component": null
+        },
+        {
+            "name": "assessment_type",
+            "type": "string",
+            "role": "categorical",
+            "nullable": true,
+            "label": "Assessment Type",
+            "short_description": "Which state testing program the score came from (CRCT/EOCT or EOG/EOC); NULL for 2018 and later.",
+            "description": "Georgia state assessment program: `crct`/`eoct` (2012-2014) or `eog`/`eoc` (2015-2017). NULL for every 2018+ row — the source dropped the column when CCRPI consolidated to four broad indicators. An attribute of the row, not part of the grain: the two programs never report the same (grade_cluster, subject) pair, so it is functionally determined by the rest of the key.",
+            "valid_values": [
+                "crct",
+                "eoc",
+                "eoct",
+                "eog"
+            ],
+            "example": "eog",
+            "unit": null,
+            "value_min": null,
+            "value_max": null,
+            "null_meaning": "Row is from 2018+ where the source no longer reports an assessment program breakdown.",
+            "key_metric_grain_contributor": false,
+            "metric_component": null
+        },
+        {
+            "name": "subject",
+            "type": "string",
+            "role": "categorical",
+            "nullable": false,
+            "label": "Subject",
+            "short_description": "Academic subject tested (e.g. mathematics, science); broad areas from 2018, more granular subjects before.",
+            "description": "Academic subject assessed, snake_case. 2018+ uses 4 broad areas (english_language_arts, mathematics, science, social_studies); 2012-2017 split into 12-13 granular subjects (CRCT `reading` is a distinct subject, not an ELA alias). The 2021-2022 label `English` folds into `english_language_arts`. Social studies has roughly half the rows of other subjects in 2021+ (assessed only in high school and part of middle).",
+            "valid_values": [
+                "9th_grade_literature_and_composition",
+                "algebra_i_coordinate_algebra",
+                "american_literature_and_composition",
+                "biology",
+                "economics_business_free_enterprise",
+                "english_language_arts",
+                "geometry_analytic_geometry",
+                "mathematics",
+                "mathematics_1",
+                "mathematics_2",
+                "physical_science",
+                "reading",
+                "science",
+                "social_studies",
+                "us_history"
+            ],
+            "example": "mathematics",
+            "unit": null,
+            "value_min": null,
+            "value_max": null,
+            "null_meaning": null,
+            "key_metric_grain_contributor": true,
+            "metric_component": null
+        },
+        {
+            "name": "participation_rate",
+            "type": "number",
+            "role": "metric",
+            "nullable": true,
+            "label": "Participation Rate",
+            "short_description": "",
+            "description": "Share of eligible students assessed, 0-1 decimal scale. Bronze ships 0-100 in 2012-2017 and 2021-2022 (divided by 100 here) and 0-1 in 2018-2019 and 2023-2025 (passed through). 94 rows (21 in 2012, 73 in 2013; max 1.059/1.084 after scaling) legitimately exceed 1.0 — transfers-in inflated the tested/enrolled ratio before GaDOE began capping in 2014. Preserved verbatim, hence unit `ratio`, not `proportion`. State-level participation collapses to ~0.65 in 2021 (COVID-year testing disruption) versus ~0.98-0.99 in every other year — faithful to bronze, not a scaling artifact.",
+            "valid_values": null,
+            "example": 0.987,
+            "unit": "ratio",
+            "value_min": null,
+            "value_max": null,
+            "null_meaning": "Suppressed by GaDOE (`Too Few Students`/`TFS`, `No Data`, or `NA`).",
+            "key_metric_grain_contributor": false,
+            "metric_component": null
+        },
+        {
+            "name": "indicator_score",
+            "type": "number",
+            "role": "metric",
+            "nullable": true,
+            "label": "Indicator Score",
+            "short_description": "Content-mastery proficiency score on a 0-100 scale (can exceed 100 in some years by design); NULL when suppressed.",
+            "description": "Primary content-mastery metric on its natural 0-100 SCORE scale (exempt from the 0-1 percentage convention). Unifies Meets & Exceeds Rate (2012-2014), Weighted Proficiency Rate (2015-2017 — students above the standard earn extra weight, so it exceeds 100 by design, max observed 146.154), Indicator Score (2018-2019, 2022-2025), and Achievement Rate (2021). No upper bound is declared because >100 is legitimate. The `100.00+` top-cap sentinel is repaired two ways: 2021 (1,772 rows) reconstructed from the learner bands as 0.5*developing + proficient + 1.5*distinguished (verified to rounding precision on all numeric 2021 rows; reconstructed values span [100.005, 150.0]); 2023 (2,683 rows) capped at 100.0 because no learner bands exist that year to reconstruct from.",
+            "valid_values": null,
+            "example": 74.3,
+            "unit": "score",
+            "value_min": 0,
+            "value_max": null,
+            "null_meaning": "Suppressed by GaDOE (`Too Few Students`/`TFS`, `No Data`, or `NA`).",
+            "key_metric_grain_contributor": false,
+            "metric_component": null
+        },
+        {
+            "name": "pct_beginning_learner",
+            "type": "number",
+            "role": "metric",
+            "nullable": true,
+            "label": "Percent Beginning Learner",
+            "short_description": "",
+            "description": "Share of students at the Beginning Learner band, 0-1 scale (bronze 0-100 divided by 100). Published only for 2021-2022; NULL every other year.",
+            "valid_values": null,
+            "example": 0.21,
+            "unit": "proportion",
+            "value_min": null,
+            "value_max": null,
+            "null_meaning": "Year outside 2021-2022 (bands not published), or suppressed by GaDOE (all four bands suppress together).",
+            "key_metric_grain_contributor": false,
+            "metric_component": null
+        },
+        {
+            "name": "pct_developing_learner",
+            "type": "number",
+            "role": "metric",
+            "nullable": true,
+            "label": "Percent Developing Learner",
+            "short_description": "",
+            "description": "Share at the Developing Learner band, 0-1 scale. Published only for 2021-2022; NULL every other year.",
+            "valid_values": null,
+            "example": 0.34,
+            "unit": "proportion",
+            "value_min": null,
+            "value_max": null,
+            "null_meaning": "Year outside 2021-2022 (bands not published), or suppressed by GaDOE (all four bands suppress together).",
+            "key_metric_grain_contributor": false,
+            "metric_component": null
+        },
+        {
+            "name": "pct_proficient_learner",
+            "type": "number",
+            "role": "metric",
+            "nullable": true,
+            "label": "Percent Proficient Learner",
+            "short_description": "",
+            "description": "Share at the Proficient Learner band, 0-1 scale. Published only for 2021-2022; NULL every other year.",
+            "valid_values": null,
+            "example": 0.29,
+            "unit": "proportion",
+            "value_min": null,
+            "value_max": null,
+            "null_meaning": "Year outside 2021-2022 (bands not published), or suppressed by GaDOE (all four bands suppress together).",
+            "key_metric_grain_contributor": false,
+            "metric_component": null
+        },
+        {
+            "name": "pct_distinguished_learner",
+            "type": "number",
+            "role": "metric",
+            "nullable": true,
+            "label": "Percent Distinguished Learner",
+            "short_description": "",
+            "description": "Share at the Distinguished Learner band, 0-1 scale. Published only for 2021-2022; NULL every other year. The four bands sum to 1.0 within rounding except for 146 defective 2021 source rows (worst sum 0.7646) — preserved as published.",
+            "valid_values": null,
+            "example": 0.16,
+            "unit": "proportion",
+            "value_min": null,
+            "value_max": null,
+            "null_meaning": "Year outside 2021-2022 (bands not published), or suppressed by GaDOE (all four bands suppress together).",
+            "key_metric_grain_contributor": false,
+            "metric_component": null
+        },
+        {
+            "name": "pct_developing_learner_or_above",
+            "type": "number",
+            "role": "metric",
+            "nullable": true,
+            "label": "Percent Developing Learner or Above",
+            "short_description": "",
+            "description": "Derived cumulative: developing + proficient + distinguished, 0-1 scale, clipped at 1.0 (independent rounding can overshoot by up to 0.0002). NULL when any summand is NULL. Only populated for 2021-2022.",
+            "valid_values": null,
+            "example": 0.79,
+            "unit": "proportion",
+            "value_min": null,
+            "value_max": null,
+            "null_meaning": "NULL whenever the underlying bands are NULL (year outside 2021-2022, or suppressed).",
+            "key_metric_grain_contributor": false,
+            "metric_component": null
+        },
+        {
+            "name": "pct_proficient_learner_or_above",
+            "type": "number",
+            "role": "metric",
+            "nullable": true,
+            "label": "Percent Proficient Learner or Above",
+            "short_description": "",
+            "description": "Derived cumulative: proficient + distinguished, 0-1 scale, clipped at 1.0. NULL when any summand is NULL. Only populated for 2021-2022.",
+            "valid_values": null,
+            "example": 0.45,
+            "unit": "proportion",
+            "value_min": null,
+            "value_max": null,
+            "null_meaning": "NULL whenever the underlying bands are NULL (year outside 2021-2022, or suppressed).",
+            "key_metric_grain_contributor": false,
+            "metric_component": null
+        },
+        {
+            "name": "indicator_target",
+            "type": "number",
+            "role": "metric",
+            "nullable": true,
+            "label": "Indicator Target",
+            "short_description": "",
+            "description": "CCRPI improvement target on the same 0-100 scale as indicator_score (observed range [1.7, 95.0]; unlike indicator_score it is bounded at 100). Published only for 2018-2019 and 2023-2025. Every 2024 mathematics row is NULL by design — GaDOE computed no math targets during the new-math-standards rollout. NOT cross-topic comparable: each CCRPI topic's target inherits its companion metric's scale (§16).",
+            "valid_values": null,
+            "example": 82.5,
+            "unit": "score",
+            "value_min": 0,
+            "value_max": 100,
+            "null_meaning": "Year outside 2018-2019/2023-2025, suppressed (`NA`/`TFS`), or a 2024 mathematics row (no math targets computed that year).",
+            "key_metric_grain_contributor": false,
+            "metric_component": null
+        },
+        {
+            "name": "ccrpi_flag",
+            "type": "string",
+            "role": "categorical",
+            "nullable": true,
+            "label": "CCRPI Flag",
+            "short_description": "Performance color flag (green, green_star, yellow, red); published only 2018-2019 and 2023-2025.",
+            "description": "CCRPI performance color flag: `green`, `green_star` (green with caveat), `yellow`, or `red` (bronze G/G*/Y/R recoded per §16). Published only for 2018-2019 and 2023-2025; bronze `NA` becomes NULL. A derived performance attribute functionally determined by the rest of the row key, so it is excluded from the contract grain.",
+            "valid_values": [
+                "green",
+                "green_star",
+                "red",
+                "yellow"
+            ],
+            "example": "green",
+            "unit": null,
+            "value_min": null,
+            "value_max": null,
+            "null_meaning": "Year outside 2018-2019/2023-2025, bronze `NA` (not rated), or a 2024 mathematics row (no math flags that year).",
+            "key_metric_grain_contributor": false,
+            "metric_component": null
+        }
+    ],
+    "key_metric": "indicator_score",
+    "numeric_filter_columns": [
+        "participation_rate",
+        "indicator_score",
+        "pct_beginning_learner",
+        "pct_developing_learner",
+        "pct_proficient_learner",
+        "pct_distinguished_learner",
+        "pct_developing_learner_or_above",
+        "pct_proficient_learner_or_above",
+        "indicator_target"
+    ],
+    "usage": "Star-schema fact table. Join the districts dimension on district_code; the schools dimension on district_code + school_code; the demographics dimension on demographic. Read directly with DuckDB over Parquet.",
+    "limitations": "Suppressed cells are NULL (not zero). State rows have NULL district_code and school_code. District rows have NULL school_code. 2012-2013 publish school rows only; district and state rows begin in 2014.",
+    "null_semantics": {
+        "suppressed_to_null": true,
+        "zero_is_real": true
+    },
+    "available_years": [
+        2012,
+        2013,
+        2014,
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+    ],
+    "schema_hash": "f8e9597e6cc0a0dc077c31b89d6bd3916db8ce038727fce0d8b670b651a8134e",
+    "tags": [
+        "education",
+        "georgia insights",
+        "ccrpi_content_mastery"
+    ],
+    "granularity_description": "One row per year, district_code, school_code, demographic, grade_cluster, subject (geography columns are NULL at higher aggregation levels).",
+    "example_queries": [
+        {
+            "description": "Latest year (2025), schools detail",
+            "query": "SELECT * FROM ccrpi_content_mastery WHERE year = 2025 LIMIT 100"
+        },
+        {
+            "description": "District 601 in 2025",
+            "query": "SELECT * FROM ccrpi_content_mastery WHERE district_code = '601' AND year = 2025 LIMIT 100"
+        },
+        {
+            "description": "Filter by grade_cluster = elementary",
+            "query": "SELECT * FROM ccrpi_content_mastery WHERE grade_cluster = 'elementary' AND year = 2025 LIMIT 100"
+        }
+    ],
+    "foreign_keys": [
+        {
+            "column": "district_code",
+            "target_object": "districts",
+            "target_columns": [
+                "district_code"
+            ],
+            "attribute_columns_added": [
+                "district_name",
+                "district_census_id",
+                "district_type"
+            ],
+            "scope": "domain"
+        },
+        {
+            "column": "school_code",
+            "target_object": "schools",
+            "target_columns": [
+                "district_code",
+                "school_code"
+            ],
+            "attribute_columns_added": [
+                "school_name"
+            ],
+            "scope": "domain"
+        },
+        {
+            "column": "demographic",
+            "target_object": "demographics",
+            "target_columns": [
+                "demographic"
+            ],
+            "attribute_columns_added": [
+                "demographic_label",
+                "demographic_category"
+            ],
+            "scope": "global"
+        }
+    ],
+    "filters": [
+        {
+            "param": "year",
+            "kind": "year_exact",
+            "type": "integer",
+            "multi_value": true,
+            "enum_enforced": false,
+            "values": null,
+            "note": "one or more exact years (comma list or repeated)"
+        },
+        {
+            "param": "year_min",
+            "kind": "year_range",
+            "type": "integer",
+            "multi_value": false,
+            "enum_enforced": false,
+            "values": null
+        },
+        {
+            "param": "year_max",
+            "kind": "year_range",
+            "type": "integer",
+            "multi_value": false,
+            "enum_enforced": false,
+            "values": null
+        },
+        {
+            "param": "detail",
+            "kind": "detail",
+            "type": "string",
+            "multi_value": false,
+            "enum_enforced": true,
+            "values": [
+                "districts",
+                "schools",
+                "states"
+            ],
+            "default": "schools"
+        },
+        {
+            "param": "district_code",
+            "kind": "foreign_key",
+            "column": "district_code",
+            "type": "string",
+            "multi_value": true,
+            "enum_enforced": false,
+            "values": null
+        },
+        {
+            "param": "school_code",
+            "kind": "foreign_key",
+            "column": "school_code",
+            "type": "string",
+            "multi_value": true,
+            "enum_enforced": false,
+            "values": null,
+            "requires": "exactly one district_code (else use 'school')"
+        },
+        {
+            "param": "demographic",
+            "kind": "foreign_key",
+            "column": "demographic",
+            "type": "string",
+            "multi_value": true,
+            "enum_enforced": true,
+            "values": [
+                "all",
+                "asian_pacific_islander",
+                "black",
+                "economically_disadvantaged",
+                "english_learners",
+                "hispanic",
+                "multiracial",
+                "native_american",
+                "students_with_disabilities",
+                "white"
+            ]
+        },
+        {
+            "param": "school",
+            "kind": "school_pair",
+            "column": null,
+            "type": "string",
+            "multi_value": true,
+            "enum_enforced": false,
+            "values": null,
+            "format": "DISTRICT-SCHOOL, e.g. 761-0199"
+        },
+        {
+            "param": "grade_cluster",
+            "kind": "categorical",
+            "column": "grade_cluster",
+            "type": "string",
+            "multi_value": true,
+            "enum_enforced": true,
+            "values": [
+                "elementary",
+                "high",
+                "middle"
+            ],
+            "has_total": false,
+            "total_value": null,
+            "requires_single_value": true,
+            "nullable": false,
+            "null_filter_token": null
+        },
+        {
+            "param": "assessment_type",
+            "kind": "categorical",
+            "column": "assessment_type",
+            "type": "string",
+            "multi_value": true,
+            "enum_enforced": true,
+            "values": [
+                "crct",
+                "eoc",
+                "eoct",
+                "eog"
+            ],
+            "has_total": false,
+            "total_value": null,
+            "requires_single_value": false,
+            "nullable": true,
+            "null_filter_token": "__null__"
+        },
+        {
+            "param": "subject",
+            "kind": "categorical",
+            "column": "subject",
+            "type": "string",
+            "multi_value": true,
+            "enum_enforced": true,
+            "values": [
+                "9th_grade_literature_and_composition",
+                "algebra_i_coordinate_algebra",
+                "american_literature_and_composition",
+                "biology",
+                "economics_business_free_enterprise",
+                "english_language_arts",
+                "geometry_analytic_geometry",
+                "mathematics",
+                "mathematics_1",
+                "mathematics_2",
+                "physical_science",
+                "reading",
+                "science",
+                "social_studies",
+                "us_history"
+            ],
+            "has_total": false,
+            "total_value": null,
+            "requires_single_value": true,
+            "nullable": false,
+            "null_filter_token": null
+        },
+        {
+            "param": "ccrpi_flag",
+            "kind": "categorical",
+            "column": "ccrpi_flag",
+            "type": "string",
+            "multi_value": true,
+            "enum_enforced": true,
+            "values": [
+                "green",
+                "green_star",
+                "red",
+                "yellow"
+            ],
+            "has_total": false,
+            "total_value": null,
+            "requires_single_value": false,
+            "nullable": true,
+            "null_filter_token": "__null__"
+        },
+        {
+            "param": "district_type",
+            "kind": "dimension_attribute",
+            "dimension": "districts",
+            "column": "district_type",
+            "type": "string",
+            "multi_value": true,
+            "enum_enforced": true,
+            "values": [
+                "commission_charter",
+                "resa",
+                "standard",
+                "state_agency",
+                "state_charter",
+                "state_school",
+                "state_special"
+            ]
+        },
+        {
+            "param": "school_level",
+            "kind": "dimension_attribute",
+            "dimension": "schools",
+            "column": "school_level",
+            "type": "string",
+            "multi_value": true,
+            "enum_enforced": true,
+            "values": [
+                "elementary",
+                "middle",
+                "high",
+                "k12",
+                "other"
+            ]
+        },
+        {
+            "param": "locale",
+            "kind": "dimension_attribute",
+            "dimension": "schools",
+            "column": "locale",
+            "type": "string",
+            "multi_value": true,
+            "enum_enforced": true,
+            "values": [
+                "city",
+                "suburb",
+                "town",
+                "rural"
+            ]
+        },
+        {
+            "param": "demographic_category",
+            "kind": "dimension_attribute",
+            "dimension": "demographics",
+            "column": "demographic_category",
+            "type": "string",
+            "multi_value": true,
+            "enum_enforced": true,
+            "values": [
+                "aggregate",
+                "disability",
+                "economic_status",
+                "esol",
+                "foster_care",
+                "gender",
+                "grade",
+                "homeless_status",
+                "migrant_status",
+                "military",
+                "race",
+                "sped"
+            ]
+        },
+        {
+            "param": "participation_rate_min",
+            "kind": "metric_bound",
+            "column": "participation_rate",
+            "type": "number",
+            "multi_value": false,
+            "enum_enforced": false,
+            "values": null,
+            "op": "at least (>=)"
+        },
+        {
+            "param": "participation_rate_max",
+            "kind": "metric_bound",
+            "column": "participation_rate",
+            "type": "number",
+            "multi_value": false,
+            "enum_enforced": false,
+            "values": null,
+            "op": "at most (<=)"
+        },
+        {
+            "param": "indicator_score_min",
+            "kind": "metric_bound",
+            "column": "indicator_score",
+            "type": "number",
+            "multi_value": false,
+            "enum_enforced": false,
+            "values": null,
+            "op": "at least (>=)"
+        },
+        {
+            "param": "indicator_score_max",
+            "kind": "metric_bound",
+            "column": "indicator_score",
+            "type": "number",
+            "multi_value": false,
+            "enum_enforced": false,
+            "values": null,
+            "op": "at most (<=)"
+        },
+        {
+            "param": "pct_beginning_learner_min",
+            "kind": "metric_bound",
+            "column": "pct_beginning_learner",
+            "type": "number",
+            "multi_value": false,
+            "enum_enforced": false,
+            "values": null,
+            "op": "at least (>=)"
+        },
+        {
+            "param": "pct_beginning_learner_max",
+            "kind": "metric_bound",
+            "column": "pct_beginning_learner",
+            "type": "number",
+            "multi_value": false,
+            "enum_enforced": false,
+            "values": null,
+            "op": "at most (<=)"
+        },
+        {
+            "param": "pct_developing_learner_min",
+            "kind": "metric_bound",
+            "column": "pct_developing_learner",
+            "type": "number",
+            "multi_value": false,
+            "enum_enforced": false,
+            "values": null,
+            "op": "at least (>=)"
+        },
+        {
+            "param": "pct_developing_learner_max",
+            "kind": "metric_bound",
+            "column": "pct_developing_learner",
+            "type": "number",
+            "multi_value": false,
+            "enum_enforced": false,
+            "values": null,
+            "op": "at most (<=)"
+        },
+        {
+            "param": "pct_proficient_learner_min",
+            "kind": "metric_bound",
+            "column": "pct_proficient_learner",
+            "type": "number",
+            "multi_value": false,
+            "enum_enforced": false,
+            "values": null,
+            "op": "at least (>=)"
+        },
+        {
+            "param": "pct_proficient_learner_max",
+            "kind": "metric_bound",
+            "column": "pct_proficient_learner",
+            "type": "number",
+            "multi_value": false,
+            "enum_enforced": false,
+            "values": null,
+            "op": "at most (<=)"
+        },
+        {
+            "param": "pct_distinguished_learner_min",
+            "kind": "metric_bound",
+            "column": "pct_distinguished_learner",
+            "type": "number",
+            "multi_value": false,
+            "enum_enforced": false,
+            "values": null,
+            "op": "at least (>=)"
+        },
+        {
+            "param": "pct_distinguished_learner_max",
+            "kind": "metric_bound",
+            "column": "pct_distinguished_learner",
+            "type": "number",
+            "multi_value": false,
+            "enum_enforced": false,
+            "values": null,
+            "op": "at most (<=)"
+        },
+        {
+            "param": "pct_developing_learner_or_above_min",
+            "kind": "metric_bound",
+            "column": "pct_developing_learner_or_above",
+            "type": "number",
+            "multi_value": false,
+            "enum_enforced": false,
+            "values": null,
+            "op": "at least (>=)"
+        },
+        {
+            "param": "pct_developing_learner_or_above_max",
+            "kind": "metric_bound",
+            "column": "pct_developing_learner_or_above",
+            "type": "number",
+            "multi_value": false,
+            "enum_enforced": false,
+            "values": null,
+            "op": "at most (<=)"
+        },
+        {
+            "param": "pct_proficient_learner_or_above_min",
+            "kind": "metric_bound",
+            "column": "pct_proficient_learner_or_above",
+            "type": "number",
+            "multi_value": false,
+            "enum_enforced": false,
+            "values": null,
+            "op": "at least (>=)"
+        },
+        {
+            "param": "pct_proficient_learner_or_above_max",
+            "kind": "metric_bound",
+            "column": "pct_proficient_learner_or_above",
+            "type": "number",
+            "multi_value": false,
+            "enum_enforced": false,
+            "values": null,
+            "op": "at most (<=)"
+        },
+        {
+            "param": "indicator_target_min",
+            "kind": "metric_bound",
+            "column": "indicator_target",
+            "type": "number",
+            "multi_value": false,
+            "enum_enforced": false,
+            "values": null,
+            "op": "at least (>=)"
+        },
+        {
+            "param": "indicator_target_max",
+            "kind": "metric_bound",
+            "column": "indicator_target",
+            "type": "number",
+            "multi_value": false,
+            "enum_enforced": false,
+            "values": null,
+            "op": "at most (<=)"
+        }
+    ],
+    "filter_hints": [
+
+    ],
+    "non_additive": [
+
+    ],
+    "partitions": [
+
+    ],
+    "value_implications": [
+
+    ],
+    "year_meaning": null,
+    "pooled_rates": [
+
+    ],
+    "series_breaks": [
+
+    ],
+    "year_window": null,
+    "pooled_min_count": null,
+    "recommended_query": {
+        "metric": "indicator_score",
+        "detail": "schools",
+        "filters": {
+            "demographic": [
+                "all"
+            ]
+        },
+        "required_choices": [
+            {
+                "column": "grade_cluster",
+                "values": [
+                    "elementary",
+                    "high",
+                    "middle"
+                ],
+                "suggested_default": "elementary"
+            },
+            {
+                "column": "subject",
+                "values": [
+                    "9th_grade_literature_and_composition",
+                    "algebra_i_coordinate_algebra",
+                    "american_literature_and_composition",
+                    "biology",
+                    "economics_business_free_enterprise",
+                    "english_language_arts",
+                    "geometry_analytic_geometry",
+                    "mathematics",
+                    "mathematics_1",
+                    "mathematics_2",
+                    "physical_science",
+                    "reading",
+                    "science",
+                    "social_studies",
+                    "us_history"
+                ],
+                "suggested_default": "english_language_arts"
+            }
+        ],
+        "ranking": {
+            "how": "/api/v1/datasets/ccrpi_content_mastery/rows?year=2025&demographic=all&grade_cluster=elementary&subject=english_language_arts&sort=-indicator_score&limit=N (sort=-col for top, sort=col for bottom)",
+            "note": "Rank within a single year (add year=<year>, default the latest available) and keep the pins above so rows are comparable; NULL (suppressed) metrics sort last either way."
+        },
+        "dependent_filters": [
+
+        ],
+        "reason": "metric=indicator_score; demographic pinned to all (request a demographic_category to break out); pick one value for: grade_cluster, subject",
+        "url": "/api/v1/datasets/ccrpi_content_mastery/rows?detail=schools&demographic=all&grade_cluster=elementary&subject=english_language_arts"
+    },
+    "example_requests": [
+        {
+            "description": "The recommended view for 2025",
+            "url": "/api/v1/datasets/ccrpi_content_mastery/rows?year=2025&demographic=all&grade_cluster=elementary&subject=english_language_arts"
+        },
+        {
+            "description": "Every row matching the recommended view, as CSV",
+            "url": "/api/v1/datasets/ccrpi_content_mastery/download?format=csv&demographic=all&grade_cluster=elementary&subject=english_language_arts"
+        },
+        {
+            "description": "The 10 highest indicator_score values in 2025",
+            "url": "/api/v1/datasets/ccrpi_content_mastery/rows?year=2025&demographic=all&grade_cluster=elementary&subject=english_language_arts&sort=-indicator_score&limit=10"
+        },
+        {
+            "description": "Georgia's published statewide figures by year",
+            "url": "/api/v1/datasets/ccrpi_content_mastery/rows?detail=states&demographic=all&grade_cluster=elementary&subject=english_language_arts&sort=year"
+        }
+    ],
+    "parameters": {
+        "paging": "limit (default 1000, at most 10000) and offset; JSON pages carry links.next",
+        "sort": "sort=-col,col2 (- for descending); NULLs sort last",
+        "columns": "columns=a,b returns only those columns",
+        "format": "json (default), csv or parquet; csv/parquet without limit return every matching row",
+        "numeric": "{metric}_min / {metric}_max, or numeric_filters (JSON)",
+        "numeric_filter_columns": [
+            "participation_rate",
+            "indicator_score",
+            "pct_beginning_learner",
+            "pct_developing_learner",
+            "pct_proficient_learner",
+            "pct_distinguished_learner",
+            "pct_developing_learner_or_above",
+            "pct_proficient_learner_or_above",
+            "indicator_target"
+        ],
+        "projectable_columns": [
+            "assessment_type",
+            "ccrpi_flag",
+            "demographic",
+            "demographic_category",
+            "demographic_label",
+            "district_census_id",
+            "district_code",
+            "district_name",
+            "district_type",
+            "grade_cluster",
+            "indicator_score",
+            "indicator_target",
+            "participation_rate",
+            "pct_beginning_learner",
+            "pct_developing_learner",
+            "pct_developing_learner_or_above",
+            "pct_distinguished_learner",
+            "pct_proficient_learner",
+            "pct_proficient_learner_or_above",
+            "school_code",
+            "school_name",
+            "subject",
+            "year"
+        ],
+        "filter_parameters": [
+            "assessment_type",
+            "ccrpi_flag",
+            "demographic",
+            "demographic_category",
+            "district_code",
+            "district_type",
+            "grade_cluster",
+            "indicator_score_max",
+            "indicator_score_min",
+            "indicator_target_max",
+            "indicator_target_min",
+            "locale",
+            "participation_rate_max",
+            "participation_rate_min",
+            "pct_beginning_learner_max",
+            "pct_beginning_learner_min",
+            "pct_developing_learner_max",
+            "pct_developing_learner_min",
+            "pct_developing_learner_or_above_max",
+            "pct_developing_learner_or_above_min",
+            "pct_distinguished_learner_max",
+            "pct_distinguished_learner_min",
+            "pct_proficient_learner_max",
+            "pct_proficient_learner_min",
+            "pct_proficient_learner_or_above_max",
+            "pct_proficient_learner_or_above_min",
+            "school",
+            "school_code",
+            "school_level",
+            "subject"
+        ]
+    },
+    "endpoints": {
+        "rows": "/api/v1/datasets/ccrpi_content_mastery/rows",
+        "query": "POST /api/v1/datasets/ccrpi_content_mastery/query",
+        "values": "/api/v1/datasets/ccrpi_content_mastery/values",
+        "aggregate": "/api/v1/datasets/ccrpi_content_mastery/aggregate",
+        "download": "/api/v1/datasets/ccrpi_content_mastery/download",
+        "contract": "/api/v1/datasets/ccrpi_content_mastery/contract",
+        "openapi": "/api/v1/datasets/ccrpi_content_mastery/openapi.json"
+    },
+    "updated_at": "2026-10-29T20:17:15+00:00"
+}

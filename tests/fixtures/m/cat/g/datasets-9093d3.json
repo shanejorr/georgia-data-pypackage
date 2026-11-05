@@ -1,0 +1,424 @@
+{
+    "data": [
+        {
+            "name": "eoir_case_outcomes",
+            "title": "Immigration Court Case Outcomes in Georgia",
+            "summary": "Immigration-court cases filed by Georgia respondents each month, how many ended in a removal order, and how long decisions took; annual county totals by custody status.",
+            "kind": "table",
+            "main_topic": "immigration",
+            "detail_levels": [
+                "counties",
+                "states"
+            ],
+            "year_min": 1997,
+            "year_max": 2026
+        },
+        {
+            "name": "ice_287g_agreements",
+            "title": "ICE 287(g) Agreements with Georgia Agencies",
+            "summary": "287(g) agreements Georgia sheriffs, police and state agencies signed with ICE each year, and how many were in force, by model and county.",
+            "kind": "table",
+            "main_topic": "immigration",
+            "detail_levels": [
+                "counties",
+                "states"
+            ],
+            "year_min": 2002,
+            "year_max": 2026
+        },
+        {
+            "name": "ice_arrests",
+            "title": "ICE Arrests in Georgia",
+            "summary": "Monthly counts of ICE arrests made in Georgia since October 2022 and the share that led to ICE detention, by gender, criminal history, arrest method, and citizenship.",
+            "kind": "table",
+            "main_topic": "immigration",
+            "detail_levels": [
+                "states"
+            ],
+            "year_min": 2022,
+            "year_max": 2026
+        },
+        {
+            "name": "ice_detainers",
+            "title": "ICE Detainers Issued to Georgia Jails",
+            "summary": "Detainers ICE sent to Georgia jails each month, how many were declined or honored, and annual totals by the receiving jail's county.",
+            "kind": "table",
+            "main_topic": "immigration",
+            "detail_levels": [
+                "counties",
+                "states"
+            ],
+            "year_min": 2022,
+            "year_max": 2026
+        },
+        {
+            "name": "ice_detention_stays",
+            "title": "ICE Detention Stays at Georgia Facilities",
+            "summary": "ICE detention stays with any time at a Georgia facility: stays begun each month, how long they lasted, how much of that was in Georgia, and how they ended.",
+            "kind": "table",
+            "main_topic": "immigration",
+            "detail_levels": [
+                "counties",
+                "states"
+            ],
+            "year_min": 2022,
+            "year_max": 2026
+        },
+        {
+            "name": "ice_detention_stints",
+            "title": "ICE Detention Book-ins at Georgia Facilities",
+            "summary": "Monthly book-ins to ICE detention facilities in Georgia since October 2022, how each stint ended and how long it lasted; annual totals by the facility's county.",
+            "kind": "table",
+            "main_topic": "immigration",
+            "detail_levels": [
+                "counties",
+                "states"
+            ],
+            "year_min": 2022,
+            "year_max": 2026
+        },
+        {
+            "name": "ice_removals",
+            "title": "ICE Removals Originating in Georgia",
+            "summary": "Monthly counts of deportations (ICE removals) whose originating arrest was recorded in Georgia since October 2022, by ICE program, gender, criminal history, and country of citizenship.",
+            "kind": "table",
+            "main_topic": "immigration",
+            "detail_levels": [
+                "states"
+            ],
+            "year_min": 2022,
+            "year_max": 2026
+        },
+        {
+            "name": "naturalizations",
+            "title": "Naturalizations",
+            "summary": "Georgia residents who became U.S. citizens by naturalization each federal fiscal year, with FY2024 country and region of birth.",
+            "kind": "table",
+            "main_topic": "immigration",
+            "detail_levels": [
+                "states"
+            ],
+            "year_min": 2015,
+            "year_max": 2024
+        },
+        {
+            "name": "new_permanent_residents",
+            "title": "New Lawful Permanent Residents",
+            "summary": "Georgians who became lawful permanent residents (green card) by fiscal year: state totals, and top counties by country and class.",
+            "kind": "table",
+            "main_topic": "immigration",
+            "detail_levels": [
+                "counties",
+                "states"
+            ],
+            "year_min": 2007,
+            "year_max": 2024
+        },
+        {
+            "name": "h1b_lca_positions",
+            "title": "H-1B Labor Condition Application Positions",
+            "summary": "H-1B (and H-1B1/E-3) worker positions the Labor Department certified for Georgia worksites each fiscal year, by county, occupation, visa program and outcome.",
+            "kind": "table",
+            "main_topic": "immigration",
+            "detail_levels": [
+                "counties",
+                "states"
+            ],
+            "year_min": 2020,
+            "year_max": 2026
+        },
+        {
+            "name": "h1b_lca_secondary_worksites",
+            "title": "H-1B LCAs Listing a Georgia Secondary Worksite",
+            "summary": "H-1B (and H-1B1/E-3) labor condition applications certified for jobs based outside Georgia that also list a Georgia worksite, each fiscal year, statewide and by county.",
+            "kind": "table",
+            "main_topic": "immigration",
+            "detail_levels": [
+                "counties",
+                "states"
+            ],
+            "year_min": 2020,
+            "year_max": 2025
+        },
+        {
+            "name": "h1b_wage_offers",
+            "title": "H-1B Wage Offers",
+            "summary": "Median annual wage offered on the H-1B, H-1B1 and E-3 positions the Labor Department certified for Georgia worksites each fiscal year, by county and occupation group.",
+            "kind": "table",
+            "main_topic": "immigration",
+            "detail_levels": [
+                "counties",
+                "states"
+            ],
+            "year_min": 2020,
+            "year_max": 2026
+        },
+        {
+            "name": "h2a_certifications",
+            "title": "H-2A Agricultural Labor Certifications",
+            "summary": "H-2A temporary farmworker positions the Labor Department certified for Georgia worksites each fiscal year, by county, occupation and outcome.",
+            "kind": "table",
+            "main_topic": "immigration",
+            "detail_levels": [
+                "counties",
+                "states"
+            ],
+            "year_min": 2020,
+            "year_max": 2026
+        },
+        {
+            "name": "h2a_wage_offers",
+            "title": "H-2A Wage Offers",
+            "summary": "Average hourly wage offered on the H-2A farmworker positions the Labor Department certified for Georgia worksites each fiscal year, by county and occupation.",
+            "kind": "table",
+            "main_topic": "immigration",
+            "detail_levels": [
+                "counties",
+                "states"
+            ],
+            "year_min": 2020,
+            "year_max": 2026
+        },
+        {
+            "name": "h2a_worker_housing",
+            "title": "H-2A Worker Housing",
+            "summary": "Beds, housing units and sites employers listed for H-2A farmworkers in Georgia on certified job orders, by fiscal year and county.",
+            "kind": "table",
+            "main_topic": "immigration",
+            "detail_levels": [
+                "counties",
+                "states"
+            ],
+            "year_min": 2020,
+            "year_max": 2026
+        },
+        {
+            "name": "h2b_certifications",
+            "title": "H-2B Non-Agricultural Labor Certifications",
+            "summary": "H-2B temporary non-farm worker positions the Labor Department certified for Georgia worksites each fiscal year, by county, occupation, cap status, nature of need and outcome.",
+            "kind": "table",
+            "main_topic": "immigration",
+            "detail_levels": [
+                "counties",
+                "states"
+            ],
+            "year_min": 2020,
+            "year_max": 2026
+        },
+        {
+            "name": "h2b_wage_offers",
+            "title": "H-2B Wage Offers",
+            "summary": "Average hourly wage offered on the H-2B non-farm positions the Labor Department certified for Georgia worksites each fiscal year, by county and occupation.",
+            "kind": "table",
+            "main_topic": "immigration",
+            "detail_levels": [
+                "counties",
+                "states"
+            ],
+            "year_min": 2020,
+            "year_max": 2026
+        },
+        {
+            "name": "deportation_detainers",
+            "title": "Georgia Prison Inmates with Deportation Detainers",
+            "summary": "Georgia state-prison inmates held with an active ICE deportation detainer on a month-end date, by citizenship country and offense group.",
+            "kind": "table",
+            "main_topic": "immigration",
+            "detail_levels": [
+                "states"
+            ],
+            "year_min": 2025,
+            "year_max": 2026
+        },
+        {
+            "name": "undocumented_population_characteristics",
+            "title": "Undocumented Immigrant Population Characteristics",
+            "summary": "The Center for Migration Studies' 2024 profile of Georgia's undocumented population by sex, age, birthplace and years in the U.S.",
+            "kind": "table",
+            "main_topic": "immigration",
+            "detail_levels": [
+                "states"
+            ],
+            "year_min": 2024,
+            "year_max": 2024
+        },
+        {
+            "name": "undocumented_population_estimates",
+            "title": "Undocumented Immigrant Population Estimates",
+            "summary": "Four modeled estimates of Georgia's undocumented immigrant population (Pew, MPI, CMS, DHS), 1990-2024, plus ten Georgia counties from MPI.",
+            "kind": "table",
+            "main_topic": "immigration",
+            "detail_levels": [
+                "counties",
+                "states"
+            ],
+            "year_min": 1990,
+            "year_max": 2024
+        },
+        {
+            "name": "refugee_arrivals",
+            "title": "Refugee Arrivals in Georgia by Nationality",
+            "summary": "Refugees resettled in Georgia each federal fiscal year since FY2012, by nationality, from the State Department's arrival reports.",
+            "kind": "table",
+            "main_topic": "immigration",
+            "detail_levels": [
+                "states"
+            ],
+            "year_min": 2012,
+            "year_max": 2026
+        },
+        {
+            "name": "refugee_arrivals_monthly",
+            "title": "Monthly Refugee Arrivals in Georgia by Nationality",
+            "summary": "Refugees resettled in Georgia each calendar month since October 2020, by nationality, from the State Department's arrival reports.",
+            "kind": "table",
+            "main_topic": "immigration",
+            "detail_levels": [
+                "states"
+            ],
+            "year_min": 2020,
+            "year_max": 2026
+        },
+        {
+            "name": "daca_recipients",
+            "title": "Active DACA Recipients in Georgia",
+            "summary": "Georgia residents holding an active DACA grant, as counted by USCIS on irregular release dates from September 2017 to April 2019 and at federal fiscal quarter-ends since; FY2018 q1 and FY2023 q3 have no release.",
+            "kind": "table",
+            "main_topic": "immigration",
+            "detail_levels": [
+                "states"
+            ],
+            "year_min": 2017,
+            "year_max": 2026
+        }
+    ],
+    "count": 23,
+    "fields": "compact",
+    "links": {
+        "schema": "/api/v1/datasets/{name}",
+        "rows": "/api/v1/datasets/{name}/rows",
+        "search": "/api/v1/search?q={text}"
+    },
+    "dimensions": [
+        {
+            "name": "districts",
+            "scope": "domain",
+            "version": "1.2.0",
+            "primary_key": [
+                "district_code"
+            ],
+            "attribute_columns": [
+                "district_name",
+                "former_names",
+                "district_census_id",
+                "district_type",
+                "county_fips",
+                "street_address",
+                "city",
+                "zip",
+                "latitude",
+                "longitude",
+                "active",
+                "directory_year"
+            ],
+            "endpoint": "/api/v1/dimensions/districts"
+        },
+        {
+            "name": "schools",
+            "scope": "domain",
+            "version": "1.2.0",
+            "primary_key": [
+                "district_code",
+                "school_code"
+            ],
+            "attribute_columns": [
+                "school_name",
+                "former_names",
+                "school_level",
+                "grade_low",
+                "grade_high",
+                "county_fips",
+                "nces_school_id",
+                "street_address",
+                "city",
+                "zip",
+                "phone",
+                "website",
+                "latitude",
+                "longitude",
+                "locale",
+                "charter",
+                "active",
+                "directory_year"
+            ],
+            "endpoint": "/api/v1/dimensions/schools"
+        },
+        {
+            "name": "block_groups",
+            "scope": "global",
+            "version": "1.0.0",
+            "primary_key": [
+                "block_group_geoid"
+            ],
+            "attribute_columns": [
+                "block_group_name",
+                "tract_geoid",
+                "county_fips",
+                "land_area_sq_mi",
+                "population_2020",
+                "housing_units_2020",
+                "households_2020"
+            ],
+            "endpoint": "/api/v1/dimensions/block_groups"
+        },
+        {
+            "name": "counties",
+            "scope": "global",
+            "version": "1.0.0",
+            "primary_key": [
+                "county_fips"
+            ],
+            "attribute_columns": [
+                "county_name"
+            ],
+            "endpoint": "/api/v1/dimensions/counties"
+        },
+        {
+            "name": "demographics",
+            "scope": "global",
+            "version": "1.0.0",
+            "primary_key": [
+                "demographic"
+            ],
+            "attribute_columns": [
+                "demographic_label",
+                "demographic_category"
+            ],
+            "endpoint": "/api/v1/dimensions/demographics"
+        },
+        {
+            "name": "tracts",
+            "scope": "global",
+            "version": "1.0.0",
+            "primary_key": [
+                "tract_geoid"
+            ],
+            "attribute_columns": [
+                "tract_name",
+                "county_fips",
+                "county_name",
+                "land_area_sq_mi",
+                "population_2020"
+            ],
+            "endpoint": "/api/v1/dimensions/tracts"
+        }
+    ],
+    "license": {
+        "id": "CC-BY-4.0",
+        "name": "Creative Commons Attribution 4.0 International (CC BY 4.0)",
+        "url": "https://creativecommons.org/licenses/by/4.0/",
+        "attribution": "Georgia Civic Data (georgiacivicdata.org)",
+        "scope": "The license covers Georgia Civic Data's cleaning, standardization, compilation, and documentation. Source data stays under its original publisher's terms; each dataset names its source.",
+        "terms": "https://georgiacivicdata.org/about#license"
+    }
+}

@@ -1,0 +1,174 @@
+# serializer version: 1
+# name: test_describe_and_columns_read_lookup_tables
+  '''
+  -- Lookup table: schools -------------------------------------------------------
+  Schools dimension table; single (non-partitioned) Parquet file. Composite
+  primary key (district_code, school_code).
+  
+  Primary key: district_code + school_code
+  Columns: district_code, school_code, school_name, former_names, school_level,
+  grade_low, grade_high, county_fips, nces_school_id, street_address, city, zip,
+  phone, website, latitude, longitude, locale, charter, active, directory_year
+  Filters: district_code, school_code, school_level, county_fips, locale, charter,
+  active, q
+  Text search (q) over: school_name
+  Get the rows with gcd.dimension('schools').
+  '''
+# ---
+# name: test_describe_lists_columns_that_need_one_value
+  '''
+  -- CCRPI Content Mastery (ccrpi_content_mastery) -------------------------------
+  Georgia student proficiency scores on state assessments (the CCRPI Content
+  Mastery component) by subject, grade cluster, and demographic subgroup,
+  2012-2025.
+  
+  Source: Georgia Insights (GaDOE)
+  Years: 2012-2025 (no data for 2020)
+  Detail levels: districts, schools (default), states
+  Grain: year, district_code, school_code, demographic, grade_cluster, subject
+  Key metric: indicator_score
+  Pick one value of: grade_cluster, subject (no total; don't mix values in one
+  summary)
+  Columns: 17, plus 6 joined name columns (see .columns); filters: 34 (see
+  .filters)
+  
+  -- Notes -----------------------------------------------------------------------
+  * Missing values: missing means suppressed (small counts), not zero; zeros are
+    real.
+  * Limitations: Suppressed cells are NULL (not zero). State rows have NULL
+    district_code and school_code. District rows have NULL school_code. 2012-2013
+    publish school rows only; district and state rows begin in 2014.
+  '''
+# ---
+# name: test_describe_reads_geometry_datasets
+  '''
+  -- Geometry dataset: school_attendance_zones -----------------------------------
+  School attendance zones for Georgia's public school districts: the polygons that
+  assign a home address to its zoned elementary, middle and high school. One row
+  per zoned school, level and grade band, for the 2026-27 school year. Districts
+  with one zoned school per grade carry the district outline as each school's
+  zone. Built from each district's own GIS layers, routing-vendor lookup APIs,
+  georeferenced PDF and image maps, and published street lists, and, by owner
+  decision where no newer map exists, the NCES School Attendance Boundary Survey
+  2015-16 lines, then clipped to the district's Census TIGER/Line boundary. Join
+  school_code (with district_code) to the schools dimension for names, NCES ids
+  and coordinates.
+  
+  CRS: OGC:CRS84 (longitude, latitude; WGS 84)
+  Grain: year, district_code, school_code, zone_level, grade_low
+  Fields: 22 (see .columns); filters: district_code, school_code, zone_level,
+  grade, year, format, resolution
+  
+  -- Notes -----------------------------------------------------------------------
+  * Limitations: Not an official enrollment determination: confirm any assignment
+    with the district. A zone is the default assignment, not the only option:
+    students can attend another public school by transfer or at charter, magnet
+    and other choice schools (see the attendance_rules route). Coverage varies by
+    district (see the coverage table); a point inside a district but outside every
+    zone of a level is a gap, never filled by guessing a school: usually the
+    source assigns it to no school, sometimes a sliver where the source's line and
+    the Census district line differ (the coverage table's reason counts the
+    residents in both). Digitized maps do have their road and label holes, and
+    unaddressed street-list blocks, given to the nearest zone. Some districts'
+    choice or transfer areas (such as Social Circle's Zone 5) are not zones and
+    are not modelled. Digitized zones carry georeferencing error
+    (positional_rmse_m) and approximate reconstructions are coarser still. Some
+    lines predate adopted changes (currency_status = stale_known_changes).
+    Charter, magnet, alternative, virtual and special-program schools have no
+    zones: the school status table (_school_status.parquet, served at
+    /school_status) lists every school of the 180 standard districts with whether
+    it has a zone here and, if not, why.
+  * A zone is the default assignment, not the only option: a Georgia student may
+    attend another public school by transfer, or a charter, magnet or other choice
+    school. See attendance_rules for the main ways.
+  * Not an official enrollment determination: attendance zones change, and these
+    are reconstructed from published sources of varying currency and accuracy (see
+    each zone's method, accuracy_class and currency_status). Confirm with the
+    school district.
+  '''
+# ---
+# name: test_describe_summarizes_a_dataset
+  '''
+  -- Four-Year Cohort Graduation Rate (graduation_rate_4_year_cohort) ------------
+  Share of the four-year high school cohort that graduated, by school, district,
+  and state and demographic subgroup, 2004-2025.
+  
+  Source: Governor's Office of Education and Workforce Strategy (GOEWS, formerly
+  GOSA)
+  Years: 2004-2025
+  Detail levels: districts, schools (default), states
+  Grain: year, district_code, school_code, demographic
+  Key metric: graduation_rate
+  Columns: 7, plus 6 joined name columns (see .columns); filters: 18 (see
+  .filters)
+  
+  -- Notes -----------------------------------------------------------------------
+  * Missing values: missing means suppressed (small counts), not zero; zeros are
+    real from 2010 on.
+  * Limitations: 2004-2010 figures predate Georgia's adoption of the federal four-
+    year adjusted-cohort methodology (ACGR, first reported 2011) and use the
+    state's earlier leaver-based rate; the 2010->2011 state rate drop (~81% to
+    ~67%) is a methodology break, not a real decline — do not trend across it.
+    Suppressed cells are NULL (not zero) from 2010 onward, but 2004-2009 sources
+    use literal ZEROS for suppressed cells — a zero rate/count in those years may
+    be real or suppressed and cannot be distinguished; treat very small cohorts in
+    2004-2009 with caution. num_cohort is NULL for every row in 2012-2016 (the
+    source publishes no denominator in those years). The 2004 file lists every
+    public school, including elementary and middle schools with no graduating
+    cohort, so 1,703 of its 2,037 all-students school rows have no graduate count
+    or rate; from 2005 only schools with a graduating cohort are listed (344 in
+    2005). School rows do not always sum to the published district row: of the
+    42,815 district rows (all subgroups) with a published num_graduates and at
+    least one published school value, 468 publish a district num_graduates below
+    the sum of its school rows, 49 of them among the 4,039 all-students rows
+    (source-published, 2005-2025; e.g. 2016 Whitfield 709 vs 810, 2014 Richmond
+    economically_disadvantaged 582 vs 1,286) — use the official district/state
+    rows for rollups rather than summing school rows. economically_disadvantaged
+    is not a like-for-like group across years. Statewide it is 55-56% of the
+    cohort in 2017-2021, then 47% (2022), 53% (2023), 61% (2024) and 66% (2025),
+    and district coding shifts: Cobb County puts 98% of its 2021 cohort in the
+    group (36-38% in 2017-2020 and 2023, 20% in 2022) and under 2% of its
+    graduates in 2011, 2012 and 2014, and districts with 100+ graduates that
+    report 10% or less of them in the group or suppress it number 6-11 a year in
+    2021-2023 (0-2 a year in 2016-2020). GOEWS does not document these shifts. The
+    group's graduation rate moves when its membership does, so check its share of
+    the cohort before comparing it across years or districts. The race axis uses
+    the combined asian_pacific_islander bucket — not comparable row-for-row with
+    split-convention topics without aggregating those topics' asian +
+    pacific_islander rows at query time. State rows have NULL district_code and
+    school_code; district rows have NULL school_code.
+  * Series break in 2011: From 2011 Georgia reports the federal four-year
+    adjusted-cohort graduation rate, while 2004-2010 use the state's earlier
+    leaver-based count, so the state rate falls from 0.808 (2010) to 0.675 (2011)
+    and the cohort rises from 113,364 to 131,012 because the method changed, not
+    because fewer students graduated.
+  '''
+# ---
+# name: test_every_declared_note_is_kept_and_printed
+  '''
+  -- Toy Data (toy) --------------------------------------------------------------
+  A toy.
+  
+  Source: Somewhere
+  Years: 2022-2024 (no data for 2023)
+  Detail levels: counties (default), states
+  Grain: year, county_fips
+  Key metric: rate
+  Pick one value of: payer (no total; don't mix values in one summary)
+  Columns: 1 (see .columns); filters: 1 (see .filters)
+  
+  -- Notes -----------------------------------------------------------------------
+  * Missing values: missing means suppressed (small counts), not zero; a zero may
+    be suppressed too.
+  * Limitations: Small samples.
+  * Year meaning: The year the survey ended.
+  * Series break in 2024: New method.
+  * Not additive (race): Groups overlap.
+  * Partition (payer): Shares add to 1.
+  * Pooled rate: rate = sum(events) / sum(pop) x 1000
+  * Year window: each figure pools 3 years, named by the window's end year
+    (windows overlap: not an annual series).
+  * Value implication: Born in Puerto Rico implies native.
+  * Pooled minimum count (20): Under 20 events is withheld.
+  '''
+# ---

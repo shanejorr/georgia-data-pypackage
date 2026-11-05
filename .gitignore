@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+dist/
+build/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Docs build output (deployed by CI, never committed)
+docs/_build/
+docs/generated/
+docs/jupyter_execute/
+
+# Notebooks
+.ipynb_checkpoints/
+
+# OS
+.DS_Store

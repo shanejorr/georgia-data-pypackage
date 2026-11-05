@@ -1,0 +1,84 @@
+{
+    "dataset": "graduation_rate_4_year_cohort",
+    "detail": "districts",
+    "columns": [
+        "demographic"
+    ],
+    "null_filter_token": "__null__",
+    "data": [
+        {
+            "demographic": "active_duty",
+            "count": 1
+        },
+        {
+            "demographic": "all",
+            "count": 1
+        },
+        {
+            "demographic": "asian_pacific_islander",
+            "count": 1
+        },
+        {
+            "demographic": "black",
+            "count": 1
+        },
+        {
+            "demographic": "economically_disadvantaged",
+            "count": 1
+        },
+        {
+            "demographic": "english_learners",
+            "count": 1
+        },
+        {
+            "demographic": "female",
+            "count": 1
+        },
+        {
+            "demographic": "foster_care",
+            "count": 1
+        },
+        {
+            "demographic": "hispanic",
+            "count": 1
+        },
+        {
+            "demographic": "homeless",
+            "count": 1
+        },
+        {
+            "demographic": "male",
+            "count": 1
+        },
+        {
+            "demographic": "migrant",
+            "count": 1
+        },
+        {
+            "demographic": "multiracial",
+            "count": 1
+        },
+        {
+            "demographic": "native_american",
+            "count": 1
+        },
+        {
+            "demographic": "not_economically_disadvantaged",
+            "count": 1
+        },
+        {
+            "demographic": "students_with_disabilities",
+            "count": 1
+        },
+        {
+            "demographic": "students_without_disabilities",
+            "count": 1
+        },
+        {
+            "demographic": "white",
+            "count": 1
+        }
+    ],
+    "total_combinations": 18,
+    "truncated": false
+}

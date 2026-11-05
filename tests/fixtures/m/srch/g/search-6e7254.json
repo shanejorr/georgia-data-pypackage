@@ -1,0 +1,141 @@
+{
+    "query": "graduation rate",
+    "matches": [
+        {
+            "name": "ccrpi_graduation_rate",
+            "main_topic": "education",
+            "sub_topic": "georgiainsights",
+            "topic": "ccrpi_graduation_rate",
+            "key": "education/georgiainsights/ccrpi_graduation_rate",
+            "version": "1.2.0",
+            "year_min": 2012,
+            "year_max": 2025,
+            "year_gaps": [
+
+            ],
+            "detail_levels": [
+                "districts",
+                "schools",
+                "states"
+            ],
+            "default_detail": "schools",
+            "has_demographic": true,
+            "tags": [
+                "education",
+                "georgia insights",
+                "ccrpi_graduation_rate"
+            ],
+            "title": "High School Graduation Rates",
+            "summary": "Georgia high school graduation rates by school, district, and demographic subgroup, 2012-2025.",
+            "score": 0.340909,
+            "matched_on": [
+                "aliases",
+                "columns",
+                "description",
+                "name",
+                "summary",
+                "tags",
+                "title"
+            ],
+            "matched_columns": [
+                "graduation_rate",
+                "ccrpi_flag",
+                "num_graduates"
+            ],
+            "endpoint": "/api/v1/datasets/ccrpi_graduation_rate"
+        },
+        {
+            "name": "graduation_rate_4_year_cohort",
+            "main_topic": "education",
+            "sub_topic": "gosa",
+            "topic": "graduation_rate_4_year_cohort",
+            "key": "education/gosa/graduation_rate_4_year_cohort",
+            "version": "1.0.0",
+            "year_min": 2004,
+            "year_max": 2025,
+            "year_gaps": [
+
+            ],
+            "detail_levels": [
+                "districts",
+                "schools",
+                "states"
+            ],
+            "default_detail": "schools",
+            "has_demographic": true,
+            "tags": [
+                "education",
+                "governor's office of education and workforce strategy",
+                "graduation_rate_4_year_cohort",
+                "goews",
+                "gosa"
+            ],
+            "title": "Four-Year Cohort Graduation Rate",
+            "summary": "Share of the four-year high school cohort that graduated, by school, district, and state and demographic subgroup, 2004-2025.",
+            "score": 0.356061,
+            "matched_on": [
+                "aliases",
+                "columns",
+                "description",
+                "name",
+                "summary",
+                "tags",
+                "title"
+            ],
+            "matched_columns": [
+                "graduation_rate"
+            ],
+            "endpoint": "/api/v1/datasets/graduation_rate_4_year_cohort"
+        },
+        {
+            "name": "pathway_completion_advanced_academic",
+            "main_topic": "education",
+            "sub_topic": "georgiainsights",
+            "topic": "pathway_completion_advanced_academic",
+            "key": "education/georgiainsights/pathway_completion_advanced_academic",
+            "version": "1.1.0",
+            "year_min": 2021,
+            "year_max": 2025,
+            "year_gaps": [
+
+            ],
+            "detail_levels": [
+                "districts",
+                "schools",
+                "states"
+            ],
+            "default_detail": "schools",
+            "has_demographic": false,
+            "tags": [
+                "education",
+                "georgia insights",
+                "pathway_completion_advanced_academic"
+            ],
+            "title": "Pathway Completer Graduation Rate: Advanced Academic",
+            "summary": "Four-year cohort graduation rate of students who completed an Advanced Academic (AP, IB, or dual enrollment) pathway, by school and district, 2021-2025.",
+            "score": 0.271429,
+            "matched_on": [
+                "aliases",
+                "columns",
+                "description",
+                "summary",
+                "title"
+            ],
+            "matched_columns": [
+                "advanced_academic_pathway_rate"
+            ],
+            "endpoint": "/api/v1/datasets/pathway_completion_advanced_academic"
+        }
+    ],
+    "match_count": 3,
+    "total_matches": 104,
+    "truncated": true,
+    "confidence": "high",
+    "retrieval": {
+        "mode": "hybrid",
+        "reranked": true
+    },
+    "dimension_matches": [
+
+    ]
+}

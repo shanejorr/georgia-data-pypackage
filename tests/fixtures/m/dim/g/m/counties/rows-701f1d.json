@@ -1,0 +1,651 @@
+{
+    "data": [
+        {
+            "county_fips": "13001",
+            "county_name": "Appling"
+        },
+        {
+            "county_fips": "13003",
+            "county_name": "Atkinson"
+        },
+        {
+            "county_fips": "13005",
+            "county_name": "Bacon"
+        },
+        {
+            "county_fips": "13007",
+            "county_name": "Baker"
+        },
+        {
+            "county_fips": "13009",
+            "county_name": "Baldwin"
+        },
+        {
+            "county_fips": "13011",
+            "county_name": "Banks"
+        },
+        {
+            "county_fips": "13013",
+            "county_name": "Barrow"
+        },
+        {
+            "county_fips": "13015",
+            "county_name": "Bartow"
+        },
+        {
+            "county_fips": "13017",
+            "county_name": "Ben Hill"
+        },
+        {
+            "county_fips": "13019",
+            "county_name": "Berrien"
+        },
+        {
+            "county_fips": "13021",
+            "county_name": "Bibb"
+        },
+        {
+            "county_fips": "13023",
+            "county_name": "Bleckley"
+        },
+        {
+            "county_fips": "13025",
+            "county_name": "Brantley"
+        },
+        {
+            "county_fips": "13027",
+            "county_name": "Brooks"
+        },
+        {
+            "county_fips": "13029",
+            "county_name": "Bryan"
+        },
+        {
+            "county_fips": "13031",
+            "county_name": "Bulloch"
+        },
+        {
+            "county_fips": "13033",
+            "county_name": "Burke"
+        },
+        {
+            "county_fips": "13035",
+            "county_name": "Butts"
+        },
+        {
+            "county_fips": "13037",
+            "county_name": "Calhoun"
+        },
+        {
+            "county_fips": "13039",
+            "county_name": "Camden"
+        },
+        {
+            "county_fips": "13043",
+            "county_name": "Candler"
+        },
+        {
+            "county_fips": "13045",
+            "county_name": "Carroll"
+        },
+        {
+            "county_fips": "13047",
+            "county_name": "Catoosa"
+        },
+        {
+            "county_fips": "13049",
+            "county_name": "Charlton"
+        },
+        {
+            "county_fips": "13051",
+            "county_name": "Chatham"
+        },
+        {
+            "county_fips": "13053",
+            "county_name": "Chattahoochee"
+        },
+        {
+            "county_fips": "13055",
+            "county_name": "Chattooga"
+        },
+        {
+            "county_fips": "13057",
+            "county_name": "Cherokee"
+        },
+        {
+            "county_fips": "13059",
+            "county_name": "Clarke"
+        },
+        {
+            "county_fips": "13061",
+            "county_name": "Clay"
+        },
+        {
+            "county_fips": "13063",
+            "county_name": "Clayton"
+        },
+        {
+            "county_fips": "13065",
+            "county_name": "Clinch"
+        },
+        {
+            "county_fips": "13067",
+            "county_name": "Cobb"
+        },
+        {
+            "county_fips": "13069",
+            "county_name": "Coffee"
+        },
+        {
+            "county_fips": "13071",
+            "county_name": "Colquitt"
+        },
+        {
+            "county_fips": "13073",
+            "county_name": "Columbia"
+        },
+        {
+            "county_fips": "13075",
+            "county_name": "Cook"
+        },
+        {
+            "county_fips": "13077",
+            "county_name": "Coweta"
+        },
+        {
+            "county_fips": "13079",
+            "county_name": "Crawford"
+        },
+        {
+            "county_fips": "13081",
+            "county_name": "Crisp"
+        },
+        {
+            "county_fips": "13083",
+            "county_name": "Dade"
+        },
+        {
+            "county_fips": "13085",
+            "county_name": "Dawson"
+        },
+        {
+            "county_fips": "13087",
+            "county_name": "Decatur"
+        },
+        {
+            "county_fips": "13089",
+            "county_name": "DeKalb"
+        },
+        {
+            "county_fips": "13091",
+            "county_name": "Dodge"
+        },
+        {
+            "county_fips": "13093",
+            "county_name": "Dooly"
+        },
+        {
+            "county_fips": "13095",
+            "county_name": "Dougherty"
+        },
+        {
+            "county_fips": "13097",
+            "county_name": "Douglas"
+        },
+        {
+            "county_fips": "13099",
+            "county_name": "Early"
+        },
+        {
+            "county_fips": "13101",
+            "county_name": "Echols"
+        },
+        {
+            "county_fips": "13103",
+            "county_name": "Effingham"
+        },
+        {
+            "county_fips": "13105",
+            "county_name": "Elbert"
+        },
+        {
+            "county_fips": "13107",
+            "county_name": "Emanuel"
+        },
+        {
+            "county_fips": "13109",
+            "county_name": "Evans"
+        },
+        {
+            "county_fips": "13111",
+            "county_name": "Fannin"
+        },
+        {
+            "county_fips": "13113",
+            "county_name": "Fayette"
+        },
+        {
+            "county_fips": "13115",
+            "county_name": "Floyd"
+        },
+        {
+            "county_fips": "13117",
+            "county_name": "Forsyth"
+        },
+        {
+            "county_fips": "13119",
+            "county_name": "Franklin"
+        },
+        {
+            "county_fips": "13121",
+            "county_name": "Fulton"
+        },
+        {
+            "county_fips": "13123",
+            "county_name": "Gilmer"
+        },
+        {
+            "county_fips": "13125",
+            "county_name": "Glascock"
+        },
+        {
+            "county_fips": "13127",
+            "county_name": "Glynn"
+        },
+        {
+            "county_fips": "13129",
+            "county_name": "Gordon"
+        },
+        {
+            "county_fips": "13131",
+            "county_name": "Grady"
+        },
+        {
+            "county_fips": "13133",
+            "county_name": "Greene"
+        },
+        {
+            "county_fips": "13135",
+            "county_name": "Gwinnett"
+        },
+        {
+            "county_fips": "13137",
+            "county_name": "Habersham"
+        },
+        {
+            "county_fips": "13139",
+            "county_name": "Hall"
+        },
+        {
+            "county_fips": "13141",
+            "county_name": "Hancock"
+        },
+        {
+            "county_fips": "13143",
+            "county_name": "Haralson"
+        },
+        {
+            "county_fips": "13145",
+            "county_name": "Harris"
+        },
+        {
+            "county_fips": "13147",
+            "county_name": "Hart"
+        },
+        {
+            "county_fips": "13149",
+            "county_name": "Heard"
+        },
+        {
+            "county_fips": "13151",
+            "county_name": "Henry"
+        },
+        {
+            "county_fips": "13153",
+            "county_name": "Houston"
+        },
+        {
+            "county_fips": "13155",
+            "county_name": "Irwin"
+        },
+        {
+            "county_fips": "13157",
+            "county_name": "Jackson"
+        },
+        {
+            "county_fips": "13159",
+            "county_name": "Jasper"
+        },
+        {
+            "county_fips": "13161",
+            "county_name": "Jeff Davis"
+        },
+        {
+            "county_fips": "13163",
+            "county_name": "Jefferson"
+        },
+        {
+            "county_fips": "13165",
+            "county_name": "Jenkins"
+        },
+        {
+            "county_fips": "13167",
+            "county_name": "Johnson"
+        },
+        {
+            "county_fips": "13169",
+            "county_name": "Jones"
+        },
+        {
+            "county_fips": "13171",
+            "county_name": "Lamar"
+        },
+        {
+            "county_fips": "13173",
+            "county_name": "Lanier"
+        },
+        {
+            "county_fips": "13175",
+            "county_name": "Laurens"
+        },
+        {
+            "county_fips": "13177",
+            "county_name": "Lee"
+        },
+        {
+            "county_fips": "13179",
+            "county_name": "Liberty"
+        },
+        {
+            "county_fips": "13181",
+            "county_name": "Lincoln"
+        },
+        {
+            "county_fips": "13183",
+            "county_name": "Long"
+        },
+        {
+            "county_fips": "13185",
+            "county_name": "Lowndes"
+        },
+        {
+            "county_fips": "13187",
+            "county_name": "Lumpkin"
+        },
+        {
+            "county_fips": "13189",
+            "county_name": "McDuffie"
+        },
+        {
+            "county_fips": "13191",
+            "county_name": "McIntosh"
+        },
+        {
+            "county_fips": "13193",
+            "county_name": "Macon"
+        },
+        {
+            "county_fips": "13195",
+            "county_name": "Madison"
+        },
+        {
+            "county_fips": "13197",
+            "county_name": "Marion"
+        },
+        {
+            "county_fips": "13199",
+            "county_name": "Meriwether"
+        },
+        {
+            "county_fips": "13201",
+            "county_name": "Miller"
+        },
+        {
+            "county_fips": "13205",
+            "county_name": "Mitchell"
+        },
+        {
+            "county_fips": "13207",
+            "county_name": "Monroe"
+        },
+        {
+            "county_fips": "13209",
+            "county_name": "Montgomery"
+        },
+        {
+            "county_fips": "13211",
+            "county_name": "Morgan"
+        },
+        {
+            "county_fips": "13213",
+            "county_name": "Murray"
+        },
+        {
+            "county_fips": "13215",
+            "county_name": "Muscogee"
+        },
+        {
+            "county_fips": "13217",
+            "county_name": "Newton"
+        },
+        {
+            "county_fips": "13219",
+            "county_name": "Oconee"
+        },
+        {
+            "county_fips": "13221",
+            "county_name": "Oglethorpe"
+        },
+        {
+            "county_fips": "13223",
+            "county_name": "Paulding"
+        },
+        {
+            "county_fips": "13225",
+            "county_name": "Peach"
+        },
+        {
+            "county_fips": "13227",
+            "county_name": "Pickens"
+        },
+        {
+            "county_fips": "13229",
+            "county_name": "Pierce"
+        },
+        {
+            "county_fips": "13231",
+            "county_name": "Pike"
+        },
+        {
+            "county_fips": "13233",
+            "county_name": "Polk"
+        },
+        {
+            "county_fips": "13235",
+            "county_name": "Pulaski"
+        },
+        {
+            "county_fips": "13237",
+            "county_name": "Putnam"
+        },
+        {
+            "county_fips": "13239",
+            "county_name": "Quitman"
+        },
+        {
+            "county_fips": "13241",
+            "county_name": "Rabun"
+        },
+        {
+            "county_fips": "13243",
+            "county_name": "Randolph"
+        },
+        {
+            "county_fips": "13245",
+            "county_name": "Richmond"
+        },
+        {
+            "county_fips": "13247",
+            "county_name": "Rockdale"
+        },
+        {
+            "county_fips": "13249",
+            "county_name": "Schley"
+        },
+        {
+            "county_fips": "13251",
+            "county_name": "Screven"
+        },
+        {
+            "county_fips": "13253",
+            "county_name": "Seminole"
+        },
+        {
+            "county_fips": "13255",
+            "county_name": "Spalding"
+        },
+        {
+            "county_fips": "13257",
+            "county_name": "Stephens"
+        },
+        {
+            "county_fips": "13259",
+            "county_name": "Stewart"
+        },
+        {
+            "county_fips": "13261",
+            "county_name": "Sumter"
+        },
+        {
+            "county_fips": "13263",
+            "county_name": "Talbot"
+        },
+        {
+            "county_fips": "13265",
+            "county_name": "Taliaferro"
+        },
+        {
+            "county_fips": "13267",
+            "county_name": "Tattnall"
+        },
+        {
+            "county_fips": "13269",
+            "county_name": "Taylor"
+        },
+        {
+            "county_fips": "13271",
+            "county_name": "Telfair"
+        },
+        {
+            "county_fips": "13273",
+            "county_name": "Terrell"
+        },
+        {
+            "county_fips": "13275",
+            "county_name": "Thomas"
+        },
+        {
+            "county_fips": "13277",
+            "county_name": "Tift"
+        },
+        {
+            "county_fips": "13279",
+            "county_name": "Toombs"
+        },
+        {
+            "county_fips": "13281",
+            "county_name": "Towns"
+        },
+        {
+            "county_fips": "13283",
+            "county_name": "Treutlen"
+        },
+        {
+            "county_fips": "13285",
+            "county_name": "Troup"
+        },
+        {
+            "county_fips": "13287",
+            "county_name": "Turner"
+        },
+        {
+            "county_fips": "13289",
+            "county_name": "Twiggs"
+        },
+        {
+            "county_fips": "13291",
+            "county_name": "Union"
+        },
+        {
+            "county_fips": "13293",
+            "county_name": "Upson"
+        },
+        {
+            "county_fips": "13295",
+            "county_name": "Walker"
+        },
+        {
+            "county_fips": "13297",
+            "county_name": "Walton"
+        },
+        {
+            "county_fips": "13299",
+            "county_name": "Ware"
+        },
+        {
+            "county_fips": "13301",
+            "county_name": "Warren"
+        },
+        {
+            "county_fips": "13303",
+            "county_name": "Washington"
+        },
+        {
+            "county_fips": "13305",
+            "county_name": "Wayne"
+        },
+        {
+            "county_fips": "13307",
+            "county_name": "Webster"
+        },
+        {
+            "county_fips": "13309",
+            "county_name": "Wheeler"
+        },
+        {
+            "county_fips": "13311",
+            "county_name": "White"
+        },
+        {
+            "county_fips": "13313",
+            "county_name": "Whitfield"
+        },
+        {
+            "county_fips": "13315",
+            "county_name": "Wilcox"
+        },
+        {
+            "county_fips": "13317",
+            "county_name": "Wilkes"
+        },
+        {
+            "county_fips": "13319",
+            "county_name": "Wilkinson"
+        },
+        {
+            "county_fips": "13321",
+            "county_name": "Worth"
+        }
+    ],
+    "pagination": {
+        "limit": 10000,
+        "offset": 0,
+        "total": 159,
+        "returned": 159,
+        "has_more": false
+    },
+    "links": {
+        "self": "/api/v1/dimensions/counties/rows?limit=10000",
+        "next": null
+    }
+}

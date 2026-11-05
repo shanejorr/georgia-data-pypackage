@@ -1,0 +1,54 @@
+{
+    "data": [
+        {
+            "year": 2024,
+            "district_code": "660",
+            "school_code": null,
+            "demographic": "all",
+            "num_graduates": 6977,
+            "num_cohort": 7695,
+            "graduation_rate": 0.9067000000000001
+        }
+    ],
+    "pagination": {
+        "limit": 10000,
+        "offset": 0,
+        "total": 1,
+        "returned": 1,
+        "has_more": false
+    },
+    "links": {
+        "self": "/api/v1/datasets/graduation_rate_4_year_cohort/rows?year=2024&detail=districts&district_code=660&demographic=all&columns=year%2Cdistrict_code%2Cschool_code%2Cdemographic%2Cnum_graduates%2Cnum_cohort%2Cgraduation_rate&limit=10000",
+        "next": null
+    },
+    "meta": {
+        "dataset": "graduation_rate_4_year_cohort",
+        "key": "education/gosa/graduation_rate_4_year_cohort",
+        "title": "Four-Year Cohort Graduation Rate",
+        "detail": "districts",
+        "key_metric": "graduation_rate",
+        "units": {
+            "num_graduates": "count",
+            "num_cohort": "count",
+            "graduation_rate": "proportion"
+        },
+        "null_semantics": {
+            "suppressed_to_null": true,
+            "zero_is_real": false,
+            "zero_is_real_from_year": 2010
+        },
+        "source": "Governor's Office of Education and Workforce Strategy (GOEWS, formerly GOSA)",
+        "source_url": "https://goews.georgia.gov/dashboards-data-report-card/downloadable-data",
+        "citation": "Four-Year Cohort Graduation Rate. Georgia Civic Data (georgiacivicdata.org), CC BY 4.0. https://georgiacivicdata.org/api/v1/datasets/graduation_rate_4_year_cohort. Original source: Governor's Office of Education and Workforce Strategy (GOEWS, formerly GOSA).",
+        "license": "CC BY 4.0",
+        "schema": "/api/v1/datasets/graduation_rate_4_year_cohort",
+        "advisories": [
+            {
+                "code": "demographic_non_additive",
+                "message": "Demographic groups overlap across categories and may overlap within a category (active_duty can be a subset of military_connected). Read the dataset's definitions and non_additive declarations. Use the published `all` total when available, never add it to its subgroups. Counts reconcile only for complete, disjoint groups; subgroup rates generally do not add to the overall rate."
+            }
+        ],
+        "data_version": "6e7b889d1c5e615c",
+        "updated_at": "2026-10-29T20:17:55+00:00"
+    }
+}

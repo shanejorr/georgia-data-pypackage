@@ -1,0 +1,639 @@
+{
+    "name": "graduation_rate_4_year_cohort",
+    "kind": "table",
+    "main_topic": "education",
+    "sub_topic": "gosa",
+    "topic": "graduation_rate_4_year_cohort",
+    "key": "education/gosa/graduation_rate_4_year_cohort",
+    "version": "1.0.0",
+    "year_min": 2004,
+    "year_max": 2025,
+    "year_gaps": [
+
+    ],
+    "update_frequency": "annual",
+    "detail_levels": [
+        "districts",
+        "schools",
+        "states"
+    ],
+    "default_detail": "schools",
+    "grain": [
+        "year",
+        "district_code",
+        "school_code",
+        "demographic"
+    ],
+    "title": "Four-Year Cohort Graduation Rate",
+    "summary": "Share of the four-year high school cohort that graduated, by school, district, and state and demographic subgroup, 2004-2025.",
+    "description": "Four-year high-school graduation rate for Georgia public schools, with official district and state rollups, by demographic subgroup (race/ethnicity, gender, disability status, English proficiency, economic status, and special populations). Reports the graduation rate, the number of graduates, and the cohort size. Published by GOEWS (formerly GOSA) for school years 2003-04 through 2024-25. 2011 onward is the federal four-year adjusted-cohort graduation rate (ACGR); 2004-2010 predate Georgia's ACGR adoption and use the state's earlier leaver-based methodology — the two halves are not trend-comparable (see limitations). This is the long historical 4-year series with demographic breakdowns; the sibling ccrpi_graduation_rate topic carries the GaDOE CCRPI release (2012 onward, 4- and 5-year rates with CCRPI target/flag context).",
+    "explorer": true,
+    "search_aliases": {
+        "en": [
+            "ACGR",
+            "adjusted cohort",
+            "graduating on time",
+            "high school diploma",
+            "graduation by race",
+            "graduation gap",
+            "students in poverty",
+            "poor students"
+        ],
+        "es": [
+            "tasa de graduación",
+            "graduación en cuatro años",
+            "diploma de secundaria",
+            "graduación por raza",
+            "brecha de graduación",
+            "estudiantes en pobreza",
+            "cohorte ajustada",
+            "graduación a tiempo"
+        ]
+    },
+    "source": "Governor's Office of Education and Workforce Strategy (GOEWS, formerly GOSA)",
+    "source_url": "https://goews.georgia.gov/dashboards-data-report-card/downloadable-data",
+    "columns": [
+        {
+            "name": "year",
+            "type": "integer",
+            "role": "year",
+            "nullable": false,
+            "label": "Year",
+            "short_description": "",
+            "description": "Ending (spring) calendar year of the cohort's graduating school year (2024 = the 2023-24 cohort). Parsed from the source's LONG_SCHOOL_YEAR and cross-checked against the filename for 2011-2025; from the filename for 2004-2010 (no year column in those eras).",
+            "valid_values": null,
+            "example": 2024,
+            "unit": null,
+            "value_min": null,
+            "value_max": null,
+            "null_meaning": null,
+            "key_metric_grain_contributor": false,
+            "metric_component": null
+        },
+        {
+            "name": "district_code",
+            "type": "string",
+            "role": "fk_district",
+            "nullable": true,
+            "label": "District Code",
+            "short_description": "",
+            "description": "GOSA district code (FK to districts dimension): 3-digit zero-padded county/city codes or 7-digit state-charter codes. Code 799 is the state-school virtual district ('State Schools'), published as a district-level aggregate in 2004-2010 and 2020-2025. In 8 district-years the source publishes school rows with no district-level row (2013: 7830110; 2014: 630, 7820212, 7830110, 7830210, 7830310; 2018: 7820618; 2025: 7820620, Discovery Regional High School); none is synthesized. NULL on state-level rows.",
+            "valid_values": null,
+            "example": "601",
+            "unit": null,
+            "value_min": null,
+            "value_max": null,
+            "null_meaning": null,
+            "key_metric_grain_contributor": false,
+            "metric_component": null
+        },
+        {
+            "name": "school_code",
+            "type": "string",
+            "role": "fk_school",
+            "nullable": true,
+            "label": "School Code",
+            "short_description": "",
+            "description": "GOSA school code, zero-padded to 4 characters (composite FK to schools dimension with district_code; not globally unique on its own). NULL on district- and state-level rows.",
+            "valid_values": null,
+            "example": "0103",
+            "unit": null,
+            "value_min": null,
+            "value_max": null,
+            "null_meaning": null,
+            "key_metric_grain_contributor": false,
+            "metric_component": null
+        },
+        {
+            "name": "demographic",
+            "type": "string",
+            "role": "fk_demographic",
+            "nullable": false,
+            "label": "Demographic",
+            "short_description": "Student subgroup the row reports (race/ethnicity, gender, disability, economic status, special population); 'all' is the total.",
+            "description": "Demographic subgroup (FK to the global demographics dimension). Race buckets use the combined asian_pacific_islander key (pre-1997 OMB convention) in every year: 2011+ bronze publishes the explicit 'Asian/Pacific Islander' label, and the bare 'Asian' label of 2004-2010 is the same combined bucket — the six race-bucket counts sum exactly to the All Students totals at the state level in every year, so Pacific Islanders are folded in, never published separately. 2004-2017 publish 15 subgroups; active_duty, foster_care, and homeless appear from 2018; english_learners is absent in 2021 and 2025 (the source dropped the Limited English Proficient subgroup in those two files). 'all' is the unfiltered total and overlaps every other value; subgroups are mutually exclusive only within their own category (race, gender, disability, economic, special population).",
+            "valid_values": [
+                "active_duty",
+                "all",
+                "asian_pacific_islander",
+                "black",
+                "economically_disadvantaged",
+                "english_learners",
+                "female",
+                "foster_care",
+                "hispanic",
+                "homeless",
+                "male",
+                "migrant",
+                "multiracial",
+                "native_american",
+                "not_economically_disadvantaged",
+                "students_with_disabilities",
+                "students_without_disabilities",
+                "white"
+            ],
+            "example": "all",
+            "unit": null,
+            "value_min": null,
+            "value_max": null,
+            "null_meaning": null,
+            "key_metric_grain_contributor": true,
+            "metric_component": null
+        },
+        {
+            "name": "num_graduates",
+            "type": "integer",
+            "role": "metric",
+            "nullable": true,
+            "label": "Number Graduates",
+            "short_description": "",
+            "description": "Number of students in the subgroup's cohort who graduated with a regular diploma within four years of first entering 9th grade (from 2011 the federal adjusted-cohort numerator; 2004-2010 use the state's earlier leaver-based accounting). Published values are >= 10 from 2011 onward (GOSA's n=10 reporting threshold). 2004-2009 use literal zeros for suppressed cells — a zero in those years may be real or suppressed and the two cannot be distinguished in source. The three non-suppressed 2010 migrant rows are internally inconsistent in bronze (num_graduates = num_cohort yet graduation_rate != 1.0; graduation_rate is the authoritative figure) and are preserved as published.",
+            "valid_values": null,
+            "example": 225,
+            "unit": "count",
+            "value_min": null,
+            "value_max": null,
+            "null_meaning": "Suppressed by GOSA ('Too few Students' literals in 2010, blank cells 2011-2020, TFS literals 2021-2025). 2004-2009 have no suppression NULLs — those sources publish literal zeros instead. Always co-suppressed with graduation_rate.",
+            "key_metric_grain_contributor": false,
+            "metric_component": "numerator"
+        },
+        {
+            "name": "num_cohort",
+            "type": "integer",
+            "role": "metric",
+            "nullable": true,
+            "label": "Number Cohort",
+            "short_description": "",
+            "description": "Cohort size — the denominator of the graduation rate. From 2011 this is the federal adjusted four-year cohort (first-time 9th-graders four years prior, plus transfers in, minus transfers out); the 2004-2010 denominator is the source's 'Approximate Class Size' (pre-ACGR leaver-based methodology). NULL for ALL rows in 2012-2016 (the source does not publish TOTAL_COUNT in those years; consumers may estimate round(num_graduates / graduation_rate) at their own rounding risk). num_cohort is not always co-suppressed with the other metrics: 2004 publishes it on 3,035 rows (1,913 school / 1,122 district) whose rate and graduate count are blank — 1,426 of them with a positive cohort — and 2023-2025 publish it on 369 / 339 / 278 rows, mostly school-level (295 school / 74 district in 2023, 271 / 68 in 2024, 213 / 65 in 2025), whose num_graduates and graduation_rate are TFS-suppressed (partial suppression). Published values are >= 10 from 2011 onward. 2004-2009 zeros may be real or suppressed (see num_graduates).",
+            "valid_values": null,
+            "example": 240,
+            "unit": "count",
+            "value_min": null,
+            "value_max": null,
+            "null_meaning": "Suppressed by GOSA, or unpublished: the source has no cohort denominator at all for 2012-2016.",
+            "key_metric_grain_contributor": false,
+            "metric_component": "denominator"
+        },
+        {
+            "name": "graduation_rate",
+            "type": "number",
+            "role": "metric",
+            "nullable": true,
+            "label": "Graduation Rate",
+            "short_description": "Share of the four-year cohort that graduated, on a 0-1 scale; 2011+ is the federal ACGR, 2004-2010 a non-comparable older method.",
+            "description": "Four-year graduation rate as a proportion (0-1 scale): num_graduates divided by num_cohort. From 2011 this is the federal adjusted-cohort rate (ACGR); 2004-2010 use Georgia's earlier leaver-based methodology and are NOT trend-comparable with 2011+ (state rate breaks 0.808 -> 0.675 at the 2010->2011 boundary). The source publishes 0-100 percentages (1-2 decimal places); divided by 100. Reconciles with num_graduates / num_cohort within 0.001 everywhere except the three documented 2010 migrant defect rows. Zeros in 2004-2009 may be real or suppressed (see num_graduates). Very low rates at three state-charter alternative / dropout-recovery high schools (7820108 Mountain Education, 7820613 Foothills Regional, 7820618 Coastal Plains; about 0.07-0.25 for all students in every ACGR year each appears: 7820108 from 2011, 7820613 from 2016, 7820618 from 2018, through 2025) are published figures and are kept as is; Mountain Education's single pre-ACGR 2010 district row is 0.448.",
+            "valid_values": null,
+            "example": 0.9375,
+            "unit": "proportion",
+            "value_min": null,
+            "value_max": null,
+            "null_meaning": "Suppressed by GOSA ('Too few Students' literals in 2010, blank cells 2011-2020, TFS literals 2021-2025). 2004-2009 have no suppression NULLs — those sources publish literal zeros instead. Always co-suppressed with num_graduates.",
+            "key_metric_grain_contributor": false,
+            "metric_component": null
+        }
+    ],
+    "key_metric": "graduation_rate",
+    "numeric_filter_columns": [
+        "num_graduates",
+        "num_cohort",
+        "graduation_rate"
+    ],
+    "usage": "Star-schema fact table. Join the districts dimension on district_code; the schools dimension on district_code + school_code; the demographics dimension on demographic. Read directly with DuckDB over Parquet.",
+    "limitations": "2004-2010 figures predate Georgia's adoption of the federal four-year adjusted-cohort methodology (ACGR, first reported 2011) and use the state's earlier leaver-based rate; the 2010->2011 state rate drop (~81% to ~67%) is a methodology break, not a real decline — do not trend across it. Suppressed cells are NULL (not zero) from 2010 onward, but 2004-2009 sources use literal ZEROS for suppressed cells — a zero rate/count in those years may be real or suppressed and cannot be distinguished; treat very small cohorts in 2004-2009 with caution. num_cohort is NULL for every row in 2012-2016 (the source publishes no denominator in those years). The 2004 file lists every public school, including elementary and middle schools with no graduating cohort, so 1,703 of its 2,037 all-students school rows have no graduate count or rate; from 2005 only schools with a graduating cohort are listed (344 in 2005). School rows do not always sum to the published district row: of the 42,815 district rows (all subgroups) with a published num_graduates and at least one published school value, 468 publish a district num_graduates below the sum of its school rows, 49 of them among the 4,039 all-students rows (source-published, 2005-2025; e.g. 2016 Whitfield 709 vs 810, 2014 Richmond economically_disadvantaged 582 vs 1,286) — use the official district/state rows for rollups rather than summing school rows. economically_disadvantaged is not a like-for-like group across years. Statewide it is 55-56% of the cohort in 2017-2021, then 47% (2022), 53% (2023), 61% (2024) and 66% (2025), and district coding shifts: Cobb County puts 98% of its 2021 cohort in the group (36-38% in 2017-2020 and 2023, 20% in 2022) and under 2% of its graduates in 2011, 2012 and 2014, and districts with 100+ graduates that report 10% or less of them in the group or suppress it number 6-11 a year in 2021-2023 (0-2 a year in 2016-2020). GOEWS does not document these shifts. The group's graduation rate moves when its membership does, so check its share of the cohort before comparing it across years or districts. The race axis uses the combined asian_pacific_islander bucket — not comparable row-for-row with split-convention topics without aggregating those topics' asian + pacific_islander rows at query time. State rows have NULL district_code and school_code; district rows have NULL school_code.",
+    "null_semantics": {
+        "suppressed_to_null": true,
+        "zero_is_real": false,
+        "zero_is_real_from_year": 2010
+    },
+    "available_years": [
+        2004,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009,
+        2010,
+        2011,
+        2012,
+        2013,
+        2014,
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+    ],
+    "schema_hash": "d58fde7781dfaec406fb52e58bc8fafc339d6eaac0cb222f1d580e3a1010e568",
+    "tags": [
+        "education",
+        "governor's office of education and workforce strategy",
+        "graduation_rate_4_year_cohort",
+        "goews",
+        "gosa"
+    ],
+    "granularity_description": "One row per year, district_code, school_code, demographic (geography columns are NULL at higher aggregation levels).",
+    "example_queries": [
+        {
+            "description": "Latest year (2025), schools detail",
+            "query": "SELECT * FROM graduation_rate_4_year_cohort WHERE year = 2025 LIMIT 100"
+        },
+        {
+            "description": "District 601 in 2025",
+            "query": "SELECT * FROM graduation_rate_4_year_cohort WHERE district_code = '601' AND year = 2025 LIMIT 100"
+        }
+    ],
+    "foreign_keys": [
+        {
+            "column": "district_code",
+            "target_object": "districts",
+            "target_columns": [
+                "district_code"
+            ],
+            "attribute_columns_added": [
+                "district_name",
+                "district_census_id",
+                "district_type"
+            ],
+            "scope": "domain"
+        },
+        {
+            "column": "school_code",
+            "target_object": "schools",
+            "target_columns": [
+                "district_code",
+                "school_code"
+            ],
+            "attribute_columns_added": [
+                "school_name"
+            ],
+            "scope": "domain"
+        },
+        {
+            "column": "demographic",
+            "target_object": "demographics",
+            "target_columns": [
+                "demographic"
+            ],
+            "attribute_columns_added": [
+                "demographic_label",
+                "demographic_category"
+            ],
+            "scope": "global"
+        }
+    ],
+    "filters": [
+        {
+            "param": "year",
+            "kind": "year_exact",
+            "type": "integer",
+            "multi_value": true,
+            "enum_enforced": false,
+            "values": null,
+            "note": "one or more exact years (comma list or repeated)"
+        },
+        {
+            "param": "year_min",
+            "kind": "year_range",
+            "type": "integer",
+            "multi_value": false,
+            "enum_enforced": false,
+            "values": null
+        },
+        {
+            "param": "year_max",
+            "kind": "year_range",
+            "type": "integer",
+            "multi_value": false,
+            "enum_enforced": false,
+            "values": null
+        },
+        {
+            "param": "detail",
+            "kind": "detail",
+            "type": "string",
+            "multi_value": false,
+            "enum_enforced": true,
+            "values": [
+                "districts",
+                "schools",
+                "states"
+            ],
+            "default": "schools"
+        },
+        {
+            "param": "district_code",
+            "kind": "foreign_key",
+            "column": "district_code",
+            "type": "string",
+            "multi_value": true,
+            "enum_enforced": false,
+            "values": null
+        },
+        {
+            "param": "school_code",
+            "kind": "foreign_key",
+            "column": "school_code",
+            "type": "string",
+            "multi_value": true,
+            "enum_enforced": false,
+            "values": null,
+            "requires": "exactly one district_code (else use 'school')"
+        },
+        {
+            "param": "demographic",
+            "kind": "foreign_key",
+            "column": "demographic",
+            "type": "string",
+            "multi_value": true,
+            "enum_enforced": true,
+            "values": [
+                "active_duty",
+                "all",
+                "asian_pacific_islander",
+                "black",
+                "economically_disadvantaged",
+                "english_learners",
+                "female",
+                "foster_care",
+                "hispanic",
+                "homeless",
+                "male",
+                "migrant",
+                "multiracial",
+                "native_american",
+                "not_economically_disadvantaged",
+                "students_with_disabilities",
+                "students_without_disabilities",
+                "white"
+            ]
+        },
+        {
+            "param": "school",
+            "kind": "school_pair",
+            "column": null,
+            "type": "string",
+            "multi_value": true,
+            "enum_enforced": false,
+            "values": null,
+            "format": "DISTRICT-SCHOOL, e.g. 761-0199"
+        },
+        {
+            "param": "district_type",
+            "kind": "dimension_attribute",
+            "dimension": "districts",
+            "column": "district_type",
+            "type": "string",
+            "multi_value": true,
+            "enum_enforced": true,
+            "values": [
+                "commission_charter",
+                "resa",
+                "standard",
+                "state_agency",
+                "state_charter",
+                "state_school",
+                "state_special"
+            ]
+        },
+        {
+            "param": "school_level",
+            "kind": "dimension_attribute",
+            "dimension": "schools",
+            "column": "school_level",
+            "type": "string",
+            "multi_value": true,
+            "enum_enforced": true,
+            "values": [
+                "elementary",
+                "middle",
+                "high",
+                "k12",
+                "other"
+            ]
+        },
+        {
+            "param": "locale",
+            "kind": "dimension_attribute",
+            "dimension": "schools",
+            "column": "locale",
+            "type": "string",
+            "multi_value": true,
+            "enum_enforced": true,
+            "values": [
+                "city",
+                "suburb",
+                "town",
+                "rural"
+            ]
+        },
+        {
+            "param": "demographic_category",
+            "kind": "dimension_attribute",
+            "dimension": "demographics",
+            "column": "demographic_category",
+            "type": "string",
+            "multi_value": true,
+            "enum_enforced": true,
+            "values": [
+                "aggregate",
+                "disability",
+                "economic_status",
+                "esol",
+                "foster_care",
+                "gender",
+                "grade",
+                "homeless_status",
+                "migrant_status",
+                "military",
+                "race",
+                "sped"
+            ]
+        },
+        {
+            "param": "num_graduates_min",
+            "kind": "metric_bound",
+            "column": "num_graduates",
+            "type": "number",
+            "multi_value": false,
+            "enum_enforced": false,
+            "values": null,
+            "op": "at least (>=)"
+        },
+        {
+            "param": "num_graduates_max",
+            "kind": "metric_bound",
+            "column": "num_graduates",
+            "type": "number",
+            "multi_value": false,
+            "enum_enforced": false,
+            "values": null,
+            "op": "at most (<=)"
+        },
+        {
+            "param": "num_cohort_min",
+            "kind": "metric_bound",
+            "column": "num_cohort",
+            "type": "number",
+            "multi_value": false,
+            "enum_enforced": false,
+            "values": null,
+            "op": "at least (>=)"
+        },
+        {
+            "param": "num_cohort_max",
+            "kind": "metric_bound",
+            "column": "num_cohort",
+            "type": "number",
+            "multi_value": false,
+            "enum_enforced": false,
+            "values": null,
+            "op": "at most (<=)"
+        },
+        {
+            "param": "graduation_rate_min",
+            "kind": "metric_bound",
+            "column": "graduation_rate",
+            "type": "number",
+            "multi_value": false,
+            "enum_enforced": false,
+            "values": null,
+            "op": "at least (>=)"
+        },
+        {
+            "param": "graduation_rate_max",
+            "kind": "metric_bound",
+            "column": "graduation_rate",
+            "type": "number",
+            "multi_value": false,
+            "enum_enforced": false,
+            "values": null,
+            "op": "at most (<=)"
+        }
+    ],
+    "filter_hints": [
+
+    ],
+    "non_additive": [
+
+    ],
+    "partitions": [
+
+    ],
+    "value_implications": [
+
+    ],
+    "year_meaning": null,
+    "pooled_rates": [
+
+    ],
+    "series_breaks": [
+        {
+            "year": 2011,
+            "reason": "From 2011 Georgia reports the federal four-year adjusted-cohort graduation rate, while 2004-2010 use the state's earlier leaver-based count, so the state rate falls from 0.808 (2010) to 0.675 (2011) and the cohort rises from 113,364 to 131,012 because the method changed, not because fewer students graduated."
+        }
+    ],
+    "year_window": null,
+    "pooled_min_count": null,
+    "recommended_query": {
+        "metric": "graduation_rate",
+        "detail": "schools",
+        "filters": {
+            "demographic": [
+                "all"
+            ]
+        },
+        "required_choices": [
+
+        ],
+        "ranking": {
+            "how": "/api/v1/datasets/graduation_rate_4_year_cohort/rows?year=2025&demographic=all&sort=-graduation_rate&limit=N (sort=-col for top, sort=col for bottom)",
+            "note": "Rank within a single year (add year=<year>, default the latest available) and keep the pins above so rows are comparable; NULL (suppressed) metrics sort last either way."
+        },
+        "dependent_filters": [
+
+        ],
+        "reason": "metric=graduation_rate; demographic pinned to all (request a demographic_category to break out)",
+        "url": "/api/v1/datasets/graduation_rate_4_year_cohort/rows?detail=schools&demographic=all"
+    },
+    "example_requests": [
+        {
+            "description": "The recommended view for 2025",
+            "url": "/api/v1/datasets/graduation_rate_4_year_cohort/rows?year=2025&demographic=all"
+        },
+        {
+            "description": "Every row matching the recommended view, as CSV",
+            "url": "/api/v1/datasets/graduation_rate_4_year_cohort/download?format=csv&demographic=all"
+        },
+        {
+            "description": "The 10 highest graduation_rate values in 2025",
+            "url": "/api/v1/datasets/graduation_rate_4_year_cohort/rows?year=2025&demographic=all&sort=-graduation_rate&limit=10"
+        },
+        {
+            "description": "graduation_rate by year, pooled over every row (weighted_rate)",
+            "url": "/api/v1/datasets/graduation_rate_4_year_cohort/aggregate?agg=weighted_rate&metric=graduation_rate&group_by=year&demographic=all"
+        },
+        {
+            "description": "Georgia's published statewide figures by year",
+            "url": "/api/v1/datasets/graduation_rate_4_year_cohort/rows?detail=states&demographic=all&sort=year"
+        }
+    ],
+    "parameters": {
+        "paging": "limit (default 1000, at most 10000) and offset; JSON pages carry links.next",
+        "sort": "sort=-col,col2 (- for descending); NULLs sort last",
+        "columns": "columns=a,b returns only those columns",
+        "format": "json (default), csv or parquet; csv/parquet without limit return every matching row",
+        "numeric": "{metric}_min / {metric}_max, or numeric_filters (JSON)",
+        "numeric_filter_columns": [
+            "num_graduates",
+            "num_cohort",
+            "graduation_rate"
+        ],
+        "projectable_columns": [
+            "demographic",
+            "demographic_category",
+            "demographic_label",
+            "district_census_id",
+            "district_code",
+            "district_name",
+            "district_type",
+            "graduation_rate",
+            "num_cohort",
+            "num_graduates",
+            "school_code",
+            "school_name",
+            "year"
+        ],
+        "filter_parameters": [
+            "demographic",
+            "demographic_category",
+            "district_code",
+            "district_type",
+            "graduation_rate_max",
+            "graduation_rate_min",
+            "locale",
+            "num_cohort_max",
+            "num_cohort_min",
+            "num_graduates_max",
+            "num_graduates_min",
+            "school",
+            "school_code",
+            "school_level"
+        ]
+    },
+    "endpoints": {
+        "rows": "/api/v1/datasets/graduation_rate_4_year_cohort/rows",
+        "query": "POST /api/v1/datasets/graduation_rate_4_year_cohort/query",
+        "values": "/api/v1/datasets/graduation_rate_4_year_cohort/values",
+        "aggregate": "/api/v1/datasets/graduation_rate_4_year_cohort/aggregate",
+        "download": "/api/v1/datasets/graduation_rate_4_year_cohort/download",
+        "contract": "/api/v1/datasets/graduation_rate_4_year_cohort/contract",
+        "openapi": "/api/v1/datasets/graduation_rate_4_year_cohort/openapi.json"
+    },
+    "updated_at": "2026-10-29T20:17:55+00:00"
+}

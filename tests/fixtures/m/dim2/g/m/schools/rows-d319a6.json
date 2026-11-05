@@ -1,0 +1,59 @@
+{
+    "data": [
+        {
+            "district_code": "630",
+            "school_code": "0104",
+            "school_name": "Clay County Middle School",
+            "former_names": null,
+            "school_level": "middle",
+            "grade_low": "06",
+            "grade_high": "08",
+            "county_fips": "13061",
+            "nces_school_id": "130120002833",
+            "street_address": "200 Hobbs Ln",
+            "city": "Fort Gaines",
+            "zip": "39851",
+            "phone": "(229)768-2234",
+            "website": "http://www.clay.k12.ga.us",
+            "latitude": 31.620837,
+            "longitude": -85.042746,
+            "locale": "rural",
+            "charter": false,
+            "active": true,
+            "directory_year": 2026
+        },
+        {
+            "district_code": "630",
+            "school_code": "0204",
+            "school_name": "Clay County Elementary",
+            "former_names": null,
+            "school_level": "elementary",
+            "grade_low": "pk",
+            "grade_high": "05",
+            "county_fips": "13061",
+            "nces_school_id": "130120002834",
+            "street_address": "200 Hobbs Ln",
+            "city": "Fort Gaines",
+            "zip": "39851",
+            "phone": "(229)768-2234",
+            "website": "http://www.clay.k2.ga.us",
+            "latitude": 31.620837,
+            "longitude": -85.042746,
+            "locale": "rural",
+            "charter": false,
+            "active": true,
+            "directory_year": 2026
+        }
+    ],
+    "pagination": {
+        "limit": 10000,
+        "offset": 0,
+        "total": 2,
+        "returned": 2,
+        "has_more": false
+    },
+    "links": {
+        "self": "/api/v1/dimensions/schools/rows?district_code=630&active=true&limit=10000",
+        "next": null
+    }
+}

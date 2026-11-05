@@ -1,0 +1,227 @@
+{
+    "name": "districts",
+    "scope": "domain",
+    "version": "1.2.0",
+    "schema_hash": "1b4c29b18b74374b7eea6513508d0f113dbf929334bcb337e6941280a86040db",
+    "description": "Districts dimension table; single (non-partitioned) Parquet file.",
+    "primary_key": [
+        "district_code"
+    ],
+    "attribute_columns": [
+        "district_name",
+        "former_names",
+        "district_census_id",
+        "district_type",
+        "county_fips",
+        "street_address",
+        "city",
+        "zip",
+        "latitude",
+        "longitude",
+        "active",
+        "directory_year"
+    ],
+    "columns": [
+        {
+            "name": "district_code",
+            "type": "string",
+            "role": "key",
+            "nullable": false,
+            "description": "GOSA district code: 3-digit (zero-padded) for standard districts, 7-digit for charter districts. A small allowlist of non-numeric pseudo-district codes (e.g. RTC) is also permitted. Primary key; natural join key for every education fact table's district_code FK.",
+            "pk_position": 1,
+            "valid_values": null
+        },
+        {
+            "name": "district_name",
+            "type": "string",
+            "role": "attribute",
+            "nullable": true,
+            "description": "District name in title case (latest name; no history).",
+            "pk_position": null,
+            "valid_values": null
+        },
+        {
+            "name": "former_names",
+            "type": "string",
+            "role": "attribute",
+            "nullable": true,
+            "description": "The district's previous name, where the build renamed it (DISTRICT_NAME_RENAMES in build_dimensions.py: the name the source files still carry); NULL for a district never renamed. Same format as the schools dimension's former_names (names joined with '; '). Name lookups (MCP resolve_entity, Data Talk) match it, so the old name still finds the district. Not joined into fact output.",
+            "pk_position": null,
+            "valid_values": null
+        },
+        {
+            "name": "district_census_id",
+            "type": "string",
+            "role": "attribute",
+            "nullable": true,
+            "description": "5-digit Census Bureau school-district code (e.g. 00060) for cross-dataset linking -- the value of the crosswalk's school_district column. This is a Census SCHOOL-DISTRICT code, NOT a county FIPS and NOT the 7-digit NCES LEA ID; a school district does not map 1:1 to a county. To reach county-level Census data, join through the crosswalk (school_district -> county FIPS). Charters and state schools are mapped to their host county's primary Census school district where known; NULL for RESAs, state agencies, state-special pseudo-districts, and any charter/state school without a host-county mapping. Sourced via src/utils/crosswalks.py.",
+            "pk_position": null,
+            "valid_values": null
+        },
+        {
+            "name": "district_type",
+            "type": "string",
+            "role": "attribute",
+            "nullable": true,
+            "description": "Classification of the reporting entity. Values: standard (Census-matchable school district), state_charter (state-authorized charter, incl. legacy pre-782 charters), commission_charter (State Charter Schools Commission-authorized), state_school (799-prefix Georgia state schools -- Deaf/Blind), state_agency (state agency reporting education programs under a district code -- Depts. of Corrections/Juvenile Justice/Human Resources/Labor; no Census ID), state_special (state-managed pseudo-district aggregates, e.g. Residential Treatment Center), resa (Regional Educational Service Agency, 850-888 range; not a Census-matchable district).",
+            "pk_position": null,
+            "valid_values": [
+                "commission_charter",
+                "resa",
+                "standard",
+                "state_agency",
+                "state_charter",
+                "state_school",
+                "state_special"
+            ]
+        },
+        {
+            "name": "county_fips",
+            "type": "string",
+            "role": "attribute",
+            "nullable": true,
+            "description": "5-digit county FIPS of the district's county (validated against the global counties dimension). Standard districts (county and city systems) carry their CCD LEA county; a charter or state-school district carries a county only when all of its CCD schools sit in a single county. NULL for RESAs, state agencies, state-special pseudo-districts, multi-county charters, and districts no NCES file lists. Both rules apply to the district's directory_year. Sourced from the NCES Common Core of Data (CCD) directory files, SY 2025-26, with coordinates, county and locale from the NCES EDGE geocode files, SY 2024-25 (data/bronze/education/nces/ccd_directory/). An entity the latest snapshot does not list as operating carries its last-known attributes from an earlier NCES year (SY 2003-04 on; directory_year says which); one no NCES file lists keeps NULL directory attributes.",
+            "pk_position": null,
+            "valid_values": null
+        },
+        {
+            "name": "street_address",
+            "type": "string",
+            "role": "attribute",
+            "nullable": true,
+            "description": "Physical/location street address of the district office (state implicit -- all Georgia). Sourced from the NCES Common Core of Data (CCD) directory files, SY 2025-26, with coordinates, county and locale from the NCES EDGE geocode files, SY 2024-25 (data/bronze/education/nces/ccd_directory/). An entity the latest snapshot does not list as operating carries its last-known attributes from an earlier NCES year (SY 2003-04 on; directory_year says which); one no NCES file lists keeps NULL directory attributes.",
+            "pk_position": null,
+            "valid_values": null
+        },
+        {
+            "name": "city",
+            "type": "string",
+            "role": "attribute",
+            "nullable": true,
+            "description": "City of the district office's physical address.",
+            "pk_position": null,
+            "valid_values": null
+        },
+        {
+            "name": "zip",
+            "type": "string",
+            "role": "attribute",
+            "nullable": true,
+            "description": "5-digit ZIP code of the district office's physical address (string; leading zeros preserved).",
+            "pk_position": null,
+            "valid_values": null
+        },
+        {
+            "name": "latitude",
+            "type": "number",
+            "role": "attribute",
+            "nullable": true,
+            "description": "Latitude of the district office (decimal degrees, WGS84).",
+            "pk_position": null,
+            "valid_values": null
+        },
+        {
+            "name": "longitude",
+            "type": "number",
+            "role": "attribute",
+            "nullable": true,
+            "description": "Longitude of the district office (decimal degrees, WGS84).",
+            "pk_position": null,
+            "valid_values": null
+        },
+        {
+            "name": "active",
+            "type": "boolean",
+            "role": "attribute",
+            "nullable": true,
+            "description": "True when the district appears in the latest CCD LEA directory snapshot (SY 2025-26) with an open operational status (Open/New/Added/Changed agency/Reopened); False otherwise (an LEA the snapshot lists as Closed or Future, and closed/historical district codes absent from it). Exception: for state-operated entity types the CCD LEA universe structurally excludes (district_type state_school / state_special), absence is not evidence of closure, so absent rows are NULL -- e.g. the operating Georgia Schools for the Deaf/Blind, where False would misread as 'closed'.",
+            "pk_position": null,
+            "valid_values": null
+        },
+        {
+            "name": "directory_year",
+            "type": "integer",
+            "role": "attribute",
+            "nullable": true,
+            "description": "NCES school year the district's directory attributes describe, as its ending calendar year (2026 = SY 2025-26, the convention of the fact tables' year). The latest snapshot's year (SY 2025-26) when the snapshot lists the district as operating; otherwise the last year an NCES CCD file listed it as operating (or, for one NCES never listed as operating, such as one scheduled to open, the last year it listed it at all). All of a row's directory attributes come from that one year. Coordinates, county and locale come from the same year's NCES EDGE geocodes from SY 2014-15 on (the snapshot year uses SY 2024-25) and from the CCD universe file itself before; locale is NULL before SY 2006-07, when NCES used a metro-centric locale scheme that does not map onto city/suburb/town/rural. NULL when no NCES file from SY 2003-04 on lists the entity. Not tied to active, which reflects the latest snapshot only.",
+            "pk_position": null,
+            "valid_values": null
+        }
+    ],
+    "filters": [
+        {
+            "param": "district_code",
+            "type": "string",
+            "multi_value": true,
+            "values": null
+        },
+        {
+            "param": "district_type",
+            "type": "string",
+            "multi_value": true,
+            "values": [
+                "commission_charter",
+                "resa",
+                "standard",
+                "state_agency",
+                "state_charter",
+                "state_school",
+                "state_special"
+            ]
+        },
+        {
+            "param": "county_fips",
+            "type": "string",
+            "multi_value": true,
+            "values": null
+        },
+        {
+            "param": "active",
+            "type": "boolean",
+            "multi_value": true,
+            "values": null
+        }
+    ],
+    "search": {
+        "param": "q",
+        "columns": [
+            "district_name"
+        ]
+    },
+    "search_aliases": {
+        "en": [
+            "school district list",
+            "district directory",
+            "district codes",
+            "district addresses",
+            "district locations",
+            "former district names",
+            "district ID lookup",
+            "district types",
+            "school systems",
+            "RESA list"
+        ],
+        "es": [
+            "lista de distritos escolares",
+            "directorio de distritos",
+            "c<U+00F3>digos de distrito",
+            "direcciones de distritos",
+            "ubicaci<U+00F3>n de distritos",
+            "nombres anteriores",
+            "tipos de distrito",
+            "sistemas escolares",
+            "b<U+00FA>squeda de distrito"
+        ]
+    },
+    "endpoints": {
+        "rows": "/api/v1/dimensions/districts/rows"
+    },
+    "link_keys": [
+        {
+            "column": "district_census_id",
+            "target": "census.school_district",
+            "via": "crosswalks.ga_census_crosswalk",
+            "note": "5-digit Census school-district code (NOT a county FIPS). To link to county-level Census data, join through the crosswalk school_district -> county FIPS (a district is not 1:1 with a county). NULL for RESAs, state agencies, state-special pseudo-districts, and unmapped charters/state schools."
+        }
+    ]
+}

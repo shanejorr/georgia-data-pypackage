@@ -1,0 +1,123 @@
+{
+    "name": "demographics",
+    "scope": "global",
+    "version": "1.0.0",
+    "schema_hash": "792a2044158b3ef194c0b824101c2be969ec22dad90c6e4bcc58b3e602ef0a6a",
+    "description": "Demographics dimension table; single (non-partitioned) Parquet file. Shared globally across domains.",
+    "primary_key": [
+        "demographic"
+    ],
+    "attribute_columns": [
+        "demographic_label",
+        "demographic_category"
+    ],
+    "columns": [
+        {
+            "name": "demographic",
+            "type": "string",
+            "role": "key",
+            "nullable": false,
+            "description": "Canonical demographic code (snake_case). Primary key; natural join key for every fact table's demographic FK.",
+            "pk_position": 1,
+            "valid_values": null
+        },
+        {
+            "name": "demographic_label",
+            "type": "string",
+            "role": "attribute",
+            "nullable": true,
+            "description": "Human-readable demographic label.",
+            "pk_position": null,
+            "valid_values": null
+        },
+        {
+            "name": "demographic_category",
+            "type": "string",
+            "role": "attribute",
+            "nullable": true,
+            "description": "Category the demographic belongs to (e.g. race, gender, economic, special_population, grade, aggregate).",
+            "pk_position": null,
+            "valid_values": [
+                "aggregate",
+                "disability",
+                "economic_status",
+                "esol",
+                "foster_care",
+                "gender",
+                "grade",
+                "homeless_status",
+                "migrant_status",
+                "military",
+                "race",
+                "sped"
+            ]
+        }
+    ],
+    "filters": [
+        {
+            "param": "demographic",
+            "type": "string",
+            "multi_value": true,
+            "values": null
+        },
+        {
+            "param": "demographic_category",
+            "type": "string",
+            "multi_value": true,
+            "values": [
+                "aggregate",
+                "disability",
+                "economic_status",
+                "esol",
+                "foster_care",
+                "gender",
+                "grade",
+                "homeless_status",
+                "migrant_status",
+                "military",
+                "race",
+                "sped"
+            ]
+        }
+    ],
+    "search": {
+        "param": "q",
+        "columns": [
+            "demographic_label"
+        ]
+    },
+    "search_aliases": {
+        "en": [
+            "demographic groups",
+            "demographic categories",
+            "demographic codes",
+            "race categories",
+            "race and ethnicity",
+            "ethnic groups",
+            "subgroup codes",
+            "group labels",
+            "demographic labels",
+            "racial groups"
+        ],
+        "es": [
+            "grupos demogr<U+00E1>ficos",
+            "categor<U+00ED>as demogr<U+00E1>ficas",
+            "c<U+00F3>digos demogr<U+00E1>ficos",
+            "categor<U+00ED>as de raza",
+            "raza y etnia",
+            "grupos <U+00E9>tnicos",
+            "c<U+00F3>digos de subgrupos",
+            "etiquetas de grupos",
+            "grupos raciales"
+        ]
+    },
+    "endpoints": {
+        "rows": "/api/v1/dimensions/demographics/rows"
+    },
+    "semantics": {
+        "mutual_exclusivity": "Not guaranteed: groups overlap across categories and may be nested within one (active_duty is a subset of military_connected in some datasets). Read the topic's definitions and non_additive declarations. Counts reconcile only for complete, disjoint, available groups; rates generally do not add.",
+        "denominator": "When published, 'all' is the total within the other selected filters. Never add it to its subgroups. Subgroup rates use their own group's denominator.",
+        "combined_buckets": "Never combine asian_pacific_islander with its split asian/pacific_islander components for the same population and period. A topic may change convention between years; its enum can therefore contain both conventions.",
+        "code_source": "This dimension is data-driven and carries no enum of demographic codes; the canonical code list is the UNION of the per-topic fact-table demographic enums, which remain the source of truth for validating a fact's demographic values."
+    }
+}

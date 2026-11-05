@@ -1,0 +1,317 @@
+{
+    "name": "schools",
+    "scope": "domain",
+    "version": "1.2.0",
+    "schema_hash": "c79e74aba4aeeaccca9dbef41ec050f137ba7180422b510b77669cbe1c9a576a",
+    "description": "Schools dimension table; single (non-partitioned) Parquet file. Composite primary key (district_code, school_code).",
+    "primary_key": [
+        "district_code",
+        "school_code"
+    ],
+    "attribute_columns": [
+        "school_name",
+        "former_names",
+        "school_level",
+        "grade_low",
+        "grade_high",
+        "county_fips",
+        "nces_school_id",
+        "street_address",
+        "city",
+        "zip",
+        "phone",
+        "website",
+        "latitude",
+        "longitude",
+        "locale",
+        "charter",
+        "active",
+        "directory_year"
+    ],
+    "columns": [
+        {
+            "name": "district_code",
+            "type": "string",
+            "role": "key",
+            "nullable": false,
+            "description": "GOSA district code (zero-padded). Composite primary key part 1 and FK to the districts dimension.",
+            "pk_position": 1,
+            "valid_values": null
+        },
+        {
+            "name": "school_code",
+            "type": "string",
+            "role": "key",
+            "nullable": false,
+            "description": "4-digit GOSA school code (zero-padded). Composite primary key part 2. NOT globally unique on its own.",
+            "pk_position": 2,
+            "valid_values": null
+        },
+        {
+            "name": "school_name",
+            "type": "string",
+            "role": "attribute",
+            "nullable": true,
+            "description": "School name in title case (latest name; no history).",
+            "pk_position": null,
+            "valid_values": null
+        },
+        {
+            "name": "former_names",
+            "type": "string",
+            "role": "attribute",
+            "nullable": true,
+            "description": "Earlier names published under this school's code, joined with '; ', most recent first: the name a GaDOE registry rename replaced (SCHOOL_NAME_OVERRIDES in build_dimensions.py), then every other name the source files gave the code in any year, except the current name written another way (case, punctuation, a cut, an abbreviation), a 2014-2015 Georgia Insights 15-character short name, a placeholder, and a name another open school in the same district has now. Usually a rename; sometimes the school the code belonged to before GaDOE reused it, whose earlier-year figures are under this code. NULL when there is none. Name lookups (MCP resolve_entity, Data Talk) match each name. Not joined into fact output.",
+            "pk_position": null,
+            "valid_values": null
+        },
+        {
+            "name": "school_level",
+            "type": "string",
+            "role": "attribute",
+            "nullable": true,
+            "description": "School level, from the CCD's own school-level classification mapped as: Elementary -> elementary, Middle -> middle, High -> high; any CCD level is overridden to k12 when the grade span covers at least grade 3 down (incl. pk/k) through grade 11 up; every other CCD level (Other, Prekindergarten, Ungraded, Adult Education, Secondary; the numeric codes of files before SY 2017-18: 1 Primary, 2 Middle, 3 High, 4 Other) -> other; NULL when the CCD reports the level as not reported or not applicable in the school's directory_year, or no NCES file lists the school. Sourced from the NCES Common Core of Data (CCD) directory files, SY 2025-26, with coordinates, county and locale from the NCES EDGE geocode files, SY 2024-25 (data/bronze/education/nces/ccd_directory/). An entity the latest snapshot does not list as operating carries its last-known attributes from an earlier NCES year (SY 2003-04 on; directory_year says which); one no NCES file lists keeps NULL directory attributes. Declared as an enum, so it is also a fact-query filter on every topic that joins this dimension (filters to school-level rows).",
+            "pk_position": null,
+            "valid_values": [
+                "elementary",
+                "middle",
+                "high",
+                "k12",
+                "other"
+            ]
+        },
+        {
+            "name": "grade_low",
+            "type": "string",
+            "role": "attribute",
+            "nullable": true,
+            "description": "Lowest grade offered, in the repo's canonical grade codes: pk, k, 01-12 (strings because of pk/k; matches the grade_level vocabulary used by fact tables).",
+            "pk_position": null,
+            "valid_values": null
+        },
+        {
+            "name": "grade_high",
+            "type": "string",
+            "role": "attribute",
+            "nullable": true,
+            "description": "Highest grade offered, in the repo's canonical grade codes: pk, k, 01-12.",
+            "pk_position": null,
+            "valid_values": null
+        },
+        {
+            "name": "county_fips",
+            "type": "string",
+            "role": "attribute",
+            "nullable": true,
+            "description": "5-digit county FIPS of the school's location county (validated against the global counties dimension). Sourced from the NCES Common Core of Data (CCD) directory files, SY 2025-26, with coordinates, county and locale from the NCES EDGE geocode files, SY 2024-25 (data/bronze/education/nces/ccd_directory/). An entity the latest snapshot does not list as operating carries its last-known attributes from an earlier NCES year (SY 2003-04 on; directory_year says which); one no NCES file lists keeps NULL directory attributes.",
+            "pk_position": null,
+            "valid_values": null
+        },
+        {
+            "name": "nces_school_id",
+            "type": "string",
+            "role": "attribute",
+            "nullable": true,
+            "description": "12-digit NCES school id (CCD ncessch) -- the federal link key for joining to NCES/EDGE datasets.",
+            "pk_position": null,
+            "valid_values": null
+        },
+        {
+            "name": "street_address",
+            "type": "string",
+            "role": "attribute",
+            "nullable": true,
+            "description": "Physical/location street address of the school (state implicit -- all Georgia). Sourced from the NCES Common Core of Data (CCD) directory files, SY 2025-26, with coordinates, county and locale from the NCES EDGE geocode files, SY 2024-25 (data/bronze/education/nces/ccd_directory/). An entity the latest snapshot does not list as operating carries its last-known attributes from an earlier NCES year (SY 2003-04 on; directory_year says which); one no NCES file lists keeps NULL directory attributes.",
+            "pk_position": null,
+            "valid_values": null
+        },
+        {
+            "name": "city",
+            "type": "string",
+            "role": "attribute",
+            "nullable": true,
+            "description": "City of the school's physical address.",
+            "pk_position": null,
+            "valid_values": null
+        },
+        {
+            "name": "zip",
+            "type": "string",
+            "role": "attribute",
+            "nullable": true,
+            "description": "5-digit ZIP code of the school's physical address (string; leading zeros preserved).",
+            "pk_position": null,
+            "valid_values": null
+        },
+        {
+            "name": "phone",
+            "type": "string",
+            "role": "attribute",
+            "nullable": true,
+            "description": "School phone number, as published.",
+            "pk_position": null,
+            "valid_values": null
+        },
+        {
+            "name": "website",
+            "type": "string",
+            "role": "attribute",
+            "nullable": true,
+            "description": "School website URL, as published in the NCES CCD directory file. Sparsely populated (roughly 4 in 10 Georgia schools report one).",
+            "pk_position": null,
+            "valid_values": null
+        },
+        {
+            "name": "latitude",
+            "type": "number",
+            "role": "attribute",
+            "nullable": true,
+            "description": "Latitude of the school (decimal degrees, WGS84).",
+            "pk_position": null,
+            "valid_values": null
+        },
+        {
+            "name": "longitude",
+            "type": "number",
+            "role": "attribute",
+            "nullable": true,
+            "description": "Longitude of the school (decimal degrees, WGS84).",
+            "pk_position": null,
+            "valid_values": null
+        },
+        {
+            "name": "locale",
+            "type": "string",
+            "role": "attribute",
+            "nullable": true,
+            "description": "NCES urban-centric locale, collapsed to its major class: codes 11-13 -> city, 21-23 -> suburb, 31-33 -> town, 41-43 -> rural. NULL when unassigned, when the school's directory_year is before 2007 (SY 2006-07 introduced the urban-centric scheme), or no NCES file lists the school. Declared as an enum, so it is also a fact-query filter on every topic that joins this dimension (filters to school-level rows).",
+            "pk_position": null,
+            "valid_values": [
+                "city",
+                "suburb",
+                "town",
+                "rural"
+            ]
+        },
+        {
+            "name": "charter",
+            "type": "boolean",
+            "role": "attribute",
+            "nullable": true,
+            "description": "CCD charter-school flag. NULL when no NCES file lists the school. Boolean by design -- not a fact-query filter.",
+            "pk_position": null,
+            "valid_values": null
+        },
+        {
+            "name": "active",
+            "type": "boolean",
+            "role": "attribute",
+            "nullable": true,
+            "description": "True when the school appears in the latest CCD directory snapshot (SY 2025-26) with an open operational status (Open/New/Added/Changed agency/Reopened); False otherwise (a school the snapshot lists as Closed or Future, and closed/historical school codes absent from it). Directory attributes do not follow active: an inactive school carries its last-known attributes (directory_year). Exception: for schools absent from the snapshot under state-operated district types the CCD universe structurally excludes (state_school / state_special), absence is structural, so active is NULL.",
+            "pk_position": null,
+            "valid_values": null
+        },
+        {
+            "name": "directory_year",
+            "type": "integer",
+            "role": "attribute",
+            "nullable": true,
+            "description": "NCES school year the school's directory attributes describe, as its ending calendar year (2026 = SY 2025-26, the convention of the fact tables' year). The latest snapshot's year (SY 2025-26) when the snapshot lists the school as operating; otherwise the last year an NCES CCD file listed it as operating and recorded a school level (a school's last operating year often reports no grades), else its last operating year (or, for one NCES never listed as operating, such as one scheduled to open, the last year it listed it at all). All of a row's directory attributes come from that one year. Coordinates, county and locale come from the same year's NCES EDGE geocodes from SY 2014-15 on (the snapshot year uses SY 2024-25) and from the CCD universe file itself before; locale is NULL before SY 2006-07, when NCES used a metro-centric locale scheme that does not map onto city/suburb/town/rural. NULL when no NCES file from SY 2003-04 on lists the entity. Not tied to active, which reflects the latest snapshot only.",
+            "pk_position": null,
+            "valid_values": null
+        }
+    ],
+    "filters": [
+        {
+            "param": "district_code",
+            "type": "string",
+            "multi_value": true,
+            "values": null
+        },
+        {
+            "param": "school_code",
+            "type": "string",
+            "multi_value": true,
+            "values": null
+        },
+        {
+            "param": "school_level",
+            "type": "string",
+            "multi_value": true,
+            "values": [
+                "elementary",
+                "middle",
+                "high",
+                "k12",
+                "other"
+            ]
+        },
+        {
+            "param": "county_fips",
+            "type": "string",
+            "multi_value": true,
+            "values": null
+        },
+        {
+            "param": "locale",
+            "type": "string",
+            "multi_value": true,
+            "values": [
+                "city",
+                "suburb",
+                "town",
+                "rural"
+            ]
+        },
+        {
+            "param": "charter",
+            "type": "boolean",
+            "multi_value": true,
+            "values": null
+        },
+        {
+            "param": "active",
+            "type": "boolean",
+            "multi_value": true,
+            "values": null
+        }
+    ],
+    "search": {
+        "param": "q",
+        "columns": [
+            "school_name"
+        ]
+    },
+    "search_aliases": {
+        "en": [
+            "school directory",
+            "list of schools",
+            "school addresses",
+            "school codes",
+            "school phone numbers",
+            "school websites",
+            "charter schools",
+            "NCES school ID",
+            "former school names",
+            "school locations"
+        ],
+        "es": [
+            "directorio de escuelas",
+            "lista de escuelas",
+            "direcciones de escuelas",
+            "c<U+00F3>digos de escuela",
+            "tel<U+00E9>fonos de escuelas",
+            "sitios web escolares",
+            "escuelas ch<U+00E1>rter",
+            "ubicaci<U+00F3>n de escuelas",
+            "nombres anteriores",
+            "nivel escolar"
+        ]
+    },
+    "endpoints": {
+        "rows": "/api/v1/dimensions/schools/rows"
+    },
+    "notes": {
+        "composite_key_note": "school_code is NOT globally unique -- the same 4-digit code (e.g. 0101) recurs across districts. The primary key is the (district_code, school_code) pair."
+    }
+}

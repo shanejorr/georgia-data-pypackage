@@ -1,0 +1,28 @@
+{
+    "data": [
+        {
+            "year": 2027,
+            "district_code": "630",
+            "district_name": "Clay County",
+            "school_code": "0104",
+            "school_name": "Clay County Middle School",
+            "zone_status": "zoned",
+            "zone_levels": "middle",
+            "no_zone_category": null,
+            "reason": null
+        },
+        {
+            "year": 2027,
+            "district_code": "630",
+            "district_name": "Clay County",
+            "school_code": "0204",
+            "school_name": "Clay County Elementary",
+            "zone_status": "zoned",
+            "zone_levels": "elementary",
+            "no_zone_category": null,
+            "reason": null
+        }
+    ],
+    "count": 2,
+    "note": "Whether each school has an attendance zone on this platform and, if not, why. zoned says only that a zone is published here, not that it covers every grade the school teaches. Not an official enrollment determination: confirm with the school district."
+}

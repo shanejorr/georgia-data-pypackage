@@ -1,0 +1,1506 @@
+{
+    "data": [
+        {
+            "name": "eoir_case_outcomes",
+            "kind": "table",
+            "main_topic": "immigration",
+            "sub_topic": "deportation_data",
+            "topic": "eoir_case_outcomes",
+            "key": "immigration/deportation_data/eoir_case_outcomes",
+            "version": "1.0.0",
+            "year_min": 1997,
+            "year_max": 2026,
+            "year_gaps": [
+
+            ],
+            "update_frequency": "monthly",
+            "detail_levels": [
+                "counties",
+                "states"
+            ],
+            "default_detail": "states",
+            "grain": [
+                "year",
+                "month",
+                "county_fips",
+                "demographic",
+                "custody",
+                "in_absentia",
+                "citizenship_country"
+            ],
+            "title": "Immigration Court Case Outcomes in Georgia",
+            "summary": "Immigration-court cases filed by Georgia respondents each month, how many ended in a removal order, and how long decisions took; annual county totals by custody status.",
+            "description": "Immigration-court cases with a Georgia address of record, filed October 1997 through 1 August 2026, from the case database the Executive Office for Immigration Review posts monthly and the Deportation Data Project processes to one row per case. Counts of cases filed, cases decided, and decided cases that ended in a removal order, the share of decided cases ordered removed, and the average days from filing to decision, by calendar month of filing, EOIR's recorded sex, custody status, whether the latest hearing was in absentia, and nationality at state level; annual totals by county of record and custody status. The county of record of a detained respondent is the detention center's county.",
+            "explorer": true,
+            "search_aliases": {
+                "en": [
+                    "immigration judge",
+                    "EOIR",
+                    "removal proceedings",
+                    "deportation orders",
+                    "ordered deported",
+                    "in absentia",
+                    "immigrant court cases",
+                    "migrant court cases",
+                    "case processing time"
+                ],
+                "es": [
+                    "juez de inmigración",
+                    "tribunal de inmigración",
+                    "audiencias de migrantes",
+                    "procedimientos de deportación",
+                    "órdenes de deportación",
+                    "deportaciones ordenadas",
+                    "órdenes en ausencia",
+                    "casos de inmigrantes",
+                    "tiempo de resolución"
+                ]
+            },
+            "source": "Executive Office for Immigration Review — Case database (posted monthly to EOIR's FOIA Library), processed by the Deportation Data Project (CC-0)",
+            "source_url": "https://deportationdata.org/data/processed/eoir.html",
+            "endpoint": "/api/v1/datasets/eoir_case_outcomes/rows",
+            "updated_at": "2026-09-26T15:47:43+00:00"
+        },
+        {
+            "name": "ice_287g_agreements",
+            "kind": "table",
+            "main_topic": "immigration",
+            "sub_topic": "deportation_data",
+            "topic": "ice_287g_agreements",
+            "key": "immigration/deportation_data/ice_287g_agreements",
+            "version": "1.0.0",
+            "year_min": 2002,
+            "year_max": 2026,
+            "year_gaps": [
+
+            ],
+            "update_frequency": "irregular",
+            "detail_levels": [
+                "counties",
+                "states"
+            ],
+            "default_detail": "states",
+            "grain": [
+                "year",
+                "county_fips",
+                "agreement_type"
+            ],
+            "title": "ICE 287(g) Agreements with Georgia Agencies",
+            "summary": "287(g) agreements Georgia sheriffs, police and state agencies signed with ICE each year, and how many were in force, by model and county.",
+            "description": "287(g) agreements between U.S. Immigration and Customs Enforcement and Georgia law-enforcement agencies - the memoranda of agreement under INA section 287(g) that deputize state and local officers to perform immigration-enforcement functions. Counts of agreements signed in each calendar year and of agreements in force at year end, by support model (jail enforcement, task force, warrant service officer, and the 2008-2013 combined jail & task force MOA), statewide and by the signing agency's county, from the Deportation Data Project's reconstruction of every ICE participating-agencies list since 2008 plus ICE and DHS records back to 2002.",
+            "explorer": true,
+            "search_aliases": {
+                "en": [
+                    "police ICE partnerships",
+                    "sheriff ICE agreements",
+                    "local immigration enforcement",
+                    "policing immigrant communities",
+                    "policing migrants",
+                    "deputized officers",
+                    "task force model",
+                    "jail enforcement model",
+                    "warrant service officers",
+                    "287g program"
+                ],
+                "es": [
+                    "policía y ICE",
+                    "policía local",
+                    "alguaciles y ICE",
+                    "la migra",
+                    "acuerdos 287g",
+                    "oficiales deputizados",
+                    "control de inmigración",
+                    "policía e inmigrantes",
+                    "policía y migrantes"
+                ]
+            },
+            "source": "U.S. Immigration and Customs Enforcement, via the Deportation Data Project (ice-287g): every archived ICE 287(g) participating-agencies list, resolved into agreement records",
+            "source_url": "https://github.com/deportationdata/ice-287g",
+            "endpoint": "/api/v1/datasets/ice_287g_agreements/rows",
+            "updated_at": "2026-09-26T15:47:57+00:00"
+        },
+        {
+            "name": "ice_arrests",
+            "kind": "table",
+            "main_topic": "immigration",
+            "sub_topic": "deportation_data",
+            "topic": "ice_arrests",
+            "key": "immigration/deportation_data/ice_arrests",
+            "version": "1.1.0",
+            "year_min": 2022,
+            "year_max": 2026,
+            "year_gaps": [
+
+            ],
+            "update_frequency": "irregular",
+            "detail_levels": [
+                "states"
+            ],
+            "default_detail": "states",
+            "grain": [
+                "year",
+                "month",
+                "county_fips",
+                "demographic",
+                "criminality",
+                "apprehension_method_group",
+                "citizenship_country"
+            ],
+            "title": "ICE Arrests in Georgia",
+            "summary": "Monthly counts of ICE arrests made in Georgia since October 2022 and the share that led to ICE detention, by gender, criminal history, arrest method, and citizenship.",
+            "description": "Count of U.S. Immigration and Customs Enforcement (ICE) administrative arrests made in Georgia, by calendar year and month, with the number and share of those arrests that led to a stay in ICE detention. Built from the Deportation Data Project's table joining each ICE arrest (person-level records ICE released under FOIA, deduplicated by DDP) to the detention stay it led to, if any. Each arrest is counted once and broken out by ICE's gender determination, criminality at arrest (convicted, pending charges, or other immigration violator), how the arrest was made (at-large, custodial, 287(g) program, other), and country of citizenship. State-level only: the source has no arrest-county field. The detention share is a DDP estimate from an approximate arrest-to-stay match; detention stays that did not begin with an ICE arrest (most border arrests) are out of scope.",
+            "explorer": true,
+            "search_aliases": {
+                "en": [
+                    "ICE raids",
+                    "immigration raids",
+                    "immigration arrests",
+                    "immigrant arrests",
+                    "migrant arrests",
+                    "undocumented immigrants arrested",
+                    "deportation arrests",
+                    "at-large arrests",
+                    "arrests leading to detention",
+                    "immigrants and crime"
+                ],
+                "es": [
+                    "redadas de ICE",
+                    "redada migratoria",
+                    "detenciones de ICE",
+                    "detención tras arresto",
+                    "arrestos de inmigrantes",
+                    "migrantes arrestados",
+                    "indocumentados arrestados",
+                    "la migra",
+                    "crimen e inmigración",
+                    "delito y deportación"
+                ]
+            },
+            "source": "Deportation Data Project — ICE arrests joined to detention stays (ICE records released under FOIA in Hausman v. ICE, deduplicated and matched by DDP)",
+            "source_url": "https://deportationdata.org/data/processed/ice.html",
+            "endpoint": "/api/v1/datasets/ice_arrests/rows",
+            "updated_at": "2026-09-26T15:47:45+00:00"
+        },
+        {
+            "name": "ice_detainers",
+            "kind": "table",
+            "main_topic": "immigration",
+            "sub_topic": "deportation_data",
+            "topic": "ice_detainers",
+            "key": "immigration/deportation_data/ice_detainers",
+            "version": "2.0.0",
+            "year_min": 2022,
+            "year_max": 2026,
+            "year_gaps": [
+
+            ],
+            "update_frequency": "irregular",
+            "detail_levels": [
+                "counties",
+                "states"
+            ],
+            "default_detail": "states",
+            "grain": [
+                "year",
+                "month",
+                "county_fips",
+                "demographic",
+                "criminality",
+                "ice_program",
+                "citizenship_country"
+            ],
+            "title": "ICE Detainers Issued to Georgia Jails",
+            "summary": "Detainers ICE sent to Georgia jails each month, how many were declined or honored, and annual totals by the receiving jail's county.",
+            "description": "Immigration detainers ICE issued to jails and prisons in Georgia, October 2022 through 6 August 2026, from the ICE detainer records released under FOIA (Hausman v. ICE) and published by the Deportation Data Project. Most are I-247A detainers asking a jail to hold someone up to 48 hours past release so ICE can take custody; about a fifth are I-247G requests for advance notification of release, which ask for notice rather than a hold. Counts of detainers issued, declined by the receiving agency, and honored (the person booked into ICE detention), by calendar month, ICE's gender determination, criminal history at issuance, the ICE program that issued the detainer, and citizenship country at state level; annual totals by the receiving jail's county.",
+            "explorer": true,
+            "search_aliases": {
+                "en": [
+                    "ICE holds",
+                    "immigration holds",
+                    "police holds",
+                    "migrant jail holds",
+                    "48-hour holds",
+                    "deportation holds",
+                    "detainer requests",
+                    "I-247A",
+                    "immigrants held in jail",
+                    "crime and detainers"
+                ],
+                "es": [
+                    "retenciones migratorias",
+                    "retenciones de ICE",
+                    "órdenes de detención",
+                    "policía y cárceles",
+                    "la migra y cárceles",
+                    "inmigración y cárceles",
+                    "inmigrantes en cárceles",
+                    "migrantes en cárceles",
+                    "retenciones para deportación",
+                    "crimen y delito"
+                ]
+            },
+            "source": "U.S. Immigration and Customs Enforcement, ERO LESA Statistical Tracking Unit - detainer records released under FOIA (Hausman v. ICE), published unprocessed by the Deportation Data Project",
+            "source_url": "https://deportationdata.org/data/ice.html",
+            "endpoint": "/api/v1/datasets/ice_detainers/rows",
+            "updated_at": "2026-09-26T15:47:45+00:00"
+        },
+        {
+            "name": "ice_detention_stays",
+            "kind": "table",
+            "main_topic": "immigration",
+            "sub_topic": "deportation_data",
+            "topic": "ice_detention_stays",
+            "key": "immigration/deportation_data/ice_detention_stays",
+            "version": "2.0.0",
+            "year_min": 2022,
+            "year_max": 2026,
+            "year_gaps": [
+
+            ],
+            "update_frequency": "irregular",
+            "detail_levels": [
+                "counties",
+                "states"
+            ],
+            "default_detail": "states",
+            "grain": [
+                "year",
+                "month",
+                "county_fips",
+                "demographic",
+                "arresting_agency_group",
+                "release_reason",
+                "citizenship_country"
+            ],
+            "title": "ICE Detention Stays at Georgia Facilities",
+            "summary": "ICE detention stays with any time at a Georgia facility: stays begun each month, how long they lasted, how much of that was in Georgia, and how they ended.",
+            "description": "Stays in ICE detention that spent any time at a Georgia facility, October 2022 through 6 August 2026, from the ICE detention records released under FOIA (Hausman v. ICE) and processed to the stay and stint level by the Deportation Data Project. A stay is one uninterrupted period in ICE custody, possibly across several facilities and states; it counts here if at least one of its facility book-ins was in Georgia, and its county is the Georgia county where it spent the most time. Counts of stays begun and ended, the average length of the whole ended stay, the average days of it spent in Georgia, and the average number of facilities per stay, by calendar month, ICE's gender determination, the arresting agency (ICE or CBP), how the stay ended, and citizenship country at state level; annual totals by the facility's county.",
+            "explorer": true,
+            "search_aliases": {
+                "en": [
+                    "immigration detention",
+                    "immigrant detention",
+                    "migrant detention",
+                    "undocumented detainees",
+                    "ICE custody",
+                    "CBP custody",
+                    "detention length",
+                    "detention before deportation",
+                    "detained then deported",
+                    "bond releases"
+                ],
+                "es": [
+                    "detención de inmigrantes",
+                    "detención de migrantes",
+                    "indocumentados detenidos",
+                    "custodia de ICE",
+                    "custodia de CBP",
+                    "detenidos por la migra",
+                    "tiempo de detención",
+                    "detención y deportación",
+                    "detenciones de inmigración",
+                    "libertad bajo fianza"
+                ]
+            },
+            "source": "U.S. Immigration and Customs Enforcement detention records released under FOIA (Hausman v. ICE), processed to one row per detention stay and one row per facility stint by the Deportation Data Project",
+            "source_url": "https://deportationdata.org/data/processed/ice.html",
+            "endpoint": "/api/v1/datasets/ice_detention_stays/rows",
+            "updated_at": "2026-10-29T20:18:03+00:00"
+        },
+        {
+            "name": "ice_detention_stints",
+            "kind": "table",
+            "main_topic": "immigration",
+            "sub_topic": "deportation_data",
+            "topic": "ice_detention_stints",
+            "key": "immigration/deportation_data/ice_detention_stints",
+            "version": "1.0.0",
+            "year_min": 2022,
+            "year_max": 2026,
+            "year_gaps": [
+
+            ],
+            "update_frequency": "irregular",
+            "detail_levels": [
+                "counties",
+                "states"
+            ],
+            "default_detail": "states",
+            "grain": [
+                "year",
+                "month",
+                "county_fips",
+                "demographic",
+                "arresting_agency_group",
+                "release_reason",
+                "citizenship_country"
+            ],
+            "title": "ICE Detention Book-ins at Georgia Facilities",
+            "summary": "Monthly book-ins to ICE detention facilities in Georgia since October 2022, how each stint ended and how long it lasted; annual totals by the facility's county.",
+            "description": "Detention stints - book-ins to one ICE detention facility in Georgia - from 2022-10-01 through 2026-08-06, aggregated from the person-level detention records ICE released under FOIA (Hausman v. ICE) and the Deportation Data Project processed. A stint is time at ONE facility; a person transferred between facilities has several stints, so this is the facility-level view of detention (use ice_detention_stays for people). Counts of stints begun, stints ended, and the mean stint length in days, by calendar month, ICE's gender determination, which agency's arrest led to the detention (ICE or CBP), how the stint ended (transferred, removed, bonded out, paroled, released on order, other, or still detained), and citizenship country at state level; annual totals by the DETENTION FACILITY'S county - Stewart, Charlton (Folkston), Irwin, Fulton and Clayton hold the large facilities, and their rows measure detention capacity, not residents.",
+            "explorer": true,
+            "search_aliases": {
+                "en": [
+                    "immigration detention",
+                    "immigrant detention centers",
+                    "migrant detention",
+                    "undocumented detainees",
+                    "ICE detention facilities",
+                    "detainee transfers",
+                    "detention admissions",
+                    "time at facility",
+                    "deportation from detention",
+                    "deported detainees"
+                ],
+                "es": [
+                    "centros de detención",
+                    "detención de inmigrantes",
+                    "detención de migrantes",
+                    "indocumentados detenidos",
+                    "instalaciones de ICE",
+                    "centros de la migra",
+                    "traslados de detenidos",
+                    "ingresos a detención",
+                    "detenciones de inmigración",
+                    "deportación desde detención"
+                ]
+            },
+            "source": "Deportation Data Project - ICE detention stints (ICE detention records released under FOIA in Hausman v. ICE, processed by DDP into one row per facility book-in)",
+            "source_url": "https://deportationdata.org/data/processed/ice.html",
+            "endpoint": "/api/v1/datasets/ice_detention_stints/rows",
+            "updated_at": "2026-09-26T15:47:46+00:00"
+        },
+        {
+            "name": "ice_removals",
+            "kind": "table",
+            "main_topic": "immigration",
+            "sub_topic": "deportation_data",
+            "topic": "ice_removals",
+            "key": "immigration/deportation_data/ice_removals",
+            "version": "1.0.0",
+            "year_min": 2022,
+            "year_max": 2026,
+            "year_gaps": [
+
+            ],
+            "update_frequency": "irregular",
+            "detail_levels": [
+                "states"
+            ],
+            "default_detail": "states",
+            "grain": [
+                "year",
+                "month",
+                "county_fips",
+                "demographic",
+                "criminality",
+                "ice_program",
+                "citizenship_country"
+            ],
+            "title": "ICE Removals Originating in Georgia",
+            "summary": "Monthly counts of deportations (ICE removals) whose originating arrest was recorded in Georgia since October 2022, by ICE program, gender, criminal history, and country of citizenship.",
+            "description": "Count of removals - deportations carried out by U.S. Immigration and Customs Enforcement (ICE) - whose originating arrest was recorded in Georgia, by calendar year and month of departure, from the person-level removal records ICE released under FOIA (Hausman v. ICE) and the Deportation Data Project published unprocessed. Each removal is counted once and broken out by ICE's gender determination, the case's criminality classification (convicted, pending charges, or other immigration violator), the ICE program that produced the removal (Criminal Alien Program, Fugitive Operations, 287(g), ...), and country of citizenship. State-level only: the source has no county field. Removals with no recorded apprehension state are in no state's count, so this is a floor: linking each removal to the same person's ICE arrest record puts the arrest in Georgia for about 57% more removals (see limitations).",
+            "explorer": true,
+            "search_aliases": {
+                "en": [
+                    "deportations",
+                    "deported",
+                    "ICE deportations",
+                    "immigration removals",
+                    "immigrant deportations",
+                    "migrants deported",
+                    "crime and deportation",
+                    "deportation numbers"
+                ],
+                "es": [
+                    "deportaciones",
+                    "deportados",
+                    "deportación de inmigrantes",
+                    "deportaciones de ICE",
+                    "deportados por la migra",
+                    "migrantes deportados",
+                    "expulsiones de inmigración",
+                    "crimen y deportación",
+                    "delitos y deportaciones"
+                ]
+            },
+            "source": "U.S. Immigration and Customs Enforcement, ERO LESA Statistical Tracking Unit - removal records released under FOIA (Hausman v. ICE), published unprocessed by the Deportation Data Project",
+            "source_url": "https://deportationdata.org/data/ice.html",
+            "endpoint": "/api/v1/datasets/ice_removals/rows",
+            "updated_at": "2026-09-26T15:47:46+00:00"
+        },
+        {
+            "name": "naturalizations",
+            "kind": "table",
+            "main_topic": "immigration",
+            "sub_topic": "dhs_ohss",
+            "topic": "naturalizations",
+            "key": "immigration/dhs_ohss/naturalizations",
+            "version": "1.0.0",
+            "year_min": 2015,
+            "year_max": 2024,
+            "year_gaps": [
+
+            ],
+            "update_frequency": "annual",
+            "detail_levels": [
+                "states"
+            ],
+            "default_detail": "states",
+            "grain": [
+                "year",
+                "county_fips",
+                "country_of_birth",
+                "region_of_birth"
+            ],
+            "title": "Naturalizations",
+            "summary": "Georgia residents who became U.S. citizens by naturalization each federal fiscal year, with FY2024 country and region of birth.",
+            "description": "Number of people aged 18 and over naturalized as U.S. citizens while living in Georgia, by federal fiscal year, from the DHS Office of Homeland Security Statistics (OHSS) Yearbook of Immigration Statistics 2024: Georgia's statewide total FY2015-FY2024 (Table 23) and, for FY2024, the same total broken down by country of birth (26 leading countries, other, unknown) and, separately, by world region of birth (Supplemental Table 1). Rounded by OHSS to the nearest 10.",
+            "explorer": true,
+            "search_aliases": {
+                "en": [
+                    "new citizens",
+                    "becoming a citizen",
+                    "citizenship",
+                    "naturalized citizens",
+                    "citizenship grants",
+                    "foreign-born citizens",
+                    "citizens by birthplace",
+                    "immigrants becoming citizens",
+                    "migrants becoming citizens",
+                    "immigration to citizenship"
+                ],
+                "es": [
+                    "nuevos ciudadanos",
+                    "ciudadanía",
+                    "obtener la ciudadanía",
+                    "ciudadanos naturalizados",
+                    "nacidos en el extranjero",
+                    "inmigrantes nuevos ciudadanos",
+                    "migrantes que obtienen ciudadanía",
+                    "de inmigración a ciudadanía"
+                ]
+            },
+            "source": "DHS Office of Homeland Security Statistics (OHSS) - Yearbook of Immigration Statistics 2024, Table 23 and Naturalizations Supplemental Table 1",
+            "source_url": "https://ohss.dhs.gov/topics/immigration/yearbook/2024",
+            "endpoint": "/api/v1/datasets/naturalizations/rows",
+            "updated_at": "2026-09-26T15:47:47+00:00"
+        },
+        {
+            "name": "new_permanent_residents",
+            "kind": "table",
+            "main_topic": "immigration",
+            "sub_topic": "dhs_ohss",
+            "topic": "new_permanent_residents",
+            "key": "immigration/dhs_ohss/new_permanent_residents",
+            "version": "1.1.0",
+            "year_min": 2007,
+            "year_max": 2024,
+            "year_gaps": [
+
+            ],
+            "update_frequency": "annual",
+            "detail_levels": [
+                "counties",
+                "states"
+            ],
+            "default_detail": "states",
+            "grain": [
+                "year",
+                "county_fips",
+                "country_of_birth",
+                "region_of_birth",
+                "class_of_admission"
+            ],
+            "title": "New Lawful Permanent Residents",
+            "summary": "Georgians who became lawful permanent residents (green card) by fiscal year: state totals, and top counties by country and class.",
+            "description": "Number of people who obtained lawful permanent resident (LPR, green card) status while living in Georgia, by federal fiscal year, from the DHS Office of Homeland Security Statistics (OHSS). Statewide totals FY2015-FY2024 (Yearbook of Immigration Statistics 2024, Table 4) with separate country-of-birth and world-region-of-birth breakdowns for FY2024 (Supplemental Table 1); and, for the 4-7 Georgia counties among the 200 U.S. counties with the most new LPRs each year, FY2007-FY2024 counts by country of birth and major class of admission (OHSS Top 200 Counties tables). OHSS publishes no county all-country/all-class total; the key metric num_new_lprs_estimated carries a platform estimate there and OHSS's figures (its cells, exact sums of them, or 0 where it lists none) everywhere else; num_new_lprs is the same series without the estimates.",
+            "explorer": true,
+            "search_aliases": {
+                "en": [
+                    "green cards",
+                    "green card holders",
+                    "LPR",
+                    "permanent residency",
+                    "legal immigrants",
+                    "new migrants",
+                    "family-based immigration",
+                    "employment green cards",
+                    "marriage green cards",
+                    "immigrant visas"
+                ],
+                "es": [
+                    "tarjeta verde",
+                    "green card",
+                    "residencia permanente",
+                    "residentes legales",
+                    "residentes permanentes",
+                    "inmigrantes legales",
+                    "migrantes nuevos",
+                    "inmigración familiar",
+                    "green card por matrimonio",
+                    "visas de inmigrante"
+                ]
+            },
+            "source": "DHS Office of Homeland Security Statistics (OHSS) - New LPRs by State, County, Country of Birth, and Major Class of Admission (Top 200 Counties); Yearbook of Immigration Statistics 2024. County all-country/all-class totals estimated by Georgia Civic Data",
+            "source_url": "https://ohss.dhs.gov/topics/immigration/lawful-permanent-residents/lpr-state-county-country-birth-and-major-class",
+            "endpoint": "/api/v1/datasets/new_permanent_residents/rows",
+            "updated_at": "2026-09-27T02:45:58+00:00"
+        },
+        {
+            "name": "h1b_lca_positions",
+            "kind": "table",
+            "main_topic": "immigration",
+            "sub_topic": "dol_oflc",
+            "topic": "h1b_lca_positions",
+            "key": "immigration/dol_oflc/h1b_lca_positions",
+            "version": "1.0.0",
+            "year_min": 2020,
+            "year_max": 2026,
+            "year_gaps": [
+
+            ],
+            "update_frequency": "quarterly",
+            "detail_levels": [
+                "counties",
+                "states"
+            ],
+            "default_detail": "states",
+            "grain": [
+                "year",
+                "county_fips",
+                "case_status",
+                "occupation_group",
+                "visa_class"
+            ],
+            "title": "H-1B Labor Condition Application Positions",
+            "summary": "H-1B (and H-1B1/E-3) worker positions the Labor Department certified for Georgia worksites each fiscal year, by county, occupation, visa program and outcome.",
+            "description": "Positions certified by the U.S. Department of Labor on labor condition applications (LCAs) for H-1B specialty-occupation workers - and the H-1B1 (Chile, Singapore) and E-3 (Australia) programs that file the same form - at Georgia worksites, by federal fiscal year: the job slots DOL's Office of Foreign Labor Certification (OFLC) certified, with the positions requested and the number of applications decided. Statewide by case outcome, occupation group and visa program, and by the county of the LCA's first worksite. From OFLC's LCA program disclosure data, FY2020 through the third quarter of FY2026. An LCA precedes the H-1B petition and the cap lottery: certified positions are not visas issued or workers hired.",
+            "explorer": true,
+            "search_aliases": {
+                "en": [
+                    "H-1B visas",
+                    "work visas",
+                    "visa sponsorship",
+                    "skilled immigrants",
+                    "migrant tech workers",
+                    "high-skilled immigration",
+                    "foreign workers",
+                    "specialty occupation jobs",
+                    "tech worker visas",
+                    "LCA filings"
+                ],
+                "es": [
+                    "visas H-1B",
+                    "visas de trabajo",
+                    "patrocinio de visa",
+                    "trabajadores extranjeros",
+                    "inmigrantes calificados",
+                    "migrantes calificados",
+                    "inmigración laboral",
+                    "empleos especializados",
+                    "trabajadores de tecnología",
+                    "solicitudes LCA"
+                ]
+            },
+            "source": "U.S. Department of Labor, Employment and Training Administration, Office of Foreign Labor Certification: LCA (H-1B, H-1B1, E-3) program disclosure data (Performance Data), FY2020-FY2026 Q3",
+            "source_url": "https://www.dol.gov/agencies/eta/foreign-labor/performance",
+            "endpoint": "/api/v1/datasets/h1b_lca_positions/rows",
+            "updated_at": "2026-09-27T19:16:55+00:00"
+        },
+        {
+            "name": "h1b_lca_secondary_worksites",
+            "kind": "table",
+            "main_topic": "immigration",
+            "sub_topic": "dol_oflc",
+            "topic": "h1b_lca_secondary_worksites",
+            "key": "immigration/dol_oflc/h1b_lca_secondary_worksites",
+            "version": "1.0.0",
+            "year_min": 2020,
+            "year_max": 2025,
+            "year_gaps": [
+
+            ],
+            "update_frequency": "annual",
+            "detail_levels": [
+                "counties",
+                "states"
+            ],
+            "default_detail": "states",
+            "grain": [
+                "year",
+                "county_fips",
+                "occupation_group",
+                "visa_class"
+            ],
+            "title": "H-1B LCAs Listing a Georgia Secondary Worksite",
+            "summary": "H-1B (and H-1B1/E-3) labor condition applications certified for jobs based outside Georgia that also list a Georgia worksite, each fiscal year, statewide and by county.",
+            "description": "H-1B labor condition applications (LCAs) - and the H-1B1 (Chile, Singapore) and E-3 (Australia) applications on the same form - that the U.S. Department of Labor certified for a job whose FIRST worksite is outside Georgia but that also list a worksite in Georgia, by federal fiscal year: statewide by occupation group and visa program, and by the county of each listed Georgia worksite. These LCAs are the ones h1b_lca_positions (which counts each LCA at its first worksite) leaves out. From OFLC's LCA disclosure data and annual worksite files, FY2020-FY2025. The count of LCAs is exact; their positions are an upper bound on the positions that may work in Georgia, and a listed worksite is not proof of a hire.",
+            "explorer": true,
+            "search_aliases": {
+                "en": [
+                    "second worksite",
+                    "additional worksites",
+                    "out-of-state employers",
+                    "multi-site H-1B",
+                    "H-1B visas",
+                    "work visas",
+                    "skilled immigrants",
+                    "migrant tech workers",
+                    "high-skilled immigration",
+                    "foreign workers"
+                ],
+                "es": [
+                    "segundo lugar de trabajo",
+                    "sitios de trabajo adicionales",
+                    "empleadores de otros estados",
+                    "visas H-1B",
+                    "visas de trabajo",
+                    "inmigrantes calificados",
+                    "migrantes calificados",
+                    "inmigración laboral",
+                    "trabajadores extranjeros"
+                ]
+            },
+            "source": "U.S. Department of Labor, Employment and Training Administration, Office of Foreign Labor Certification: LCA (H-1B, H-1B1, E-3) program disclosure data and LCA worksite files (Performance Data), FY2020-FY2025",
+            "source_url": "https://www.dol.gov/agencies/eta/foreign-labor/performance",
+            "endpoint": "/api/v1/datasets/h1b_lca_secondary_worksites/rows",
+            "updated_at": "2026-09-27T05:19:33+00:00"
+        },
+        {
+            "name": "h1b_wage_offers",
+            "kind": "table",
+            "main_topic": "immigration",
+            "sub_topic": "dol_oflc",
+            "topic": "h1b_wage_offers",
+            "key": "immigration/dol_oflc/h1b_wage_offers",
+            "version": "1.0.0",
+            "year_min": 2020,
+            "year_max": 2026,
+            "year_gaps": [
+
+            ],
+            "update_frequency": "quarterly",
+            "detail_levels": [
+                "counties",
+                "states"
+            ],
+            "default_detail": "states",
+            "grain": [
+                "year",
+                "county_fips",
+                "occupation_group"
+            ],
+            "title": "H-1B Wage Offers",
+            "summary": "Median annual wage offered on the H-1B, H-1B1 and E-3 positions the Labor Department certified for Georgia worksites each fiscal year, by county and occupation group.",
+            "description": "The median annual wage employers offered on the specialty-occupation positions (H-1B, H-1B1 Chile/Singapore and E-3 Australia) whose labor condition applications DOL's Office of Foreign Labor Certification certified for Georgia worksites, by federal fiscal year, weighted by positions certified: statewide by occupation group and by the county of the LCA's first worksite, with the positions and LCAs behind each median. The same LCAs as h1b_lca_positions, which counts the positions. From OFLC's LCA program disclosure data, FY2020 through the third quarter of FY2026.",
+            "explorer": true,
+            "search_aliases": {
+                "en": [
+                    "H-1B salaries",
+                    "H-1B pay",
+                    "software developer salaries",
+                    "tech worker pay",
+                    "work visa wages",
+                    "immigrant worker pay",
+                    "migrant worker pay",
+                    "immigration wage offers",
+                    "foreign worker pay",
+                    "salary offers"
+                ],
+                "es": [
+                    "salarios H-1B",
+                    "sueldos de programadores",
+                    "salarios de trabajadores extranjeros",
+                    "pago de visas laborales",
+                    "salarios de inmigrantes",
+                    "salarios de migrantes",
+                    "inmigración laboral",
+                    "ofertas salariales",
+                    "sueldos de tecnología"
+                ]
+            },
+            "source": "U.S. Department of Labor, Employment and Training Administration, Office of Foreign Labor Certification: LCA program (H-1B, H-1B1, E-3) disclosure data (Performance Data), FY2020-FY2026 Q3",
+            "source_url": "https://www.dol.gov/agencies/eta/foreign-labor/performance",
+            "endpoint": "/api/v1/datasets/h1b_wage_offers/rows",
+            "updated_at": "2026-09-27T19:16:57+00:00"
+        },
+        {
+            "name": "h2a_certifications",
+            "kind": "table",
+            "main_topic": "immigration",
+            "sub_topic": "dol_oflc",
+            "topic": "h2a_certifications",
+            "key": "immigration/dol_oflc/h2a_certifications",
+            "version": "1.1.0",
+            "year_min": 2020,
+            "year_max": 2026,
+            "year_gaps": [
+
+            ],
+            "update_frequency": "quarterly",
+            "detail_levels": [
+                "counties",
+                "states"
+            ],
+            "default_detail": "states",
+            "grain": [
+                "year",
+                "county_fips",
+                "case_status",
+                "soc_occupation",
+                "labor_contractor"
+            ],
+            "title": "H-2A Agricultural Labor Certifications",
+            "summary": "H-2A temporary farmworker positions the Labor Department certified for Georgia worksites each fiscal year, by county, occupation and outcome.",
+            "description": "Positions certified by the U.S. Department of Labor for H-2A temporary agricultural workers at Georgia worksites, by federal fiscal year: the job slots DOL's Office of Foreign Labor Certification (OFLC) approved on each employer's H-2A application, with the positions requested and the number of applications decided. Statewide by case outcome, occupation (SOC) and whether the employer is an H-2A labor contractor, and by the county of the application's first worksite. From OFLC's H-2A program disclosure data, FY2020 through the third quarter of FY2026.",
+            "explorer": true,
+            "search_aliases": {
+                "en": [
+                    "farmworker visas",
+                    "guest workers",
+                    "seasonal farmworkers",
+                    "migrant farmworkers",
+                    "immigrant farmworkers",
+                    "temporary farm jobs",
+                    "farm labor contractors",
+                    "crop workers",
+                    "labor immigration",
+                    "agricultural labor"
+                ],
+                "es": [
+                    "visas para campesinos",
+                    "jornaleros",
+                    "trabajadores temporales agrícolas",
+                    "campesinos migrantes",
+                    "trabajadores agrícolas inmigrantes",
+                    "empleos agrícolas temporales",
+                    "contratistas agrícolas",
+                    "trabajadores del campo",
+                    "inmigración laboral"
+                ]
+            },
+            "source": "U.S. Department of Labor, Employment and Training Administration, Office of Foreign Labor Certification: H-2A program disclosure data (Performance Data), FY2020-FY2026 Q3",
+            "source_url": "https://www.dol.gov/agencies/eta/foreign-labor/performance",
+            "endpoint": "/api/v1/datasets/h2a_certifications/rows",
+            "updated_at": "2026-09-27T19:16:59+00:00"
+        },
+        {
+            "name": "h2a_wage_offers",
+            "kind": "table",
+            "main_topic": "immigration",
+            "sub_topic": "dol_oflc",
+            "topic": "h2a_wage_offers",
+            "key": "immigration/dol_oflc/h2a_wage_offers",
+            "version": "1.0.0",
+            "year_min": 2020,
+            "year_max": 2026,
+            "year_gaps": [
+
+            ],
+            "update_frequency": "quarterly",
+            "detail_levels": [
+                "counties",
+                "states"
+            ],
+            "default_detail": "states",
+            "grain": [
+                "year",
+                "county_fips",
+                "soc_occupation"
+            ],
+            "title": "H-2A Wage Offers",
+            "summary": "Average hourly wage offered on the H-2A farmworker positions the Labor Department certified for Georgia worksites each fiscal year, by county and occupation.",
+            "description": "The average hourly wage employers offered on the H-2A temporary agricultural positions DOL's Office of Foreign Labor Certification certified for Georgia worksites, by federal fiscal year, weighted by positions certified: statewide by occupation (SOC) and by the county of the application's first worksite, with the positions and applications behind each average. The same applications as h2a_certifications, which counts the positions. From OFLC's H-2A program disclosure data, FY2020 through the third quarter of FY2026.",
+            "explorer": true,
+            "search_aliases": {
+                "en": [
+                    "farmworker pay",
+                    "farm wages",
+                    "agricultural wages",
+                    "hourly farm pay",
+                    "H-2A pay rates",
+                    "farmworker visa wages",
+                    "migrant farmworker pay",
+                    "immigrant farmworker wages",
+                    "labor immigration",
+                    "guest worker wages"
+                ],
+                "es": [
+                    "salarios de campesinos",
+                    "sueldos agrícolas",
+                    "pago por hora agrícola",
+                    "salarios de jornaleros",
+                    "pago H-2A",
+                    "salarios de campesinos migrantes",
+                    "sueldos de inmigrantes agrícolas",
+                    "inmigración laboral",
+                    "salarios de trabajadores temporales"
+                ]
+            },
+            "source": "U.S. Department of Labor, Employment and Training Administration, Office of Foreign Labor Certification: H-2A program disclosure data (Performance Data), FY2020-FY2026 Q3",
+            "source_url": "https://www.dol.gov/agencies/eta/foreign-labor/performance",
+            "endpoint": "/api/v1/datasets/h2a_wage_offers/rows",
+            "updated_at": "2026-09-27T05:19:34+00:00"
+        },
+        {
+            "name": "h2a_worker_housing",
+            "kind": "table",
+            "main_topic": "immigration",
+            "sub_topic": "dol_oflc",
+            "topic": "h2a_worker_housing",
+            "key": "immigration/dol_oflc/h2a_worker_housing",
+            "version": "1.0.0",
+            "year_min": 2020,
+            "year_max": 2026,
+            "year_gaps": [
+
+            ],
+            "update_frequency": "quarterly",
+            "detail_levels": [
+                "counties",
+                "states"
+            ],
+            "default_detail": "states",
+            "grain": [
+                "year",
+                "county_fips"
+            ],
+            "title": "H-2A Worker Housing",
+            "summary": "Beds, housing units and sites employers listed for H-2A farmworkers in Georgia on certified job orders, by fiscal year and county.",
+            "description": "Housing capacity that employers listed for H-2A temporary agricultural workers at sites in Georgia, by federal fiscal year: the beds (total occupancy), housing units and housing sites on the job orders the U.S. Department of Labor's Office of Foreign Labor Certification (OFLC) certified in the year, and the number of those job orders. Statewide and by the county of each housing site, from the primary housing in Section D of each job order and the additional housing in its Addendum B, in OFLC's H-2A program disclosure data, FY2020 through the third quarter of FY2026.",
+            "explorer": true,
+            "search_aliases": {
+                "en": [
+                    "farmworker housing",
+                    "migrant labor camps",
+                    "guest worker housing",
+                    "employer-provided housing",
+                    "worker beds",
+                    "farm worker lodging",
+                    "immigrant farmworker housing",
+                    "visa worker housing",
+                    "labor immigration",
+                    "housing capacity"
+                ],
+                "es": [
+                    "vivienda para campesinos",
+                    "vivienda de jornaleros",
+                    "campamentos de migrantes",
+                    "alojamiento de trabajadores",
+                    "camas para trabajadores",
+                    "vivienda de inmigrantes agrícolas",
+                    "vivienda del empleador",
+                    "inmigración laboral"
+                ]
+            },
+            "source": "U.S. Department of Labor, Employment and Training Administration, Office of Foreign Labor Certification: H-2A program disclosure data (Performance Data), main file Section D housing and Addendum B Housing, FY2020-FY2026 Q3",
+            "source_url": "https://www.dol.gov/agencies/eta/foreign-labor/performance",
+            "endpoint": "/api/v1/datasets/h2a_worker_housing/rows",
+            "updated_at": "2026-09-27T05:19:31+00:00"
+        },
+        {
+            "name": "h2b_certifications",
+            "kind": "table",
+            "main_topic": "immigration",
+            "sub_topic": "dol_oflc",
+            "topic": "h2b_certifications",
+            "key": "immigration/dol_oflc/h2b_certifications",
+            "version": "1.1.0",
+            "year_min": 2020,
+            "year_max": 2026,
+            "year_gaps": [
+
+            ],
+            "update_frequency": "quarterly",
+            "detail_levels": [
+                "counties",
+                "states"
+            ],
+            "default_detail": "states",
+            "grain": [
+                "year",
+                "county_fips",
+                "case_status",
+                "soc_occupation",
+                "cap_status",
+                "nature_of_need"
+            ],
+            "title": "H-2B Non-Agricultural Labor Certifications",
+            "summary": "H-2B temporary non-farm worker positions the Labor Department certified for Georgia worksites each fiscal year, by county, occupation, cap status, nature of need and outcome.",
+            "description": "Positions certified by the U.S. Department of Labor for H-2B temporary non-agricultural workers at Georgia worksites, by federal fiscal year: the job slots DOL's Office of Foreign Labor Certification (OFLC) approved on each employer's H-2B application, with the positions requested and the number of applications decided. Statewide by case outcome, occupation (SOC), whether the workers are subject to the H-2B visa cap and the employer's stated nature of the temporary need (seasonal, peakload, one-time occurrence, intermittent), and by the county of the application's first worksite. From OFLC's H-2B program disclosure data, FY2020 through the third quarter of FY2026.",
+            "explorer": true,
+            "search_aliases": {
+                "en": [
+                    "seasonal workers",
+                    "temporary foreign workers",
+                    "seasonal work visas",
+                    "visa cap",
+                    "landscaping workers",
+                    "housekeeping workers",
+                    "meatpacking workers",
+                    "migrant seasonal workers",
+                    "immigrant guest workers",
+                    "labor immigration"
+                ],
+                "es": [
+                    "trabajadores temporales",
+                    "trabajadores extranjeros temporales",
+                    "visas de temporada",
+                    "límite de visas",
+                    "jardinería y paisajismo",
+                    "trabajadores de limpieza",
+                    "empacadores de carne",
+                    "trabajadores migrantes temporales",
+                    "trabajadores inmigrantes temporales",
+                    "inmigración laboral"
+                ]
+            },
+            "source": "U.S. Department of Labor, Employment and Training Administration, Office of Foreign Labor Certification: H-2B program disclosure data (Performance Data), FY2020-FY2026 Q3",
+            "source_url": "https://www.dol.gov/agencies/eta/foreign-labor/performance",
+            "endpoint": "/api/v1/datasets/h2b_certifications/rows",
+            "updated_at": "2026-09-27T05:19:31+00:00"
+        },
+        {
+            "name": "h2b_wage_offers",
+            "kind": "table",
+            "main_topic": "immigration",
+            "sub_topic": "dol_oflc",
+            "topic": "h2b_wage_offers",
+            "key": "immigration/dol_oflc/h2b_wage_offers",
+            "version": "1.0.0",
+            "year_min": 2020,
+            "year_max": 2026,
+            "year_gaps": [
+
+            ],
+            "update_frequency": "quarterly",
+            "detail_levels": [
+                "counties",
+                "states"
+            ],
+            "default_detail": "states",
+            "grain": [
+                "year",
+                "county_fips",
+                "soc_occupation"
+            ],
+            "title": "H-2B Wage Offers",
+            "summary": "Average hourly wage offered on the H-2B non-farm positions the Labor Department certified for Georgia worksites each fiscal year, by county and occupation.",
+            "description": "The average hourly wage employers offered on the H-2B temporary non-agricultural positions DOL's Office of Foreign Labor Certification certified for Georgia worksites, by federal fiscal year, weighted by positions certified: statewide by occupation (SOC) and by the county of the application's first worksite, with the positions and applications behind each average. The same applications as h2b_certifications, which counts the positions. From OFLC's H-2B program disclosure data, FY2020 through the third quarter of FY2026.",
+            "explorer": true,
+            "search_aliases": {
+                "en": [
+                    "seasonal worker pay",
+                    "landscaping wages",
+                    "housekeeping wages",
+                    "hourly pay offers",
+                    "guest worker wages",
+                    "temporary worker wages",
+                    "seasonal work visa pay",
+                    "migrant worker pay",
+                    "immigrant worker wages",
+                    "labor immigration"
+                ],
+                "es": [
+                    "salarios de temporada",
+                    "sueldos de jardinería",
+                    "salarios de limpieza",
+                    "pago por hora",
+                    "salarios de trabajadores temporales",
+                    "pago de visas temporales",
+                    "salarios de migrantes",
+                    "sueldos de trabajadores inmigrantes",
+                    "inmigración laboral"
+                ]
+            },
+            "source": "U.S. Department of Labor, Employment and Training Administration, Office of Foreign Labor Certification: H-2B program disclosure data (Performance Data), FY2020-FY2026 Q3",
+            "source_url": "https://www.dol.gov/agencies/eta/foreign-labor/performance",
+            "endpoint": "/api/v1/datasets/h2b_wage_offers/rows",
+            "updated_at": "2026-09-27T05:19:32+00:00"
+        },
+        {
+            "name": "deportation_detainers",
+            "kind": "table",
+            "main_topic": "immigration",
+            "sub_topic": "gdc",
+            "topic": "deportation_detainers",
+            "key": "immigration/gdc/deportation_detainers",
+            "version": "1.0.0",
+            "year_min": 2025,
+            "year_max": 2026,
+            "year_gaps": [
+
+            ],
+            "update_frequency": "monthly",
+            "detail_levels": [
+                "states"
+            ],
+            "default_detail": "states",
+            "grain": [
+                "year",
+                "month",
+                "county_fips",
+                "citizenship_country",
+                "offense_group"
+            ],
+            "title": "Georgia Prison Inmates with Deportation Detainers",
+            "summary": "Georgia state-prison inmates held with an active ICE deportation detainer on a month-end date, by citizenship country and offense group.",
+            "description": "Inmates in Georgia Department of Corrections custody who hold an active immigration (deportation) detainer, from GDC's monthly 'O.C.G.A. 42-1-11.4 Monthly Report - Detainers for Deportation'. A point-in-time count on the report's as-of date (a month-end), statewide, with the total broken down by the inmate's country of citizenship and, separately, by offense group. Only the months whose report was captured exist; GDC overwrites the report monthly and keeps no archive.",
+            "explorer": true,
+            "search_aliases": {
+                "en": [
+                    "ICE holds",
+                    "immigration holds",
+                    "deportation holds",
+                    "foreign-born inmates",
+                    "noncitizen prisoners",
+                    "immigrant inmates",
+                    "crimes by inmates",
+                    "prison detainer list"
+                ],
+                "es": [
+                    "retenciones migratorias",
+                    "órdenes de detención ICE",
+                    "reclusos extranjeros",
+                    "inmigrantes en prisión",
+                    "migrantes presos",
+                    "presos indocumentados",
+                    "inmigración y cárceles",
+                    "crimen y deportación",
+                    "delitos y deportaciones",
+                    "deportación de presos"
+                ]
+            },
+            "source": "Georgia Department of Corrections - O.C.G.A. 42-1-11.4 Monthly Report, Detainers for Deportation (earlier months via the Internet Archive's Wayback Machine)",
+            "source_url": "https://gdc.georgia.gov/organization/about-gdc/research-and-reports",
+            "endpoint": "/api/v1/datasets/deportation_detainers/rows",
+            "updated_at": "2026-09-27T02:45:56+00:00"
+        },
+        {
+            "name": "undocumented_population_characteristics",
+            "kind": "table",
+            "main_topic": "immigration",
+            "sub_topic": "population_estimates",
+            "topic": "undocumented_population_characteristics",
+            "key": "immigration/population_estimates/undocumented_population_characteristics",
+            "version": "1.0.0",
+            "year_min": 2024,
+            "year_max": 2024,
+            "year_gaps": [
+
+            ],
+            "update_frequency": "irregular",
+            "detail_levels": [
+                "states"
+            ],
+            "default_detail": "states",
+            "grain": [
+                "year",
+                "county_fips",
+                "demographic",
+                "estimator",
+                "region_of_birth",
+                "country_of_birth",
+                "years_in_us",
+                "age_bracket"
+            ],
+            "title": "Undocumented Immigrant Population Characteristics",
+            "summary": "The Center for Migration Studies' 2024 profile of Georgia's undocumented population by sex, age, birthplace and years in the U.S.",
+            "description": "Characteristics of Georgia's undocumented immigrant population from the Center for Migration Studies of New York (CMS), data year 2024: CMS's modeled estimate of 502,000 broken down, one breakdown at a time, by sex, age bracket, world region of birth, country of birth (31 countries) and years in the United States. For the size of the population and how Pew, MPI, CMS and DHS compare, use undocumented_population_estimates.",
+            "explorer": true,
+            "search_aliases": {
+                "en": [
+                    "unauthorized immigrants",
+                    "undocumented migrants",
+                    "undocumented demographics",
+                    "undocumented by age",
+                    "birthplace of undocumented",
+                    "length of residence",
+                    "CMS estimates",
+                    "unauthorized population profile"
+                ],
+                "es": [
+                    "inmigrantes sin papeles",
+                    "indocumentados",
+                    "migrantes indocumentados",
+                    "perfil de indocumentados",
+                    "indocumentados por edad",
+                    "años de residencia",
+                    "estimaciones del CMS",
+                    "población sin papeles"
+                ]
+            },
+            "source": "Center for Migration Studies of New York, State and National Data Tool (undocumented population, data year 2024)",
+            "source_url": "https://data.cmsny.org/",
+            "endpoint": "/api/v1/datasets/undocumented_population_characteristics/rows",
+            "updated_at": "2026-09-26T15:47:56+00:00"
+        },
+        {
+            "name": "undocumented_population_estimates",
+            "kind": "table",
+            "main_topic": "immigration",
+            "sub_topic": "population_estimates",
+            "topic": "undocumented_population_estimates",
+            "key": "immigration/population_estimates/undocumented_population_estimates",
+            "version": "1.0.0",
+            "year_min": 1990,
+            "year_max": 2024,
+            "year_gaps": [
+                1991,
+                1992,
+                1993,
+                1994,
+                1996,
+                1997,
+                1999,
+                2001,
+                2002,
+                2004
+            ],
+            "update_frequency": "irregular",
+            "detail_levels": [
+                "counties",
+                "states"
+            ],
+            "default_detail": "states",
+            "grain": [
+                "year",
+                "county_fips",
+                "estimator"
+            ],
+            "title": "Undocumented Immigrant Population Estimates",
+            "summary": "Four modeled estimates of Georgia's undocumented immigrant population (Pew, MPI, CMS, DHS), 1990-2024, plus ten Georgia counties from MPI.",
+            "description": "Modeled estimates of the undocumented (unauthorized) immigrant population living in Georgia from four independent estimators - Pew Research Center (1990-2023, with a 90% margin of error), the Migration Policy Institute (mid-2023, statewide and ten counties), the Center for Migration Studies of New York (data year 2024) and the DHS Office of Homeland Security Statistics (January 1 of 2000 and 2005-2022 except 2021, revised series). One row per estimator and reference year; the estimator is always a filter, never summed.",
+            "explorer": true,
+            "search_aliases": {
+                "en": [
+                    "how many undocumented",
+                    "unauthorized immigrants",
+                    "undocumented migrants",
+                    "unauthorized population",
+                    "pew estimates",
+                    "MPI estimates",
+                    "DHS estimates"
+                ],
+                "es": [
+                    "cuántos indocumentados",
+                    "inmigrantes sin papeles",
+                    "migrantes indocumentados",
+                    "población indocumentada",
+                    "estimaciones de pew",
+                    "estimaciones del MPI",
+                    "estimaciones del DHS"
+                ]
+            },
+            "source": "Pew Research Center; Migration Policy Institute; Center for Migration Studies of New York; DHS Office of Homeland Security Statistics",
+            "source_url": "https://ohss.dhs.gov/topics/immigration/illegal/population-estimates",
+            "endpoint": "/api/v1/datasets/undocumented_population_estimates/rows",
+            "updated_at": "2026-09-27T02:45:59+00:00"
+        },
+        {
+            "name": "refugee_arrivals",
+            "kind": "table",
+            "main_topic": "immigration",
+            "sub_topic": "state_rpc",
+            "topic": "refugee_arrivals",
+            "key": "immigration/state_rpc/refugee_arrivals",
+            "version": "1.0.0",
+            "year_min": 2012,
+            "year_max": 2026,
+            "year_gaps": [
+
+            ],
+            "update_frequency": "monthly",
+            "detail_levels": [
+                "states"
+            ],
+            "default_detail": "states",
+            "grain": [
+                "year",
+                "county_fips",
+                "nationality"
+            ],
+            "title": "Refugee Arrivals in Georgia by Nationality",
+            "summary": "Refugees resettled in Georgia each federal fiscal year since FY2012, by nationality, from the State Department's arrival reports.",
+            "description": "Refugees resettled in Georgia by nationality, per federal fiscal year, from the U.S. Department of State Refugee Processing Center's 'Refugee Arrivals by State and Nationality' reports: the FY2012-FY2025 year-end reports and the FY2026 fiscal-year-to-date report (2025-10-01 through 2026-08-31). One row per fiscal year and nationality, plus Georgia's total (nationality = 'all').",
+            "explorer": true,
+            "search_aliases": {
+                "en": [
+                    "refugee resettlement",
+                    "resettled refugees",
+                    "refugee admissions",
+                    "newly arrived refugees",
+                    "refugee program",
+                    "humanitarian arrivals",
+                    "refugees per year",
+                    "refugees and migrants",
+                    "immigrants and refugees",
+                    "refugee immigration"
+                ],
+                "es": [
+                    "reasentamiento de refugiados",
+                    "refugiados reasentados",
+                    "admisión de refugiados",
+                    "refugiados recién llegados",
+                    "programa de refugiados",
+                    "llegadas humanitarias",
+                    "refugiados por año",
+                    "refugiados y migrantes",
+                    "inmigrantes y refugiados",
+                    "inmigración de refugiados"
+                ]
+            },
+            "source": "U.S. Department of State, Bureau of Population, Refugees, and Migration, Refugee Processing Center - Refugee Arrivals by State and Nationality (fiscal-year reports); analyzed by Georgia Civic Data",
+            "source_url": "https://www.rpc.state.gov/archives",
+            "endpoint": "/api/v1/datasets/refugee_arrivals/rows",
+            "updated_at": "2026-09-26T15:47:52+00:00"
+        },
+        {
+            "name": "refugee_arrivals_monthly",
+            "kind": "table",
+            "main_topic": "immigration",
+            "sub_topic": "state_rpc",
+            "topic": "refugee_arrivals_monthly",
+            "key": "immigration/state_rpc/refugee_arrivals_monthly",
+            "version": "1.0.0",
+            "year_min": 2020,
+            "year_max": 2026,
+            "year_gaps": [
+
+            ],
+            "update_frequency": "monthly",
+            "detail_levels": [
+                "states"
+            ],
+            "default_detail": "states",
+            "grain": [
+                "year",
+                "month",
+                "county_fips",
+                "nationality"
+            ],
+            "title": "Monthly Refugee Arrivals in Georgia by Nationality",
+            "summary": "Refugees resettled in Georgia each calendar month since October 2020, by nationality, from the State Department's arrival reports.",
+            "description": "Refugees resettled in Georgia by calendar month of admission and nationality, October 2020 through August 2026, from the U.S. Department of State Refugee Processing Center's 'Refugee Arrivals by State and Nationality' reports (FY2021-FY2025 year-end and FY2026 year to date). One row per calendar month and nationality, plus Georgia's total (nationality = 'all') and calendar-year totals (month = 'all').",
+            "explorer": true,
+            "search_aliases": {
+                "en": [
+                    "refugee resettlement",
+                    "resettled refugees",
+                    "refugee admissions",
+                    "newly arrived refugees",
+                    "humanitarian arrivals",
+                    "refugees by month",
+                    "monthly resettlement",
+                    "refugees and migrants",
+                    "immigrants and refugees",
+                    "refugee immigration"
+                ],
+                "es": [
+                    "reasentamiento de refugiados",
+                    "refugiados reasentados",
+                    "admisión de refugiados",
+                    "refugiados recién llegados",
+                    "llegadas humanitarias",
+                    "refugiados por mes",
+                    "reasentamiento mensual",
+                    "refugiados y migrantes",
+                    "inmigrantes y refugiados",
+                    "inmigración de refugiados"
+                ]
+            },
+            "source": "U.S. Department of State, Bureau of Population, Refugees, and Migration, Refugee Processing Center - Refugee Arrivals by State and Nationality (fiscal-year reports, by month of admission); analyzed by Georgia Civic Data",
+            "source_url": "https://www.rpc.state.gov/archives",
+            "endpoint": "/api/v1/datasets/refugee_arrivals_monthly/rows",
+            "updated_at": "2026-09-26T15:48:01+00:00"
+        },
+        {
+            "name": "daca_recipients",
+            "kind": "table",
+            "main_topic": "immigration",
+            "sub_topic": "uscis",
+            "topic": "daca_recipients",
+            "key": "immigration/uscis/daca_recipients",
+            "version": "1.1.0",
+            "year_min": 2017,
+            "year_max": 2026,
+            "year_gaps": [
+
+            ],
+            "update_frequency": "quarterly",
+            "detail_levels": [
+                "states"
+            ],
+            "default_detail": "states",
+            "grain": [
+                "year",
+                "quarter",
+                "county_fips"
+            ],
+            "title": "Active DACA Recipients in Georgia",
+            "summary": "Georgia residents holding an active DACA grant, as counted by USCIS on irregular release dates from September 2017 to April 2019 and at federal fiscal quarter-ends since; FY2018 q1 and FY2023 q3 have no release.",
+            "description": "Number of Georgia residents holding Deferred Action for Childhood Arrivals (DACA) on each snapshot date, from U.S. Citizenship and Immigration Services' Active DACA Recipients reports: the Georgia row of the State or Territory of Residence table, one row per federal fiscal quarter with a release, from FY2017 q4 (as of 2017-09-04) to FY2026 q3 (as of 2026-06-30); FY2018 q1 and FY2023 q3 have no release. Before June 2019 USCIS released at irregular month-ends, each placed in the fiscal quarter containing it. A point-in-time stock, rounded by USCIS to the nearest 10.",
+            "explorer": true,
+            "search_aliases": {
+                "en": [
+                    "dreamers",
+                    "DACA holders",
+                    "deferred action",
+                    "childhood arrivals",
+                    "undocumented youth",
+                    "immigrant youth",
+                    "young migrants",
+                    "DACA beneficiaries",
+                    "immigration relief",
+                    "deportation protection"
+                ],
+                "es": [
+                    "dreamers",
+                    "soñadores",
+                    "beneficiarios de DACA",
+                    "acción diferida",
+                    "llegados en la infancia",
+                    "jóvenes indocumentados",
+                    "jóvenes inmigrantes",
+                    "jóvenes migrantes",
+                    "alivio de inmigración",
+                    "protección contra deportación"
+                ]
+            },
+            "source": "U.S. Citizenship and Immigration Services (USCIS) - Active DACA Recipients reports, Immigration and Citizenship Data",
+            "source_url": "https://www.uscis.gov/tools/reports-and-studies/immigration-and-citizenship-data?ddt_mon=&ddt_yr=&query=Active%20DACA&items_per_page=100&page=0",
+            "endpoint": "/api/v1/datasets/daca_recipients/rows",
+            "updated_at": "2026-09-27T02:45:56+00:00"
+        }
+    ],
+    "count": 23,
+    "fields": "full",
+    "links": {
+        "schema": "/api/v1/datasets/{name}",
+        "rows": "/api/v1/datasets/{name}/rows",
+        "search": "/api/v1/search?q={text}"
+    },
+    "dimensions": [
+        {
+            "name": "districts",
+            "scope": "domain",
+            "version": "1.2.0",
+            "primary_key": [
+                "district_code"
+            ],
+            "attribute_columns": [
+                "district_name",
+                "former_names",
+                "district_census_id",
+                "district_type",
+                "county_fips",
+                "street_address",
+                "city",
+                "zip",
+                "latitude",
+                "longitude",
+                "active",
+                "directory_year"
+            ],
+            "endpoint": "/api/v1/dimensions/districts"
+        },
+        {
+            "name": "schools",
+            "scope": "domain",
+            "version": "1.2.0",
+            "primary_key": [
+                "district_code",
+                "school_code"
+            ],
+            "attribute_columns": [
+                "school_name",
+                "former_names",
+                "school_level",
+                "grade_low",
+                "grade_high",
+                "county_fips",
+                "nces_school_id",
+                "street_address",
+                "city",
+                "zip",
+                "phone",
+                "website",
+                "latitude",
+                "longitude",
+                "locale",
+                "charter",
+                "active",
+                "directory_year"
+            ],
+            "endpoint": "/api/v1/dimensions/schools"
+        },
+        {
+            "name": "block_groups",
+            "scope": "global",
+            "version": "1.0.0",
+            "primary_key": [
+                "block_group_geoid"
+            ],
+            "attribute_columns": [
+                "block_group_name",
+                "tract_geoid",
+                "county_fips",
+                "land_area_sq_mi",
+                "population_2020",
+                "housing_units_2020",
+                "households_2020"
+            ],
+            "endpoint": "/api/v1/dimensions/block_groups"
+        },
+        {
+            "name": "counties",
+            "scope": "global",
+            "version": "1.0.0",
+            "primary_key": [
+                "county_fips"
+            ],
+            "attribute_columns": [
+                "county_name"
+            ],
+            "endpoint": "/api/v1/dimensions/counties"
+        },
+        {
+            "name": "demographics",
+            "scope": "global",
+            "version": "1.0.0",
+            "primary_key": [
+                "demographic"
+            ],
+            "attribute_columns": [
+                "demographic_label",
+                "demographic_category"
+            ],
+            "endpoint": "/api/v1/dimensions/demographics"
+        },
+        {
+            "name": "tracts",
+            "scope": "global",
+            "version": "1.0.0",
+            "primary_key": [
+                "tract_geoid"
+            ],
+            "attribute_columns": [
+                "tract_name",
+                "county_fips",
+                "county_name",
+                "land_area_sq_mi",
+                "population_2020"
+            ],
+            "endpoint": "/api/v1/dimensions/tracts"
+        }
+    ],
+    "license": {
+        "id": "CC-BY-4.0",
+        "name": "Creative Commons Attribution 4.0 International (CC BY 4.0)",
+        "url": "https://creativecommons.org/licenses/by/4.0/",
+        "attribution": "Georgia Civic Data (georgiacivicdata.org)",
+        "scope": "The license covers Georgia Civic Data's cleaning, standardization, compilation, and documentation. Source data stays under its original publisher's terms; each dataset names its source.",
+        "terms": "https://georgiacivicdata.org/about#license"
+    }
+}

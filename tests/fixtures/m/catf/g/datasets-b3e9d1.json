@@ -1,0 +1,175 @@
+{
+    "data": [
+        {
+            "name": "school_attendance_zones",
+            "title": "School Attendance Zones",
+            "summary": "The attendance-zone polygons that assign a home address to a school, by school, level and grade run.",
+            "kind": "geometry",
+            "main_topic": "education",
+            "detail_levels": [
+                "schools"
+            ],
+            "year_min": 2027,
+            "year_max": 2027,
+            "key": "education/school_zones/school_attendance_zones",
+            "formats": [
+                "geojson",
+                "shapefile",
+                "geoparquet",
+                "json"
+            ],
+            "endpoint": "/api/v1/datasets/school_attendance_zones/rows",
+            "source": "School district attendance-zone maps (see the contract)"
+        },
+        {
+            "name": "school_district_boundaries",
+            "title": "School District Boundaries",
+            "summary": "Census TIGER/Line school district boundaries for Georgia, keyed to district_code.",
+            "kind": "geometry",
+            "main_topic": "education",
+            "detail_levels": [
+                "districts"
+            ],
+            "year_min": 2027,
+            "year_max": 2027,
+            "key": null,
+            "formats": [
+                "geojson",
+                "shapefile",
+                "geoparquet",
+                "json"
+            ],
+            "endpoint": "/api/v1/datasets/school_district_boundaries/rows",
+            "source": "U.S. Census Bureau TIGER/Line"
+        }
+    ],
+    "count": 2,
+    "fields": "full",
+    "links": {
+        "schema": "/api/v1/datasets/{name}",
+        "rows": "/api/v1/datasets/{name}/rows",
+        "search": "/api/v1/search?q={text}"
+    },
+    "dimensions": [
+        {
+            "name": "districts",
+            "scope": "domain",
+            "version": "1.2.0",
+            "primary_key": [
+                "district_code"
+            ],
+            "attribute_columns": [
+                "district_name",
+                "former_names",
+                "district_census_id",
+                "district_type",
+                "county_fips",
+                "street_address",
+                "city",
+                "zip",
+                "latitude",
+                "longitude",
+                "active",
+                "directory_year"
+            ],
+            "endpoint": "/api/v1/dimensions/districts"
+        },
+        {
+            "name": "schools",
+            "scope": "domain",
+            "version": "1.2.0",
+            "primary_key": [
+                "district_code",
+                "school_code"
+            ],
+            "attribute_columns": [
+                "school_name",
+                "former_names",
+                "school_level",
+                "grade_low",
+                "grade_high",
+                "county_fips",
+                "nces_school_id",
+                "street_address",
+                "city",
+                "zip",
+                "phone",
+                "website",
+                "latitude",
+                "longitude",
+                "locale",
+                "charter",
+                "active",
+                "directory_year"
+            ],
+            "endpoint": "/api/v1/dimensions/schools"
+        },
+        {
+            "name": "block_groups",
+            "scope": "global",
+            "version": "1.0.0",
+            "primary_key": [
+                "block_group_geoid"
+            ],
+            "attribute_columns": [
+                "block_group_name",
+                "tract_geoid",
+                "county_fips",
+                "land_area_sq_mi",
+                "population_2020",
+                "housing_units_2020",
+                "households_2020"
+            ],
+            "endpoint": "/api/v1/dimensions/block_groups"
+        },
+        {
+            "name": "counties",
+            "scope": "global",
+            "version": "1.0.0",
+            "primary_key": [
+                "county_fips"
+            ],
+            "attribute_columns": [
+                "county_name"
+            ],
+            "endpoint": "/api/v1/dimensions/counties"
+        },
+        {
+            "name": "demographics",
+            "scope": "global",
+            "version": "1.0.0",
+            "primary_key": [
+                "demographic"
+            ],
+            "attribute_columns": [
+                "demographic_label",
+                "demographic_category"
+            ],
+            "endpoint": "/api/v1/dimensions/demographics"
+        },
+        {
+            "name": "tracts",
+            "scope": "global",
+            "version": "1.0.0",
+            "primary_key": [
+                "tract_geoid"
+            ],
+            "attribute_columns": [
+                "tract_name",
+                "county_fips",
+                "county_name",
+                "land_area_sq_mi",
+                "population_2020"
+            ],
+            "endpoint": "/api/v1/dimensions/tracts"
+        }
+    ],
+    "license": {
+        "id": "CC-BY-4.0",
+        "name": "Creative Commons Attribution 4.0 International (CC BY 4.0)",
+        "url": "https://creativecommons.org/licenses/by/4.0/",
+        "attribution": "Georgia Civic Data (georgiacivicdata.org)",
+        "scope": "The license covers Georgia Civic Data's cleaning, standardization, compilation, and documentation. Source data stays under its original publisher's terms; each dataset names its source.",
+        "terms": "https://georgiacivicdata.org/about#license"
+    }
+}

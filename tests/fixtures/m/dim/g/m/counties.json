@@ -1,0 +1,70 @@
+{
+    "name": "counties",
+    "scope": "global",
+    "version": "1.0.0",
+    "schema_hash": "79a71d9c1a1bae3f07b25944663975221474c45a7cd55bba3333d7da0b2c9369",
+    "description": "Counties dimension table; single (non-partitioned) Parquet file. Shared globally across domains.",
+    "primary_key": [
+        "county_fips"
+    ],
+    "attribute_columns": [
+        "county_name"
+    ],
+    "columns": [
+        {
+            "name": "county_fips",
+            "type": "string",
+            "role": "key",
+            "nullable": false,
+            "description": "5-digit county FIPS code (state prefix 13 + 3-digit county). Primary key; natural join key for every fact table's county_fips FK.",
+            "pk_position": 1,
+            "valid_values": null
+        },
+        {
+            "name": "county_name",
+            "type": "string",
+            "role": "attribute",
+            "nullable": false,
+            "description": "County name in title case, without 'County' suffix.",
+            "pk_position": null,
+            "valid_values": null
+        }
+    ],
+    "filters": [
+        {
+            "param": "county_fips",
+            "type": "string",
+            "multi_value": true,
+            "values": null
+        }
+    ],
+    "search": {
+        "param": "q",
+        "columns": [
+            "county_name"
+        ]
+    },
+    "search_aliases": {
+        "en": [
+            "county codes",
+            "county FIPS",
+            "FIPS codes",
+            "list of counties",
+            "county names",
+            "county lookup",
+            "county ID numbers"
+        ],
+        "es": [
+            "códigos de condado",
+            "códigos FIPS",
+            "FIPS de condado",
+            "lista de condados",
+            "nombres de condados",
+            "búsqueda de condado",
+            "números de condado"
+        ]
+    },
+    "endpoints": {
+        "rows": "/api/v1/dimensions/counties/rows"
+    }
+}

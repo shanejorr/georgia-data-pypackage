@@ -1,0 +1,431 @@
+{
+    "name": "school_attendance_zones",
+    "kind": "geometry",
+    "key": "education/school_zones/school_attendance_zones",
+    "dataset": "education/school_attendance_zones",
+    "version": "1.0.0",
+    "description": {
+        "purpose": "School attendance zones for Georgia's public school districts: the polygons that assign a home address to its zoned elementary, middle and high school. One row per zoned school, level and grade band, for the 2026-27 school year. Districts with one zoned school per grade carry the district outline as each school's zone. Built from each district's own GIS layers, routing-vendor lookup APIs, georeferenced PDF and image maps, and published street lists, and, by owner decision where no newer map exists, the NCES School Attendance Boundary Survey 2015-16 lines, then clipped to the district's Census TIGER/Line boundary. Join school_code (with district_code) to the schools dimension for names, NCES ids and coordinates.",
+        "usage": "Point lookups: test a point against the full-resolution geometry (zones.parquet), filtered by zone_level and by grade_low <= grade <= grade_high. Plotting: use _zones_display.parquet. Never sum anything across zone_level: an address normally sits in one zone per level (a few documented overlaps return two schools).",
+        "limitations": "Not an official enrollment determination: confirm any assignment with the district. A zone is the default assignment, not the only option: students can attend another public school by transfer or at charter, magnet and other choice schools (see the attendance_rules route). Coverage varies by district (see the coverage table); a point inside a district but outside every zone of a level is a gap, never filled by guessing a school: usually the source assigns it to no school, sometimes a sliver where the source's line and the Census district line differ (the coverage table's reason counts the residents in both). Digitized maps do have their road and label holes, and unaddressed street-list blocks, given to the nearest zone. Some districts' choice or transfer areas (such as Social Circle's Zone 5) are not zones and are not modelled. Digitized zones carry georeferencing error (positional_rmse_m) and approximate reconstructions are coarser still. Some lines predate adopted changes (currency_status = stale_known_changes). Charter, magnet, alternative, virtual and special-program schools have no zones: the school status table (_school_status.parquet, served at /school_status) lists every school of the 180 standard districts with whether it has a zone here and, if not, why."
+    },
+    "grain": [
+        "year",
+        "district_code",
+        "school_code",
+        "zone_level",
+        "grade_low"
+    ],
+    "crs": "OGC:CRS84 (longitude, latitude; WGS 84)",
+    "fields": [
+        {
+            "name": "year",
+            "type": "integer",
+            "description": "School year the zones are in effect for, as its ending calendar year (2027 = 2026-27). The lines themselves may be older; see boundary_vintage.",
+            "enum": null,
+            "shapefile_field": "year"
+        },
+        {
+            "name": "district_code",
+            "type": "string",
+            "description": "GOSA district code (FK to the districts dimension).",
+            "enum": null,
+            "shapefile_field": "dist_code"
+        },
+        {
+            "name": "school_code",
+            "type": "string",
+            "description": "GOSA school code; with district_code, FK to the schools dimension (which carries the school's name, level, NCES id and coordinates).",
+            "enum": null,
+            "shapefile_field": "schl_code"
+        },
+        {
+            "name": "zone_level",
+            "type": "string",
+            "description": "Assignment band the polygon answers: elementary, middle or high. Within a district, level and grade a point normally lies in one zone; a few documented overlaps (the source's own) return two schools, and a point in a gap returns none.",
+            "enum": [
+                "elementary",
+                "middle",
+                "high"
+            ],
+            "shapefile_field": "zone_lvl"
+        },
+        {
+            "name": "grade_low",
+            "type": "string",
+            "description": "Lowest grade this polygon assigns (pk, k, 01-12). Can be narrower than the school's own span: a K-8 school has an elementary k-05 row and a middle 06-08 row.",
+            "enum": [
+                "pk",
+                "k",
+                "01",
+                "02",
+                "03",
+                "04",
+                "05",
+                "06",
+                "07",
+                "08",
+                "09",
+                "10",
+                "11",
+                "12"
+            ],
+            "shapefile_field": "grade_lo"
+        },
+        {
+            "name": "grade_high",
+            "type": "string",
+            "description": "Highest grade this polygon assigns (pk, k, 01-12).",
+            "enum": [
+                "pk",
+                "k",
+                "01",
+                "02",
+                "03",
+                "04",
+                "05",
+                "06",
+                "07",
+                "08",
+                "09",
+                "10",
+                "11",
+                "12"
+            ],
+            "shapefile_field": "grade_hi"
+        },
+        {
+            "name": "source_school_name",
+            "type": "string",
+            "description": "The school's name exactly as printed in the source (provenance). Use the schools dimension for the current name.",
+            "enum": null,
+            "shapefile_field": "src_name"
+        },
+        {
+            "name": "method",
+            "type": "string",
+            "description": "How the polygon was obtained: official_gis (the district's, county's or city's own vector layer or drawing: a GIS service, KML or My Maps), vendor_api (a routing or planning vendor's lookup service or map layer), nces_sabs_copy (lines copied from the NCES School Attendance Boundary Survey 2015-16, used by owner decision where no newer map exists: read from the NCES layer, or re-served unchanged by the district's vendor; see boundary_vintage), geopdf_vector (vector paths of a georeferenced PDF), pdf_vector_georeferenced (a vector PDF with no georeferencing, registered to the district by its drawn outline, or by its road network where that fits better), raster_digitized (a map image registered by its outline, or by a GeoPDF's own control points, and traced), tile_digitized (georeferenced map tiles), street_list_reconstructed (a street/address-range list assigned to census blocks), feeder_union (a level no source draws, built as the union of another level's zones by a feeder pattern: the district's published feeder key, or for Polk County one inferred from enrollment cohorts; the lines, accuracy_class and positional_rmse_m are those of the zones it is built from), district_outline (a level with one zoned school: the zone is the district, or for a district in separate parts, the part holding the school).",
+            "enum": [
+                "district_outline",
+                "feeder_union",
+                "geopdf_vector",
+                "nces_sabs_copy",
+                "official_gis",
+                "pdf_vector_georeferenced",
+                "raster_digitized",
+                "street_list_reconstructed",
+                "tile_digitized",
+                "vendor_api"
+            ],
+            "shapefile_field": "method"
+        },
+        {
+            "name": "accuracy_class",
+            "type": "string",
+            "description": "authoritative_vector (the source's own geometry), derived_from_official_map (digitized from an official map: by this platform, see positional_rmse_m, or, for nces_sabs_copy, by the NCES survey from the lines the district reported for 2015-16), approximate_reconstruction (hand-drawn or low-resolution source, or rebuilt from a street list), district_outline (a level with one zoned school, or one school per separate part of the district).",
+            "enum": [
+                "approximate_reconstruction",
+                "authoritative_vector",
+                "derived_from_official_map",
+                "district_outline"
+            ],
+            "shapefile_field": "accuracy"
+        },
+        {
+            "name": "positional_rmse_m",
+            "type": "number",
+            "description": "How well a traced map was placed, in metres: the trimmed RMS distance between the traced map's outer edge and the TIGER district line (or, for a map registered by its roads, between its roads and TIGER roads). For geopdf_vector, the RMS residual of the PDF's own georeferencing control points (how consistently the file places its page, not how far the map maker's lines lie from the ground), or, for a map drawn as lines, the distance of its drawn county line from TIGER. A registration residual, not an independent accuracy measure of each zone line: on a coarse image the lines themselves can be off by more. A feeder_union row carries the largest figure of the zones it is built from. Null for vector sources, NCES survey copies, street-list reconstructions and district outlines.",
+            "enum": null,
+            "shapefile_field": "rmse_m"
+        },
+        {
+            "name": "boundary_vintage",
+            "type": "string",
+            "description": "When the lines were drawn or adopted, and how that is known (e.g. 'adopted 2024-06-17', 'layer last edited 2026-07', 'unknown').",
+            "enum": null,
+            "shapefile_field": "bnd_vntg"
+        },
+        {
+            "name": "currency_status",
+            "type": "string",
+            "description": "current_stated (the source says it is current), current_presumed (no evidence of a later change), stale_known_changes (a later adopted change could not be applied; the lookup warns).",
+            "enum": [
+                "current_presumed",
+                "current_stated",
+                "stale_known_changes"
+            ],
+            "shapefile_field": "currency"
+        },
+        {
+            "name": "currency_note",
+            "type": "string",
+            "description": "For a stale_known_changes zone, what changed and when, in one short sentence (for example the adopted change the source does not show, its board date and about how many students it moves); the lookup's currency_warning quotes it. At most 254 bytes, so it survives the shapefile export whole, unlike a long boundary_vintage.",
+            "enum": null,
+            "shapefile_field": "curr_note"
+        },
+        {
+            "name": "source_url",
+            "type": "string",
+            "description": "The source the polygon came from, verbatim.",
+            "enum": null,
+            "shapefile_field": "src_url"
+        },
+        {
+            "name": "source_publisher",
+            "type": "string",
+            "description": "Who publishes the source: district, county, city, regional_commission, vendor (a routing vendor serving the district), federal (Census TIGER/Line, or NCES SABS 2015-16).",
+            "enum": [
+                "city",
+                "county",
+                "district",
+                "federal",
+                "regional_commission",
+                "vendor"
+            ],
+            "shapefile_field": "src_pub"
+        },
+        {
+            "name": "retrieved_on",
+            "type": "date",
+            "description": "Date the source was retrieved.",
+            "enum": null,
+            "shapefile_field": "retrieved"
+        },
+        {
+            "name": "area_sq_mi",
+            "type": "number",
+            "description": "Zone area in square miles, measured in the CONUS Albers equal-area projection (EPSG:5070).",
+            "enum": null,
+            "shapefile_field": "area_sqmi"
+        },
+        {
+            "name": "bbox_xmin",
+            "type": "number",
+            "description": "Bounding box west edge (longitude); lets a reader prefilter without a spatial extension.",
+            "enum": null,
+            "shapefile_field": "bbox_xmin"
+        },
+        {
+            "name": "bbox_ymin",
+            "type": "number",
+            "description": "Bounding box south edge (latitude).",
+            "enum": null,
+            "shapefile_field": "bbox_ymin"
+        },
+        {
+            "name": "bbox_xmax",
+            "type": "number",
+            "description": "Bounding box east edge (longitude).",
+            "enum": null,
+            "shapefile_field": "bbox_xmax"
+        },
+        {
+            "name": "bbox_ymax",
+            "type": "number",
+            "description": "Bounding box north edge (latitude).",
+            "enum": null,
+            "shapefile_field": "bbox_ymax"
+        },
+        {
+            "name": "geometry",
+            "type": "geometry",
+            "description": "The zone: a MultiPolygon as ISO WKB, longitude/latitude (OGC:CRS84), counterclockwise exterior rings, clipped to the district's Census TIGER/Line boundary.",
+            "enum": null,
+            "shapefile_field": null
+        }
+    ],
+    "joined_label_fields": [
+        "school_name",
+        "nces_school_id",
+        "district_name",
+        "district_census_id",
+        "nces_lea_id"
+    ],
+    "shapefile_field_map": {
+        "year": "year",
+        "district_code": "dist_code",
+        "school_code": "schl_code",
+        "zone_level": "zone_lvl",
+        "grade_low": "grade_lo",
+        "grade_high": "grade_hi",
+        "source_school_name": "src_name",
+        "method": "method",
+        "accuracy_class": "accuracy",
+        "positional_rmse_m": "rmse_m",
+        "boundary_vintage": "bnd_vntg",
+        "currency_status": "currency",
+        "source_url": "src_url",
+        "source_publisher": "src_pub",
+        "retrieved_on": "retrieved",
+        "currency_note": "curr_note",
+        "area_sq_mi": "area_sqmi",
+        "bbox_xmin": "bbox_xmin",
+        "bbox_ymin": "bbox_ymin",
+        "bbox_xmax": "bbox_xmax",
+        "bbox_ymax": "bbox_ymax",
+        "school_name": "schl_name",
+        "district_name": "dist_name",
+        "nces_school_id": "nces_schid",
+        "nces_lea_id": "nces_lea",
+        "district_census_id": "dist_cenid",
+        "tiger_geoid": "tgr_geoid",
+        "tiger_vintage": "tgr_vntg",
+        "boundary_type": "bnd_type",
+        "tract_geoid": "tract_id",
+        "county_fips": "cnty_fips",
+        "land_area_sq_mi": "land_sqmi"
+    },
+    "shapefile_text_limit": "dBASE text fields hold at most 254 bytes (UTF-8). A longer value (a long boundary_vintage or source_url) is cut in the shapefile only, at a character boundary, to at most 251 bytes followed by '...'. GeoJSON, GeoParquet and json carry the full text; currency_note always fits.",
+    "formats": [
+        "geojson",
+        "shapefile",
+        "geoparquet",
+        "json"
+    ],
+    "resolutions": {
+        "display": "simplified as a coverage (shared edges stay shared); maps",
+        "full": "the full-resolution polygons the lookup uses"
+    },
+    "companion_files": [
+        {
+            "file": "_zones_display.parquet",
+            "description": "The same rows simplified for plotting (about 7 m tolerance, simplified as a coverage so neighbouring zones keep shared edges). Never used for lookups."
+        },
+        {
+            "file": "_coverage.parquet",
+            "description": "One row per standard district (all 180): tier, status, per-level land and population coverage, methods, and the reason for anything short of complete. Served by the /coverage endpoint; columns below.",
+            "columns": [
+                {
+                    "name": "year",
+                    "description": "School year, as its ending year (2027 = 2026-27)."
+                },
+                {
+                    "name": "district_code",
+                    "description": "GOSA district code."
+                },
+                {
+                    "name": "tier",
+                    "description": "Source tier: A (vector layer or polygon API), B (partial, recent or vendor vector), C (map images or PDFs, or street lists), N (one zoned school per grade: the district outline is each zone), D (address lookup only) or E (no current source; D and E publish only their single-school levels)."
+                },
+                {
+                    "name": "status",
+                    "description": "complete (each level's zones cover at least 98% of the district's land at every grade of the level, and a multi-school level's at least 98% of its 2020 population; reason lists small known gaps), partial (some level falls short; reason says why), one_school_per_grade (Tier N), or not_available (no zones published)."
+                },
+                {
+                    "name": "levels_covered",
+                    "description": "Levels with zones, comma-separated."
+                },
+                {
+                    "name": "level_status_elementary",
+                    "description": "Per level (also level_status_middle, level_status_high): zoned, one_school_per_grade (one school, the district outline), partial (zones that leave a grade of the level, or more than 2% of its land or, for a multi-school level, of its 2020 population, unassigned, or a new school's zone withheld), not_available (no zones published at this level), or served_by_other_district."
+                },
+                {
+                    "name": "pct_land_area_elementary",
+                    "description": "Per level (also _middle, _high): share of the district's 2020 land blocks the level's zones cover, at the level's worst grade (k-05, 06-08, 09-12; a grade counts as covered by a zone of any level that assigns it). Null when the level has no zones."
+                },
+                {
+                    "name": "pct_population_elementary",
+                    "description": "Per level (also _middle, _high): share of the district's 2020 residents (blocks by interior point, including blocks the Census Block Assignment File gives the district outside its current TIGER outline) in a zone, at the level's worst grade."
+                },
+                {
+                    "name": "zone_count",
+                    "description": "Number of zone rows in the district."
+                },
+                {
+                    "name": "methods",
+                    "description": "The zones' method values, comma-separated."
+                },
+                {
+                    "name": "accuracy_classes",
+                    "description": "The zones' accuracy_class values, comma-separated."
+                },
+                {
+                    "name": "currency_statuses",
+                    "description": "The zones' currency_status values, comma-separated."
+                },
+                {
+                    "name": "reason",
+                    "description": "Why the district falls short of complete, and its known gaps: the residents (2020) no zone covers, slivers along the district line, and residents of Block Assignment File blocks outside its outline. A lookup in a gap returns it."
+                },
+                {
+                    "name": "best_lead",
+                    "description": "Tier D/E: the most promising way to obtain the zones."
+                },
+                {
+                    "name": "extension_note",
+                    "description": "What a lookup says in a Department of Defense area the district serves at some grades (Fort Benning's on-post high-school choice)."
+                },
+                {
+                    "name": "served_elsewhere",
+                    "description": "Levels the district does not operate: zone_level, the receiving district_code and school_code, and the reason."
+                },
+                {
+                    "name": "geometry",
+                    "description": "The district's TIGER outline, simplified for display."
+                }
+            ]
+        },
+        {
+            "file": "_school_status.parquet",
+            "description": "One row per school of the 180 standard districts (their active schools in the 2024-25 NCES directory, plus those opened since that have a zone source): whether the school has a zone here and, if not, why. Plain Parquet, no geometry. Schools of other districts (state charter schools, state schools, regional agencies) and schools no longer active have no row. Served by the /school_status endpoint; columns below.",
+            "columns": [
+                {
+                    "name": "year",
+                    "description": "School year, as its ending year (2027 = 2026-27)."
+                },
+                {
+                    "name": "district_code",
+                    "description": "GOSA district code."
+                },
+                {
+                    "name": "school_code",
+                    "description": "GOSA school code; with district_code, the key to the schools dimension (the school's name, grades, NCES id and coordinates)."
+                },
+                {
+                    "name": "zone_status",
+                    "description": "zoned (the school has at least one zone in zones.parquet), no_zone (it has no attendance zone by design; no_zone_category and reason say why) or not_yet_collected (it should have a zone and none is published here yet; reason is the district's coverage reason). A zoned school can still lack a zone for some of its grades: this table does not show that (compare zones.parquet's grade_low and grade_high with the school's grades)."
+                },
+                {
+                    "name": "zone_levels",
+                    "description": "The levels the school's zones carry (elementary, middle, high), comma-separated in that order. Null unless zoned."
+                },
+                {
+                    "name": "no_zone_category",
+                    "description": "Why a no_zone school has no zone: charter, virtual, alternative, special_education, vocational (career and technical), pre_k_only, no_grades (no grade span on record), magnet_or_choice (a magnet, theme, career or other school students apply to or choose), residential_or_treatment (a school within a residential or treatment program), closed_or_consolidated (closed, or merged into another school, since the schools dimension's 2025-26 snapshot) or other. Null unless no_zone."
+                },
+                {
+                    "name": "reason",
+                    "description": "One or more plain sentences: for no_zone, why this school has no attendance zone; for not_yet_collected, why its district's zones are missing or incomplete (the coverage table's reason). Null when zoned."
+                }
+            ]
+        }
+    ],
+    "limitations": "Not an official enrollment determination: confirm any assignment with the district. A zone is the default assignment, not the only option: students can attend another public school by transfer or at charter, magnet and other choice schools (see the attendance_rules route). Coverage varies by district (see the coverage table); a point inside a district but outside every zone of a level is a gap, never filled by guessing a school: usually the source assigns it to no school, sometimes a sliver where the source's line and the Census district line differ (the coverage table's reason counts the residents in both). Digitized maps do have their road and label holes, and unaddressed street-list blocks, given to the nearest zone. Some districts' choice or transfer areas (such as Social Circle's Zone 5) are not zones and are not modelled. Digitized zones carry georeferencing error (positional_rmse_m) and approximate reconstructions are coarser still. Some lines predate adopted changes (currency_status = stale_known_changes). Charter, magnet, alternative, virtual and special-program schools have no zones: the school status table (_school_status.parquet, served at /school_status) lists every school of the 180 standard districts with whether it has a zone here and, if not, why.",
+    "note": "Not an official enrollment determination: attendance zones change, and these are reconstructed from published sources of varying currency and accuracy (see each zone's method, accuracy_class and currency_status). Confirm with the school district.",
+    "assignment_note": "A zone is the default assignment, not the only option: a Georgia student may attend another public school by transfer, or a charter, magnet or other choice school. See attendance_rules for the main ways.",
+    "filters": {
+        "district_code": "comma list",
+        "school_code": "comma list",
+        "zone_level": "comma list of the zone_level enum",
+        "grade": "one grade (PK, KK, 01-12): zones serving it",
+        "year": "school year (the year it ends)",
+        "format": [
+            "geojson",
+            "shapefile",
+            "geoparquet",
+            "json"
+        ],
+        "resolution": [
+            "display",
+            "full"
+        ]
+    },
+    "endpoints": {
+        "rows": "/api/v1/datasets/school_attendance_zones/rows",
+        "contract": "/api/v1/datasets/school_attendance_zones/contract",
+        "coverage": "/api/v1/datasets/school_attendance_zones/coverage",
+        "school_status": "/api/v1/datasets/school_attendance_zones/school_status",
+        "attendance_rules": "/api/v1/datasets/school_attendance_zones/attendance_rules",
+        "locate": "/api/v1/locate"
+    }
+}
