@@ -40,18 +40,23 @@ the [R package](https://georgiacivicdata.org/r/), with a `gcd_` prefix.
 
 ## Installation
 
-The package is not on PyPI yet. Install the development version from
-GitHub:
+Install the package from PyPI:
 
 ```bash
-pip install "georgiacivicdata @ git+https://github.com/shanejorr/georgia-data-pypackage"
+pip install georgiacivicdata
 ```
 
 The `polars` extra adds Polars output and the `geo` extra adds geopandas for
 maps:
 
 ```bash
-pip install "georgiacivicdata[polars,geo] @ git+https://github.com/shanejorr/georgia-data-pypackage"
+pip install "georgiacivicdata[polars,geo]"
+```
+
+Or install the development version from GitHub:
+
+```bash
+pip install "georgiacivicdata @ git+https://github.com/shanejorr/georgia-data-pypackage"
 ```
 
 ## Example: graduation rates in Fulton County
@@ -1632,7 +1637,7 @@ catalog, names and filters, and the rules of the data.
 
 # Changelog
 
-## georgiacivicdata 0.1.0 (unreleased)
+## georgiacivicdata 0.1.0
 
 First version: the Python counterpart of the R package georgiacivicdata.
 
