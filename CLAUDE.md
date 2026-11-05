@@ -77,7 +77,7 @@ file.
 | `_locate.py`, `_geocode.py` | `locate()` and the Census batch geocoder |
 | `_meta.py` | `meta()`, `citation()` |
 | `tests/` | pytest; `helpers.py` (shared helpers), `conftest.py` (autouse fixtures), recorded responses in `tests/fixtures/m/`, syrupy snapshots in `tests/__snapshots__/` |
-| `docs/` | Sphinx site: `conf.py`, `index.md`, `reference.md`, `articles/*.ipynb` (executed, committed), `notebooks/*.md` (article sources), `build.py`, `precompile.py` |
+| `docs/` | Sphinx site: `conf.py`, `index.ipynb` and `articles/*.ipynb` (executed, committed), `notebooks/*.md` (their sources), `reference.md`, `agents.md`, `news.md`, `build.py`, `precompile.py` |
 | `.github/workflows/` | `ci.yml` (lint, types, tests on a 3-OS matrix, no-extras job, build), `docs.yml` (builds and deploys to `gh-pages`), `live-api.yml` (weekly live tests) |
 
 ## Conventions
