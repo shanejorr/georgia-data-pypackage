@@ -78,7 +78,7 @@ file.
 | `_meta.py` | `meta()`, `citation()` |
 | `tests/` | pytest; `helpers.py` (shared helpers), `conftest.py` (autouse fixtures), recorded responses in `tests/fixtures/m/`, syrupy snapshots in `tests/__snapshots__/` |
 | `docs/` | Sphinx site: `conf.py`, `index.ipynb` and `articles/*.ipynb` (executed, committed), `notebooks/*.md` (their sources), `reference.md`, `agents.md`, `news.md`, `build.py`, `precompile.py` |
-| `.github/workflows/` | `ci.yml` (lint, types, tests on a 3-OS matrix, no-extras job, build), `docs.yml` (builds and deploys to `gh-pages`), `live-api.yml` (weekly live tests) |
+| `.github/workflows/` | `ci.yml` (lint, types, tests on a 3-OS matrix, no-extras job, build), `docs.yml` (builds and deploys to `gh-pages`), `live-api.yml` (weekly live tests), `publish.yml` (TestPyPI by hand, PyPI on a GitHub release) |
 
 ## Conventions
 
@@ -194,9 +194,23 @@ file.
   green, `uv run python docs/build.py` clean, `uv build` and
   `uvx twine check --strict dist/*`, `NEWS.md` updated, version bumped in
   `pyproject.toml`.
-- **Never publish to PyPI** (`uv publish`, `twine upload`). Shane decides
-  when. When he does, use trusted publishing from GitHub Actions; try
-  TestPyPI first.
+- **Never publish to PyPI or TestPyPI**: no `uv publish` or `twine upload`,
+  no running `publish.yml`, no GitHub release. Shane decides when.
+- Releases go through `.github/workflows/publish.yml` (trusted publishing,
+  no API tokens). Each version can be uploaded to each index only once.
+  1. One commit: the version in `pyproject.toml`, the `NEWS.md` heading
+     (drop "unreleased"), and, for the first release, the install sections
+     of `README.md`, `docs/notebooks/index.md` and `docs/index.ipynb`
+     (`pip install georgiacivicdata` instead of the GitHub install). The
+     push redeploys the docs at once, so release the same day.
+  2. TestPyPI: `gh workflow run publish.yml`. It uploads to TestPyPI, then
+     downloads the wheel back, installs it and imports it.
+  3. PyPI: publish a GitHub release tagged `v<version>` (`v0.1.0`). The job
+     stops if the tag doesn't match `pyproject.toml`.
+- One-time setup, by Shane on pypi.org and test.pypi.org: a (pending)
+  trusted publisher with owner `shanejorr`, repository
+  `georgia-data-pypackage`, workflow `publish.yml`, and environment `pypi`
+  or `testpypi`.
 
 ## Documentation site
 
