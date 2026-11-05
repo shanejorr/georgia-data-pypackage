@@ -26,6 +26,7 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
+from urllib.parse import urljoin
 
 DOCS = Path(__file__).resolve().parent
 BUILD = DOCS / "_build"
@@ -166,8 +167,17 @@ def write_llms(pages: list[Path]) -> None:
     order = [n for n, _, _ in GUIDES if n in by_name] + reference + others
     parts = []
     for name in order:
+        page_url = f"{SITE_URL}{name}.md"
         text = (HTML / by_name[name]).read_text(encoding="utf-8")
-        parts.append(f"<!-- {SITE_URL}{name}.md -->\n\n{text}")
+        # Relative links (the figures in _images/) resolve from each page's own
+        # folder, not from the site root where llms-full.txt sits: make them
+        # absolute.
+        text = re.sub(
+            r"\]\((?![a-z]+:|#)([^)\s]+)\)",
+            lambda m, base=page_url: f"]({urljoin(base, m.group(1))})",
+            text,
+        )
+        parts.append(f"<!-- {page_url} -->\n\n{text}")
     (HTML / "llms-full.txt").write_text("\n\n---\n\n".join(parts), encoding="utf-8")
 
 
