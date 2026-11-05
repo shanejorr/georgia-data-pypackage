@@ -84,8 +84,6 @@ html_theme_options = {
     "github_url": "https://github.com/shanejorr/georgia-data-pypackage",
     "external_links": [
         {"name": "Georgia Civic Data", "url": "https://georgiacivicdata.org"},
-        {"name": "API docs", "url": "https://georgiacivicdata.org/docs"},
-        {"name": "R package", "url": "https://georgiacivicdata.org/r/"},
     ],
     "header_links_before_dropdown": 6,
     "navbar_align": "left",
