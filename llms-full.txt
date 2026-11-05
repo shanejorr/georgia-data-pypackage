@@ -1,0 +1,3367 @@
+<!-- https://georgiacivicdata.org/py/index.md -->
+
+# georgiacivicdata
+
+`georgiacivicdata` brings Georgia's public data into Python. It is the
+Python client for the API run by [Georgia Civic Data](https://georgiacivicdata.org).
+
+Georgia Civic Data gathers, organizes, and standardizes Georgia's public
+data, helping residents, parents, researchers, and professionals find
+answers in data that is already theirs. Every dataset has the same shape,
+with the same codes for counties, school districts, schools and demographic
+groups, so datasets from different agencies can be compared and joined.
+
+The data covers education, Census, health, and immigration. Geographic
+detail spans from the whole state down to single schools and Census tracts.
+Each dataset comes with a data contract that documents its source, its
+columns, and the limits of the data.
+
+With `georgiacivicdata` you can:
+
+- Find Georgia datasets, read the documentation, and get rows, all from
+  Python.
+- Get **pandas or Polars** data frames with consistent column types: codes
+  stay text so leading zeros survive, years are integers, and rates are
+  proportions between 0 and 1.
+- See every school, district, and county code with its name, and filter by
+  name instead of code.
+- Get school attendance zones and district boundaries as geopandas
+  `GeoDataFrame`s, ready to map.
+- Look up the schools zoned for any Georgia address.
+
+There is no API key and nothing to configure. The same functions exist in
+the [R package](https://georgiacivicdata.org/r/), with a `gcd_` prefix
+([Coming from R](https://georgiacivicdata.org/py/coming-from-r.md)).
+
+#### TIP
+**For LLM agents:** every page of this site has a Markdown version. Add
+`.md` to a page's address, or start at
+[llms.txt](https://georgiacivicdata.org/py/llms.txt). See
+[For LLM agents](https://georgiacivicdata.org/py/agents.md).
+
+## Installation
+
+The package is not on PyPI yet. Install the development version from
+GitHub:
+
+```bash
+pip install "georgiacivicdata @ git+https://github.com/shanejorr/georgia-data-pypackage"
+```
+
+The `polars` extra adds Polars output and the `geo` extra adds geopandas for
+maps:
+
+```bash
+pip install "georgiacivicdata[polars,geo] @ git+https://github.com/shanejorr/georgia-data-pypackage"
+```
+
+## Example: graduation rates in Fulton County
+
+This walkthrough answers one question from start to finish: how has the
+high school graduation rate in Fulton County Schools changed over time? It
+follows the usual workflow:
+
+- Find a dataset: `gcd.search()` or `gcd.datasets()`.
+- Learn what is in it: `gcd.columns()` and `gcd.describe()`.
+- Download the data: `gcd.rows()`.
+- Plot it: any Python plotting tool, such as matplotlib.
+
+### Step 1: find the right dataset
+
+Every dataset has a short name, such as `graduation_rate_4_year_cohort`, and
+you need that name to get data. If you don't know it, `gcd.search()`
+searches the catalog in plain words. It matches both keywords and meaning, so
+you don't need the exact wording of a dataset's title. Each result has the
+dataset's `name`, `title`, and the first and last years it covers.
+
+```python
+import georgiacivicdata as gcd
+
+gcd.search("high school graduation", n=5)[["name", "title", "year_min", "year_max"]]
+```
+
+```text
+GCDAdvisory: Lookup tables that match: 'schools', 'districts'. See gcd.dimension().
+```
+
+```text
+                            name                                         title  year_min  year_max
+0          ccrpi_graduation_rate                  High School Graduation Rates      2012      2025
+1  graduation_rate_4_year_cohort              Four-Year Cohort Graduation Rate      2004      2025
+2         high_school_completers                        High School Completers      2011      2025
+3              postsecondary_c11  Postsecondary Enrollment of HS Graduates ...      2010      2023
+4              postsecondary_c12  Postsecondary Outcomes of HS Graduates (C...      2008      2021
+```
+
+The four-year cohort graduation rate, `graduation_rate_4_year_cohort`, is
+the one we want: the share of students who graduate within four years of
+starting ninth grade. `gcd.datasets()` lists the whole catalog, for browsing
+instead of searching.
+
+### Step 2: learn what is in it
+
+Check what a dataset holds before downloading it. `gcd.columns()` lists its
+columns with each one's type, role (a year, a place, a demographic group, or
+a measured value), and unit.
+
+```python
+gcd.columns("graduation_rate_4_year_cohort")[["column", "type", "role", "unit"]]
+```
+
+```text
+                  column     type            role        unit
+0                   year  integer            year        <NA>
+1          district_code   string     fk_district        <NA>
+2          district_name   string           label        <NA>
+3     district_census_id   string           label        <NA>
+4          district_type   string           label        <NA>
+5            school_code   string       fk_school        <NA>
+6            school_name   string           label        <NA>
+7            demographic   string  fk_demographic        <NA>
+8      demographic_label   string           label        <NA>
+9   demographic_category   string           label        <NA>
+10         num_graduates  integer          metric       count
+11            num_cohort  integer          metric       count
+12       graduation_rate   number          metric  proportion
+```
+
+Each row is one year, one place and one demographic group. The value we want
+is `graduation_rate`, a proportion on the 0-1 scale, so 0.9 means 90%.
+
+`gcd.describe()` prints the rest of the dataset's documentation: its source,
+the years and detail levels it covers, and notes on how to use it. Those
+notes matter here. Georgia changed how it calculates the graduation rate in
+2011, so the rates before and after 2011 are not comparable. We start the
+series in 2011.
+
+### Step 3: get the rows
+
+`gcd.rows()` downloads a dataset's rows as a data frame. Filters narrow the
+request:
+
+- `district` takes a district's name and turns it into the district code for
+  you (`district_code` takes the code directly).
+- `detail="districts"` asks for district-wide figures rather than one row
+  per school.
+- `demographic` picks the student groups; `"all"` is every student.
+- `year` picks the years: `range(2011, 2026)` is 2011 to 2025.
+
+```python
+grads = gcd.rows(
+    "graduation_rate_4_year_cohort",
+    district="Fulton County",
+    detail="districts",
+    demographic=["all", "black", "hispanic", "white"],
+    year=range(2011, 2026),
+)
+grads
+```
+
+```text
+GCDAdvisory: This result contains NULL metric cells, which mean the value was SUPPRESSED (small counts), not zero — do not report or chart a NULL as 0 (see null_semantics and each column's null_meaning).
+GCDAdvisory: Demographic groups overlap across categories and may overlap within a category (active_duty can be a subset of military_connected). Read the dataset's definitions and non_additive declarations. Use the published `all` total when available, never add it to its subgroups. Counts reconcile only for complete, disjoint groups; subgroup rates generally do not add to the overall rate.
+GCDAdvisory: `district_census_id` is a 5-digit Census school-district code, NOT a county FIPS, and a district is not 1:1 with a county — do not map these district rows as counties.
+```
+
+```text
+    year district_code  district_name district_census_id district_type  ... demographic_label  \
+0   2011           660  Fulton County              02280      standard  ...               All   
+1   2011           660  Fulton County              02280      standard  ...             Black   
+2   2011           660  Fulton County              02280      standard  ...          Hispanic   
+3   2011           660  Fulton County              02280      standard  ...             White   
+4   2012           660  Fulton County              02280      standard  ...               All   
+5   2012           660  Fulton County              02280      standard  ...             Black   
+6   2012           660  Fulton County              02280      standard  ...          Hispanic   
+7   2012           660  Fulton County              02280      standard  ...             White   
+8   2013           660  Fulton County              02280      standard  ...               All   
+9   2013           660  Fulton County              02280      standard  ...             Black   
+10  2013           660  Fulton County              02280      standard  ...          Hispanic   
+11  2013           660  Fulton County              02280      standard  ...             White   
+12  2014           660  Fulton County              02280      standard  ...               All   
+13  2014           660  Fulton County              02280      standard  ...             Black   
+14  2014           660  Fulton County              02280      standard  ...          Hispanic   
+15  2014           660  Fulton County              02280      standard  ...             White   
+16  2015           660  Fulton County              02280      standard  ...               All   
+17  2015           660  Fulton County              02280      standard  ...             Black   
+18  2015           660  Fulton County              02280      standard  ...          Hispanic   
+19  2015           660  Fulton County              02280      standard  ...             White   
+20  2016           660  Fulton County              02280      standard  ...               All   
+21  2016           660  Fulton County              02280      standard  ...             Black   
+22  2016           660  Fulton County              02280      standard  ...          Hispanic   
+23  2016           660  Fulton County              02280      standard  ...             White   
+24  2017           660  Fulton County              02280      standard  ...               All   
+25  2017           660  Fulton County              02280      standard  ...             Black   
+26  2017           660  Fulton County              02280      standard  ...          Hispanic   
+27  2017           660  Fulton County              02280      standard  ...             White   
+28  2018           660  Fulton County              02280      standard  ...               All   
+29  2018           660  Fulton County              02280      standard  ...             Black   
+30  2018           660  Fulton County              02280      standard  ...          Hispanic   
+31  2018           660  Fulton County              02280      standard  ...             White   
+32  2019           660  Fulton County              02280      standard  ...               All   
+33  2019           660  Fulton County              02280      standard  ...             Black   
+34  2019           660  Fulton County              02280      standard  ...          Hispanic   
+35  2019           660  Fulton County              02280      standard  ...             White   
+36  2020           660  Fulton County              02280      standard  ...               All   
+37  2020           660  Fulton County              02280      standard  ...             Black   
+38  2020           660  Fulton County              02280      standard  ...          Hispanic   
+39  2020           660  Fulton County              02280      standard  ...             White   
+40  2021           660  Fulton County              02280      standard  ...               All   
+41  2021           660  Fulton County              02280      standard  ...             Black   
+42  2021           660  Fulton County              02280      standard  ...          Hispanic   
+43  2021           660  Fulton County              02280      standard  ...             White   
+44  2022           660  Fulton County              02280      standard  ...               All   
+45  2022           660  Fulton County              02280      standard  ...             Black   
+46  2022           660  Fulton County              02280      standard  ...          Hispanic   
+47  2022           660  Fulton County              02280      standard  ...             White   
+48  2023           660  Fulton County              02280      standard  ...               All   
+49  2023           660  Fulton County              02280      standard  ...             Black   
+50  2023           660  Fulton County              02280      standard  ...          Hispanic   
+51  2023           660  Fulton County              02280      standard  ...             White   
+52  2024           660  Fulton County              02280      standard  ...               All   
+53  2024           660  Fulton County              02280      standard  ...             Black   
+54  2024           660  Fulton County              02280      standard  ...          Hispanic   
+55  2024           660  Fulton County              02280      standard  ...             White   
+56  2025           660  Fulton County              02280      standard  ...               All   
+57  2025           660  Fulton County              02280      standard  ...             Black   
+58  2025           660  Fulton County              02280      standard  ...          Hispanic   
+59  2025           660  Fulton County              02280      standard  ...             White   
+
+   demographic_category num_graduates  num_cohort  graduation_rate  
+0             aggregate          5396        7703           0.7005  
+1                  race          2057        3536           0.5817  
+2                  race           364         671           0.5425  
+3                  race          2343        2707           0.8655  
+4             aggregate          5233        <NA>           0.7134  
+5                  race          1876        <NA>           0.5629  
+6                  race           329        <NA>           0.5117  
+7                  race          2338        <NA>           0.9066  
+8             aggregate          5483        <NA>           0.7550  
+9                  race          2005        <NA>           0.6330  
+10                 race           423        <NA>           0.5930  
+11                 race          2355        <NA>           0.9100  
+12            aggregate          5610        <NA>           0.7870  
+13                 race          2007        <NA>           0.6770  
+14                 race           454        <NA>           0.6210  
+15                 race          2393        <NA>           0.9220  
+16            aggregate          6061        <NA>           0.8528  
+17                 race          2356        <NA>           0.7814  
+18                 race           500        <NA>           0.7299  
+19                 race          2391        <NA>           0.9391  
+20            aggregate          6213        <NA>           0.8662  
+21                 race          2570        <NA>           0.8133  
+22                 race           547        <NA>           0.7534  
+23                 race          2214        <NA>           0.9482  
+24            aggregate          6406        7379           0.8681  
+25                 race          2603        3212           0.8104  
+26                 race           624         836           0.7464  
+27                 race          2379        2488           0.9562  
+28            aggregate          6708        7731           0.8677  
+29                 race          2666        3335           0.7994  
+30                 race           734         939           0.7817  
+31                 race          2322        2426           0.9571  
+32            aggregate          6859        7863           0.8723  
+33                 race          2786        3430           0.8122  
+34                 race           817        1008           0.8105  
+35                 race          2300        2417           0.9516  
+36            aggregate          6565        7682           0.8546  
+37                 race          2524        3225           0.7826  
+38                 race           859        1109           0.7746  
+39                 race          2239        2355           0.9507  
+40            aggregate          6648        7579           0.8772  
+41                 race          2488        3069           0.8107  
+42                 race           857        1085           0.7899  
+43                 race          2280        2367           0.9632  
+44            aggregate          6782        7598           0.8926  
+45                 race          2595        3124           0.8307  
+46                 race           917        1094           0.8382  
+47                 race          2179        2249           0.9689  
+48            aggregate          6815        7547           0.9030  
+49                 race          2634        3038           0.8670  
+50                 race           926        1134           0.8166  
+51                 race          2118        2195           0.9649  
+52            aggregate          6977        7695           0.9067  
+53                 race          2828        3278           0.8627  
+54                 race          1023        1175           0.8706  
+55                 race          2015        2085           0.9664  
+56            aggregate          7294        7934           0.9193  
+57                 race          2962        3385           0.8750  
+58                 race          1091        1226           0.8899  
+59                 race          2012        2067           0.9734  
+
+[60 rows x 11 columns]
+```
+
+Each place comes back with both its code and its name, and each demographic
+code with a readable label. The API also sends advisories, shown as
+`GCDAdvisory` warnings. Here they warn that the `all` total sits beside the
+subgroups, so never add a total to its subgroups. A missing value usually
+means the figure was **suppressed** to protect small groups, not that it is
+zero.
+
+### Step 4: plot the overall rate
+
+The result is an ordinary data frame. To plot the overall rate over time,
+keep the rows where `demographic` is `"all"` and draw a line.
+
+```python
+import matplotlib.pyplot as plt
+from matplotlib.ticker import PercentFormatter
+
+grads_all = grads[grads["demographic"] == "all"]
+
+fig, ax = plt.subplots(figsize=(7, 4))
+ax.plot(grads_all["year"], grads_all["graduation_rate"], marker="o", color="#1f5f8b")
+ax.yaxis.set_major_formatter(PercentFormatter(1))
+ax.set_ylim(0.6, 1)
+ax.set_title("Fulton County Schools four-year graduation rate, all students")
+ax.set_ylabel("Graduation rate")
+ax.spines[["top", "right"]].set_visible(False)
+fig.text(0.99, 0.01, "Source: Georgia Civic Data (GOEWS)", ha="right", fontsize=8)
+plt.show()
+```
+
+![image](_images/ec9fa6fe02c79a1243e157d3ab1deeb66ad8ce75e6d86a29260a8673bffc75e1.png)
+
+### pandas or Polars
+
+pandas is the default. Every table function takes `backend="polars"`, and
+`gcd.set_option("backend", "polars")` switches the whole session:
+
+```python
+gcd.rows(
+    "graduation_rate_4_year_cohort",
+    district="Fulton County",
+    detail="districts",
+    demographic="all",
+    year=range(2023, 2026),
+    quiet=True,
+    backend="polars",
+)
+```
+
+```text
+shape: (3, 11)
+┌──────┬────────────┬────────────┬────────────┬───┬────────────┬───────────┬───────────┬───────────┐
+│ year ┆ district_c ┆ district_n ┆ district_c ┆ … ┆ demographi ┆ num_gradu ┆ num_cohor ┆ graduatio │
+│ ---  ┆ ode        ┆ ame        ┆ ensus_id   ┆   ┆ c_category ┆ ates      ┆ t         ┆ n_rate    │
+│ i64  ┆ ---        ┆ ---        ┆ ---        ┆   ┆ ---        ┆ ---       ┆ ---       ┆ ---       │
+│      ┆ str        ┆ str        ┆ str        ┆   ┆ str        ┆ i64       ┆ i64       ┆ f64       │
+╞══════╪════════════╪════════════╪════════════╪═══╪════════════╪═══════════╪═══════════╪═══════════╡
+│ 2023 ┆ 660        ┆ Fulton     ┆ 02280      ┆ … ┆ aggregate  ┆ 6815      ┆ 7547      ┆ 0.903     │
+│      ┆            ┆ County     ┆            ┆   ┆            ┆           ┆           ┆           │
+│ 2024 ┆ 660        ┆ Fulton     ┆ 02280      ┆ … ┆ aggregate  ┆ 6977      ┆ 7695      ┆ 0.9067    │
+│      ┆            ┆ County     ┆            ┆   ┆            ┆           ┆           ┆           │
+│ 2025 ┆ 660        ┆ Fulton     ┆ 02280      ┆ … ┆ aggregate  ┆ 7294      ┆ 7934      ┆ 0.9193    │
+│      ┆            ┆ County     ┆            ┆   ┆            ┆           ┆           ┆           │
+└──────┴────────────┴────────────┴────────────┴───┴────────────┴───────────┴───────────┴───────────┘
+```
+
+## Lookup tables
+
+Datasets hold codes and figures, with place names added. Everything else
+known about a place lives in shared lookup tables, called dimensions: a
+district's type, a school's level, grade span, locale (city, suburb, town or
+rural), charter status, address and coordinates, and a Census tract's land
+area and population. `gcd.dimension()` returns one as a data frame, with the
+same name filters as `gcd.rows()`.
+
+Lookup tables help you:
+
+- Browse what exists before you request data, such as every active high
+  school in a district.
+- Add attributes the datasets don't carry, then filter or group by them.
+- Map schools with their coordinates.
+
+Here are the active high schools in Fulton County with their locale:
+
+```python
+gcd.dimension(
+    "schools",
+    district="Fulton County",
+    school_level="high",
+    active=True,
+    columns=["district_code", "school_code", "school_name", "locale"],
+)
+```
+
+```text
+   district_code school_code                             school_name  locale
+0            660        0106                      Milton High School  suburb
+1            660        0118        Hapeville Charter Career Academy  suburb
+2            660        0119                   Cambridge High School  suburb
+3            660        0176                    Banneker High School  suburb
+4            660        0191                     Roswell High School    city
+5            660        0198                  Centennial High School    city
+6            660        0203                   Northview High School  suburb
+7            660        0205                  Alpharetta High School    city
+8            660        0291                   Creekside High School  suburb
+9            660        0386                Independence High School    city
+10           660        0392               Chattahoochee High School  suburb
+11           660        0691                  Tri-Cities High School  suburb
+12           660        0910                 Johns Creek High School  suburb
+13           660        1110             Langston Hughes High School   rural
+14           660        1320                     Skyview High School  suburb
+15           660        1322                      Innovation Academy    city
+16           660        1323                   Global Impact Academy  suburb
+17           660        1325    Fulton Academy Of Virtual Excellence    city
+18           660        1326         Promise Career Institute School  suburb
+19           660        3066  Riverwood International Charter School    city
+20           660        4062               North Springs High School    city
+21           660        5069                    Westlake High School  suburb
+```
+
+To compare graduation rates by locale, merge the locale into school-level
+graduation rates. School codes repeat across districts, so merge on
+`district_code` and `school_code` together.
+
+```python
+schools = gcd.dimension(
+    "schools",
+    district="Fulton County",
+    columns=["district_code", "school_code", "locale"],
+)
+
+school_grads = gcd.rows(
+    "graduation_rate_4_year_cohort",
+    district="Fulton County",
+    detail="schools",
+    demographic="all",
+    year=2025,
+    quiet=True,
+)
+
+school_grads = school_grads.merge(schools, on=["district_code", "school_code"])
+school_grads.groupby("locale")["graduation_rate"].median()
+```
+
+```text
+locale
+city      0.95080
+rural     0.94330
+suburb    0.96585
+Name: graduation_rate, dtype: float64
+```
+
+Fulton County has only two rural high schools, so treat this as an
+illustration, not a finding.
+
+## School zones and places
+
+`gcd.school_zones()` returns school attendance zones as a geopandas
+`GeoDataFrame`, ready to map. This map shows the high school zones in
+Atlanta Public Schools:
+
+```python
+zones = gcd.school_zones(district="Atlanta Public Schools", zone_level="high")
+
+ax = zones.plot(
+    column="school_name", edgecolor="white", linewidth=0.5, figsize=(6, 5), cmap="tab20"
+)
+ax.set_title("Atlanta Public Schools high school zones, 2026-27")
+ax.set_axis_off()
+plt.show()
+```
+
+![image](_images/47552da58dffa94b5a31f617b02f0cca4971c0152c598c4b9d45f2cf63b17d6b.png)
+
+`gcd.locate()` goes the other way: give it an address or a point, and it
+returns the places that contain it, including the county, Census tract,
+school district and zoned schools. Addresses are geocoded on your computer
+with the U.S. Census geocoder, so only the point reaches the Georgia Civic
+Data API.
+
+```python
+# The Georgia State Capitol
+gcd.locate(address="206 Washington St SW, Atlanta, GA 30334")[
+    ["geographic_type", "geographic_id", "geographic_name", "grades"]
+]
+```
+
+```text
+GCDAdvisory: A zone is the default assignment, not the only option: a Georgia student may attend another public school by transfer, or a charter, magnet or other choice school. See attendance_rules for the main ways.
+```
+
+```text
+     geographic_type geographic_id                               geographic_name grades
+0             county         13121                                        Fulton   <NA>
+1              tract   13121003500                               Census Tract 35   <NA>
+2        block_group  131210035001  Block Group 1, Census Tract 35, Fulton Co...   <NA>
+3    school_district           761                        Atlanta Public Schools   <NA>
+4  elementary_school      761-0199                  Centennial Academy (Charter)    K-5
+5      middle_school      761-0199                  Centennial Academy (Charter)    6-8
+6        high_school      761-4560                           Midtown High School   9-12
+```
+
+## Data license and citation
+
+The data is published under the [Creative Commons Attribution 4.0
+International license (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/):
+credit Georgia Civic Data and the original source. `gcd.citation()` writes
+the citation for any result:
+
+```python
+gcd.citation(grads)
+```
+
+```text
+"Four-Year Cohort Graduation Rate. Georgia Civic Data (georgiacivicdata.org), CC BY 4.0. https://georgiacivicdata.org/api/v1/datasets/graduation_rate_4_year_cohort. Original source: Governor's Office of Education and Workforce Strategy (GOEWS, formerly GOSA)."
+```
+
+The package code is MIT-licensed.
+
+## Learn more
+
+- [Get started](https://georgiacivicdata.org/py/articles/get-started.md): the catalog, names and filters,
+  and the rules of the data that are easy to get wrong.
+- [Analyzing Georgia data](https://georgiacivicdata.org/py/articles/analysis.md): joining two datasets
+  and pooling rates from their counts.
+- [School zones and places](https://georgiacivicdata.org/py/articles/school-zones.md): maps, zone status
+  and locating points and addresses.
+- [Reference](https://georgiacivicdata.org/py/reference.md): every function.
+- Georgia Civic Data: [https://georgiacivicdata.org](https://georgiacivicdata.org)
+- API documentation: [https://georgiacivicdata.org/docs](https://georgiacivicdata.org/docs)
+
+
+---
+
+<!-- https://georgiacivicdata.org/py/articles/get-started.md -->
+
+# Get started
+
+`georgiacivicdata` reads the [Georgia Civic Data](https://georgiacivicdata.org)
+API: cleaned public data about Georgia's schools and communities. The
+[home page](https://georgiacivicdata.org/py/index.md) walks through the basic workflow (search for a
+dataset, read its columns, get its rows, plot them and cite them) with
+Fulton County's graduation rate. This article covers what that example
+leaves out: how to narrow the catalog, how names and filters work, and the
+rules of the data that are easy to get wrong.
+
+```python
+import georgiacivicdata as gcd
+```
+
+## Browse the catalog
+
+`gcd.datasets()` is the whole catalog, one row per dataset. Every argument
+narrows it on the server:
+
+```python
+catalog = gcd.datasets()
+catalog.groupby(["main_topic", "kind"]).size()
+```
+
+```text
+main_topic   kind    
+census       table       28
+education    geometry     2
+             table       61
+health       table       62
+immigration  table       23
+dtype: int64
+```
+
+```python
+gcd.datasets(main_topic="education", level="districts", year=2025)[["name", "title"]]
+```
+
+```text
+                                            name                                         title
+0                          ccrpi_content_mastery                         CCRPI Content Mastery
+1                          ccrpi_graduation_rate                  High School Graduation Rates
+2                                 ccrpi_progress                                CCRPI Progress
+3                                ccrpi_readiness                               CCRPI Readiness
+4                     ccrpi_scoring_by_component                   CCRPI Scores and Components
+5                            enrollment_by_grade   Enrollment by Grade Level (Fall and Spring)
+6         enrollment_march_gender_race_ethnicity           March Enrollment by Race and Gender
+7                  enrollment_october_disability    Special Education Enrollment by Disability
+8       enrollment_october_gender_race_ethnicity         October Enrollment by Race and Gender
+9                             free_reduced_lunch      Free and Reduced-Price Lunch Eligibility
+10              georgia_milestones_end_of_course  Georgia Milestones End-of-Course (EOC) Re...
+11               georgia_milestones_end_of_grade  Georgia Milestones End-of-Grade (EOG) Res...
+12          pathway_completion_advanced_academic  Pathway Completer Graduation Rate: Advanc...
+13                       pathway_completion_ctae       Pathway Completer Graduation Rate: CTAE
+14                  pathway_completion_fine_arts  Pathway Completer Graduation Rate: Fine Arts
+15             pathway_completion_world_language  Pathway Completer Graduation Rate: World ...
+16                                    act_scores             ACT College Readiness Test Scores
+17                     advanced_placement_scores           Advanced Placement (AP) Exam Scores
+18                                    attendance    Student Attendance and Chronic Absenteeism
+19              certified_personnel_compensation  Certified Personnel Compensation (Salarie...
+20               certified_personnel_composition  Certified Personnel Composition (Staff Ch...
+21                certified_personnel_experience       Certified Personnel Years of Experience
+22                          direct_certification    Direct Certification for Free School Meals
+23                             dropout_rate_7_12                      Grade 7-12 Dropout Rates
+24                             dropout_rate_9_12                     Grades 9-12 Dropout Rates
+25  educator_qualifications_emergency_and_pro...               Emergency-Credentialed Teachers
+26  educator_qualifications_inexperienced_tea...            Inexperienced Teachers and Leaders
+27  educator_qualifications_out_of_field_teac...                         Out-of-Field Teachers
+28                     english_learner_exit_rate             English Learner Program Exit Rate
+29                 enrollment_demographic_shares                 Enrollment Demographic Shares
+30              enrollment_program_participation              Enrollment Program Participation
+31              financial_efficiency_star_rating       Financial Efficiency Star Rating (FESR)
+32                  georgia_alternate_assessment            Georgia Alternate Assessment (GAA)
+33  georgia_milestones_end_of_course_by_grade...  Georgia Milestones End-of-Course (EOC) Re...
+34       georgia_milestones_end_of_course_lexile  Georgia Milestones EOC Lexile Reading Scores
+35  georgia_milestones_end_of_grade_by_grade_...  Georgia Milestones End-of-Grade Assessmen...
+36        georgia_milestones_end_of_grade_lexile  Georgia Milestones End-of-Grade Lexile Re...
+37                 graduation_rate_4_year_cohort              Four-Year Cohort Graduation Rate
+38                        high_school_completers                        High School Completers
+39                       hope_eligible_graduates                       HOPE-Eligible Graduates
+40                              k12_expenditures        K-12 Expenditures by Spending Function
+41                                  k12_revenues               K-12 Revenues by Funding Source
+42                         per_pupil_expenditure                  Per-Pupil Expenditure (FESR)
+43                             retained_students            Retained (Held-Back) K-12 Students
+44                         salaries_and_benefits                District Salaries and Benefits
+45                            sat_scores_highest            SAT Scores (Highest Section Score)
+46                             sat_scores_recent       SAT Scores (Most Recent Administration)
+47                         student_mobility_rate                        Student Mobility Rates
+48             state_charter_academic_comparison             State Charter Academic Comparison
+49     state_charter_accountability_designations     State Charter Accountability Designations
+50           state_charter_financial_performance           State Charter Financial Performance
+```
+
+## Read a dataset's notes
+
+`gcd.describe()` prints what a dataset holds, where it comes from, its years
+and detail levels, the columns that identify a row (its *grain*) and the
+notes its data contract declares:
+
+```python
+gcd.describe("graduation_rate_4_year_cohort")
+```
+
+```text
+-- Four-Year Cohort Graduation Rate (graduation_rate_4_year_cohort) ------------
+Share of the four-year high school cohort that graduated, by school, district,
+and state and demographic subgroup, 2004-2025.
+
+Source: Governor's Office of Education and Workforce Strategy (GOEWS, formerly
+GOSA)
+Years: 2004-2025
+Detail levels: districts, schools (default), states
+Grain: year, district_code, school_code, demographic
+Key metric: graduation_rate
+Columns: 7, plus 6 joined name columns (see .columns); filters: 18 (see
+.filters)
+
+-- Notes -----------------------------------------------------------------------
+* Missing values: missing means suppressed (small counts), not zero; zeros are
+  real from 2010 on.
+* Limitations: 2004-2010 figures predate Georgia's adoption of the federal four-
+  year adjusted-cohort methodology (ACGR, first reported 2011) and use the
+  state's earlier leaver-based rate; the 2010->2011 state rate drop (~81% to
+  ~67%) is a methodology break, not a real decline — do not trend across it.
+  Suppressed cells are NULL (not zero) from 2010 onward, but 2004-2009 sources
+  use literal ZEROS for suppressed cells — a zero rate/count in those years may
+  be real or suppressed and cannot be distinguished; treat very small cohorts in
+  2004-2009 with caution. num_cohort is NULL for every row in 2012-2016 (the
+  source publishes no denominator in those years). The 2004 file lists every
+  public school, including elementary and middle schools with no graduating
+  cohort, so 1,703 of its 2,037 all-students school rows have no graduate count
+  or rate; from 2005 only schools with a graduating cohort are listed (344 in
+  2005). School rows do not always sum to the published district row: of the
+  42,815 district rows (all subgroups) with a published num_graduates and at
+  least one published school value, 468 publish a district num_graduates below
+  the sum of its school rows, 49 of them among the 4,039 all-students rows
+  (source-published, 2005-2025; e.g. 2016 Whitfield 709 vs 810, 2014 Richmond
+  economically_disadvantaged 582 vs 1,286) — use the official district/state
+  rows for rollups rather than summing school rows. economically_disadvantaged
+  is not a like-for-like group across years. Statewide it is 55-56% of the
+  cohort in 2017-2021, then 47% (2022), 53% (2023), 61% (2024) and 66% (2025),
+  and district coding shifts: Cobb County puts 98% of its 2021 cohort in the
+  group (36-38% in 2017-2020 and 2023, 20% in 2022) and under 2% of its
+  graduates in 2011, 2012 and 2014, and districts with 100+ graduates that
+  report 10% or less of them in the group or suppress it number 6-11 a year in
+  2021-2023 (0-2 a year in 2016-2020). GOEWS does not document these shifts. The
+  group's graduation rate moves when its membership does, so check its share of
+  the cohort before comparing it across years or districts. The race axis uses
+  the combined asian_pacific_islander bucket — not comparable row-for-row with
+  split-convention topics without aggregating those topics' asian +
+  pacific_islander rows at query time. State rows have NULL district_code and
+  school_code; district rows have NULL school_code.
+* Series break in 2011: From 2011 Georgia reports the federal four-year
+  adjusted-cohort graduation rate, while 2004-2010 use the state's earlier
+  leaver-based count, so the state rate falls from 0.808 (2010) to 0.675 (2011)
+  and the cohort rises from 113,364 to 131,012 because the method changed, not
+  because fewer students graduated.
+```
+
+Some categorical columns have no total. `gcd.describe()` lists them under
+**"Pick one value of"**: for example, `grade_cluster` and `subject` in
+`ccrpi_content_mastery`, whose values must not be mixed in one summary. The
+result's `filters` table shows every filter:
+
+```python
+d = gcd.describe("ccrpi_content_mastery")
+d.filters.loc[d.filters["kind"] == "categorical", ["param", "has_total", "requires_single_value"]]
+```
+
+```text
+              param  has_total  requires_single_value
+8     grade_cluster      False                   True
+9   assessment_type      False                  False
+10          subject      False                   True
+11       ccrpi_flag      False                  False
+```
+
+## Filter by name or by code
+
+Name a district, school or county and the package turns it into a code.
+Names match exactly, ignoring case, accents and a trailing "County", and
+former names work too:
+
+```python
+gcd.rows(
+    "graduation_rate_4_year_cohort",
+    district="Fulton County",
+    school="Riverwood High School",  # a former name
+    demographic="all",
+    year=range(2021, 2026),
+    quiet=True,
+)[["year", "district_code", "school_code", "school_name", "graduation_rate"]]
+```
+
+```text
+   year district_code school_code                             school_name  graduation_rate
+0  2021           660        3066  Riverwood International Charter School           0.9345
+1  2022           660        3066  Riverwood International Charter School           0.9753
+2  2023           660        3066  Riverwood International Charter School           0.9693
+3  2024           660        3066  Riverwood International Charter School           0.9877
+4  2025           660        3066  Riverwood International Charter School           0.9708
+```
+
+A name that matches more than one place stops with the candidates instead
+of guessing. "Eastside Elementary School" is in several districts, and
+Fulton County has an old and a new "Milton High School". The error is a
+`GCDPlaceAmbiguousError`, so a script can catch it:
+
+```python
+try:
+    gcd.rows("graduation_rate_4_year_cohort", school="Milton High School", district="Fulton County")
+except gcd.GCDPlaceAmbiguousError as err:
+    print(err)
+```
+
+```text
+'Milton High School' matches more than one school.
+  Use `school_id` with one 'DISTRICT-SCHOOL' code.
+  * 660-0106: Milton High School (Fulton County, active)
+  * 660-2060: Milton High School (Fulton County, inactive)
+```
+
+Codes work everywhere names do. A school is identified by its district and
+school codes together, written `"DISTRICT-SCHOOL"` in `school_id`:
+
+```python
+gcd.rows(
+    "graduation_rate_4_year_cohort",
+    school_id="660-0106",
+    demographic="all",
+    year=2025,
+    quiet=True,
+)[["year", "school_code", "school_name", "num_graduates", "num_cohort", "graduation_rate"]]
+```
+
+```text
+   year school_code         school_name  num_graduates  num_cohort  graduation_rate
+0  2025        0106  Milton High School            502         522           0.9617
+```
+
+## Years and detail levels
+
+`year=range(2021, 2026)` asks for 2021 to 2025 (a Python range leaves out its
+end); `year=[2015, 2025]` asks for those two years only. Each call returns
+one **detail level**: schools, districts, states, counties or tracts,
+whatever the dataset publishes. The default is the finest level (counties
+for Census datasets). Columns that would be empty at a level are left out:
+
+```python
+gcd.rows(
+    "graduation_rate_4_year_cohort",
+    detail="states",
+    demographic="all",
+    year=[2015, 2025],
+    quiet=True,
+)
+```
+
+```text
+   year demographic demographic_label demographic_category  num_graduates  num_cohort  \
+0  2015         all               All            aggregate          98465        <NA>   
+1  2025         all               All            aggregate         123911      142070   
+
+   graduation_rate  
+0           0.7884  
+1           0.8722  
+```
+
+To combine levels, call once per level and concatenate the rows
+(`pd.concat`).
+
+## What a missing value means
+
+A missing metric usually means the value was **suppressed** to protect
+privacy (small counts), **not zero**. The schema's `null_semantics` says
+which, and `gcd.rows()` passes on the API's advisory when a result holds
+suppressed values:
+
+```python
+small = gcd.rows(
+    "graduation_rate_4_year_cohort",
+    district="Appling County",
+    year=2024,
+    detail="districts",
+)
+small[["demographic", "num_graduates", "num_cohort", "graduation_rate"]]
+```
+
+```text
+GCDAdvisory: This result contains NULL metric cells, which mean the value was SUPPRESSED (small counts), not zero — do not report or chart a NULL as 0 (see null_semantics and each column's null_meaning).
+GCDAdvisory: Demographic groups overlap across categories and may overlap within a category (active_duty can be a subset of military_connected). Read the dataset's definitions and non_additive declarations. Use the published `all` total when available, never add it to its subgroups. Counts reconcile only for complete, disjoint groups; subgroup rates generally do not add to the overall rate.
+GCDAdvisory: `district_census_id` is a 5-digit Census school-district code, NOT a county FIPS, and a district is not 1:1 with a county — do not map these district rows as counties.
+```
+
+```text
+                       demographic  num_graduates  num_cohort  graduation_rate
+0                      active_duty           <NA>        <NA>              NaN
+1                              all            225         240           0.9375
+2           asian_pacific_islander           <NA>        <NA>              NaN
+3                            black             57          62           0.9194
+4       economically_disadvantaged            225         240           0.9375
+5                 english_learners             13          14           0.9286
+6                           female            111         114           0.9737
+7                      foster_care           <NA>        <NA>              NaN
+8                         hispanic             42          44           0.9545
+9                         homeless           <NA>        <NA>              NaN
+10                            male            114         126           0.9048
+11                         migrant             18          20           0.9000
+12                     multiracial           <NA>        <NA>              NaN
+13                 native_american           <NA>        <NA>              NaN
+14  not_economically_disadvantaged           <NA>        <NA>              NaN
+15      students_with_disabilities             25          31           0.8065
+16   students_without_disabilities            200         209           0.9570
+17                           white            119         127           0.9370
+```
+
+The advisories are `GCDAdvisory` warnings. They stay with the result in
+`gcd.meta(small)["advisories"]`; `quiet=True` (or
+`gcd.set_option("quiet", True)`) silences them, and the usual
+[`warnings`](https://docs.python.org/3/library/warnings.html) filters work too:
+
+```python
+[a["code"] for a in gcd.meta(small)["advisories"]]
+```
+
+```text
+['suppressed_values_present',
+ 'demographic_non_additive',
+ 'district_not_county']
+```
+
+## Totals beside subgroups
+
+Nothing is pinned by default, so a result holds the `all` total beside every
+subgroup, and subgroups from different categories overlap (a student is in a
+race group, a gender group and an economic group at once). Never add them
+up:
+
+```python
+fulton = gcd.rows(
+    "graduation_rate_4_year_cohort",
+    district="Fulton County",
+    detail="districts",
+    year=2025,
+    quiet=True,
+)
+pd.Series(
+    {
+        "published_total": fulton.loc[fulton["demographic"] == "all", "num_cohort"].iloc[0],
+        "sum_of_every_row": fulton["num_cohort"].sum(),
+    }
+)
+```
+
+```text
+published_total      7934
+sum_of_every_row    39902
+dtype: int64
+```
+
+Use the published `all` row for totals, and filter one category
+(`demographic_category="race"`) to compare groups.
+
+## Which values exist: `gcd.values()`
+
+When a filter returns nothing, `gcd.values()` shows which combinations exist
+under the other filters, with row counts, without downloading rows:
+
+```python
+gcd.values("ccrpi_content_mastery", ["grade_cluster", "subject"], year=2025, detail="districts")
+```
+
+```text
+   grade_cluster                subject  n_rows
+0     elementary  english_language_arts    2340
+1     elementary            mathematics    2340
+2     elementary                science    2340
+3           high  english_language_arts    2340
+4           high            mathematics    2340
+5           high                science    2340
+6           high         social_studies    2340
+7         middle  english_language_arts    2340
+8         middle            mathematics    2340
+9         middle                science    2340
+10        middle         social_studies    2340
+```
+
+## Lookup tables
+
+There are six lookup tables: `districts`, `schools`, `counties`, `tracts`,
+`block_groups` and `demographics`. `gcd.dimension()` returns any of them.
+**School codes repeat across districts**, so join schools on
+`district_code` and `school_code` together, never `school_code` alone:
+
+```python
+schools = gcd.dimension("schools", columns=["district_code", "school_code"])
+schools["school_code"].value_counts().head(3)
+```
+
+```text
+school_code
+8010    198
+8012    175
+8013    166
+Name: count, dtype: int64[pyarrow]
+```
+
+## pandas or Polars
+
+pandas is the default. Pass `backend="polars"` to any table function, or set
+it for the session:
+
+```python
+gcd.set_option("backend", "polars")
+gcd.dimension("counties", n_max=3)
+```
+
+```text
+shape: (3, 2)
+┌─────────────┬─────────────┐
+│ county_fips ┆ county_name │
+│ ---         ┆ ---         │
+│ str         ┆ str         │
+╞═════════════╪═════════════╡
+│ 13001       ┆ Appling     │
+│ 13003       ┆ Atkinson    │
+│ 13005       ┆ Bacon       │
+└─────────────┴─────────────┘
+```
+
+```python
+gcd.set_option("backend", "pandas")
+```
+
+pandas results use nullable dtypes: integers are `Int64`, booleans
+`boolean` and text `string`, so a missing value is `<NA>` and codes keep
+their leading zeros; floats stay `float64`, with `NaN` for missing. Polars
+results get the same types natively. Geometry always comes back as a
+geopandas `GeoDataFrame`; use `geometry=False` for a Polars table of the
+attributes.
+
+## Caching
+
+Metadata (the catalog, schemas and lookup tables) is cached for the Python
+session. Rows can also be cached on disk, if you ask:
+
+```python
+gcd.set_option("cache", True)   # or cache=True in gcd.rows()
+```
+
+Cached responses are kept with their `ETag` in the user cache folder, and
+each repeat asks the server whether the data changed: an unchanged answer
+reuses the saved copy without downloading, and a new data release downloads
+afresh (a response the server marks fresh, for five minutes, is reused
+without asking). `gcd.cache_clear()` empties both caches.
+
+
+---
+
+<!-- https://georgiacivicdata.org/py/articles/analysis.md -->
+
+# Analyzing Georgia data
+
+This article puts two datasets side by side: infant mortality from the
+Georgia Department of Public Health and the poverty rate from the U.S.
+Census. Infant mortality, the number of babies who die before their first
+birthday per 1,000 live births, is one of the most widely used measures of a
+community's health. The article shows the steps any such analysis needs.
+
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+from matplotlib.ticker import PercentFormatter
+
+import georgiacivicdata as gcd
+```
+
+## Pick the datasets
+
+```python
+gcd.search("infant mortality", n=3)[["name", "title", "year_min", "year_max"]]
+```
+
+```text
+             name                                         title  year_min  year_max
+0   infant_deaths      Infant Deaths and Infant Mortality Rates      2000      2025
+1    fetal_deaths        Fetal Deaths and Fetal Mortality Rates      2000      2025
+2  birth_outcomes  Birth Outcomes (Low Birthweight and Prete...      2000      2025
+```
+
+```python
+gcd.search("poverty rate", level="counties", n=3)[["name", "title", "year_min", "year_max"]]
+```
+
+```text
+                           name                                         title  year_min  year_max
+0                       poverty                                 Poverty (ACS)      2020      2024
+1           poverty_by_nativity     Poverty by Nativity and Citizenship (ACS)      2020      2024
+2  low_income_low_access_tracts  Low-Income, Low-Access Tracts (USDA 2025 ...      2025      2025
+```
+
+`infant_deaths` holds infant deaths and live births from the state's OASIS
+system, by county of residence; `poverty` is the American Community Survey
+(ACS) 5-year estimate of the share of people below the federal poverty line.
+Before joining them, check that they share a detail level and a key, and
+which years they cover:
+
+```python
+infant_info = gcd.describe("infant_deaths")
+poverty_info = gcd.describe("poverty")
+
+print(
+    "Shared detail levels:",
+    sorted(set(infant_info.detail_levels) & set(poverty_info.detail_levels)),
+)
+print("Shared grain:", sorted(set(infant_info.grain) & set(poverty_info.grain)))
+print("Infant deaths years:", min(infant_info.years), "-", max(infant_info.years))
+print("Poverty years:", min(poverty_info.years), "-", max(poverty_info.years))
+```
+
+```text
+Shared detail levels: ['counties', 'states']
+Shared grain: ['county_fips', 'tract_geoid', 'year']
+Infant deaths years: 2000 - 2025
+Poverty years: 2020 - 2024
+```
+
+Both publish county rows keyed by `county_fips`. The ACS figures are 5-year
+estimates named by their end year, so the 2024 vintage pools survey
+responses from 2020 to 2024. We match it with the infant deaths of 2020 to
+2024.
+
+## Read the notes first
+
+The dataset's notes say which columns can't be added up. Causes and ages at
+death nest inside each other (`all` contains every cause, and `neonatal`
+contains `early_neonatal`), so summing across them counts the same deaths
+more than once:
+
+```python
+infant_info.notes["non_additive"]["column"].tolist()
+```
+
+```text
+['cause', 'age_at_death']
+```
+
+Pinning both to `all` gives one row per county, year and group. The notes
+also set a floor on any figure we compute ourselves:
+
+```python
+print(infant_info.notes["pooled_min_count"]["reason"].iloc[0])
+```
+
+```text
+OASIS withholds rates based on 1-4 deaths (shown as * on OASIS), so no figure combined from fewer than 5 deaths is given.
+```
+
+## Pool infant mortality from counts
+
+`gcd.columns()` names the numerator and denominator of the rate:
+
+```python
+cols = gcd.columns("infant_deaths")
+cols.loc[cols["metric_component"].notna(), ["column", "metric_component"]]
+```
+
+```text
+        column metric_component
+11  num_deaths        numerator
+12  num_births      denominator
+```
+
+```python
+infant = gcd.rows(
+    "infant_deaths",
+    detail="counties",
+    demographic="all",
+    cause="all",
+    age_at_death="all",
+    year=range(2020, 2025),
+    quiet=True,
+)
+
+pd.DataFrame(
+    {
+        "county_years": [len(infant)],
+        "with_a_rate": [infant["death_rate_per_1k_births"].notna().sum()],
+        "median_births": [infant["num_births"].median()],
+    }
+)
+```
+
+```text
+   county_years  with_a_rate  median_births
+0           795          385          258.0
+```
+
+Infant deaths are rare and most of Georgia's 159 counties are small. In a
+typical county-year a few hundred babies are born and a single death moves
+the rate by several points. That is why about half of the county-years have
+no published rate at all. A county's rate over several years is the sum of
+its deaths over the sum of its births, not the average of its yearly rates:
+
+```python
+pooled = (
+    infant.groupby(["county_fips", "county_name"], as_index=False)
+    .agg(deaths=("num_deaths", "sum"), births=("num_births", "sum"))
+    .assign(infant_mortality=lambda d: 1000 * d["deaths"] / d["births"])
+)
+
+pooled.sort_values("births", ascending=False).head(10)
+```
+
+```text
+    county_fips county_name  deaths  births  infant_mortality
+66        13135    Gwinnett     323   56843          5.682318
+59        13121      Fulton     389   56491          6.886053
+43        13089      DeKalb     299   49609          6.027132
+32        13067        Cobb     229   43244          5.295532
+30        13063     Clayton     177   19212          9.212992
+24        13051     Chatham     133   17899          7.430583
+27        13057    Cherokee      59   15278          3.861762
+68        13139        Hall      76   13787          5.512439
+120       13245    Richmond     135   13110         10.297483
+74        13151       Henry      77   13077          5.888201
+```
+
+```python
+few = int((pooled["deaths"] < 5).sum())
+print(f"Counties with fewer than five infant deaths in 2020-2024: {few}")
+```
+
+```text
+Counties with fewer than five infant deaths in 2020-2024: 41
+```
+
+Even pooled over five years, those counties had too few infant deaths for a
+rate under the dataset's own rule. We keep their counts for the group sums
+below but leave them out of any county-level figure.
+
+Pooling and averaging give different answers whenever counties differ in
+size. Here is the comparison with the published state rows:
+
+```python
+state = gcd.rows(
+    "infant_deaths",
+    detail="states",
+    demographic="all",
+    cause="all",
+    age_at_death="all",
+    year=range(2020, 2025),
+    quiet=True,
+)
+
+pd.DataFrame(
+    {
+        "infant_mortality": [
+            pooled["infant_mortality"].mean(),
+            1000 * pooled["deaths"].sum() / pooled["births"].sum(),
+            1000 * state["num_deaths"].sum() / state["num_births"].sum(),
+        ],
+        "births": pd.array(
+            [None, pooled["births"].sum(), state["num_births"].sum()], dtype="Int64"
+        ),
+    },
+    index=["mean of county rates", "pooled from county counts", "state rows"],
+)
+```
+
+```text
+                           infant_mortality  births
+mean of county rates               6.939697    <NA>
+pooled from county counts          6.651060  623660
+state rows                         6.651060  623660
+```
+
+The counties add up to the state row exactly, so the rate pooled from county
+counts matches the state's. The plain mean of county rates is further off,
+because it weighs a county with a hundred births like one with fifty
+thousand.
+
+## Join the poverty rate
+
+```python
+poverty = gcd.rows(
+    "poverty",
+    detail="counties",
+    year=2024,
+    race_iteration="all",
+    quiet=True,
+)[["county_fips", "poverty_rate", "poverty_rate_moe"]]
+
+joined = pooled.merge(poverty, on="county_fips", how="inner")
+len(joined)
+```
+
+```text
+159
+```
+
+The ACS reports a 90% margin of error beside each estimate; for small
+counties it can be a sizable share of the estimate:
+
+```python
+moe_share = joined["poverty_rate_moe"] / joined["poverty_rate"]
+pd.Series({"median_moe_share": moe_share.median(), "max_moe_share": moe_share.max()})
+```
+
+```text
+median_moe_share    0.190001
+max_moe_share       0.507069
+dtype: float64
+```
+
+```python
+rated = joined[joined["deaths"] >= 5]
+
+x = rated["poverty_rate"].to_numpy(dtype=float)
+y = rated["infant_mortality"].to_numpy(dtype=float)
+w = rated["births"].to_numpy(dtype=float)
+slope, intercept = np.polyfit(x, y, 1, w=np.sqrt(w))
+
+fig, ax = plt.subplots(figsize=(7, 4.5))
+ax.scatter(x, y, s=w / w.max() * 400, alpha=0.5, color="#b91c1c", edgecolor="none")
+grid = np.linspace(x.min(), x.max(), 50)
+ax.plot(grid, intercept + slope * grid, color="0.3")
+ax.xaxis.set_major_formatter(PercentFormatter(1))
+ax.set_xlabel("Share of people below the poverty line, 2020-2024")
+ax.set_ylabel("Infant deaths per 1,000 live births, 2020-2024")
+ax.set_title("Georgia counties: infant mortality and poverty")
+ax.spines[["top", "right"]].set_visible(False)
+plt.show()
+```
+
+![image](../_images/524694862e7415905a2bd439fe9a332f57cddcd8bcd5573939212ca060909359.png)
+
+Each point is a county with at least five infant deaths in 2020-2024, sized
+by its births; the line is a straight-line fit weighted by births.
+
+```python
+# Spearman's rank correlation: the correlation of the ranks
+round(float(rated["poverty_rate"].rank().corr(rated["infant_mortality"].rank())), 2)
+```
+
+```text
+0.37
+```
+
+County by county the association is modest, partly because even five-year
+rates in small counties carry a lot of chance variation. Grouping counties
+by their poverty rate and pooling each group's counts gives steadier rates.
+Every county counts here, including those with too few deaths for a rate of
+their own:
+
+```python
+thirds = joined.assign(
+    poverty_group=pd.qcut(
+        joined["poverty_rate"], 3, labels=["Lowest third", "Middle third", "Highest third"]
+    )
+)
+
+(
+    thirds.groupby("poverty_group", observed=True)
+    .agg(counties=("county_fips", "size"), deaths=("deaths", "sum"), births=("births", "sum"))
+    .assign(infant_mortality=lambda d: 1000 * d["deaths"] / d["births"])
+)
+```
+
+```text
+               counties  deaths  births  infant_mortality
+poverty_group                                            
+Lowest third         53    2345  395522          5.928874
+Middle third         53    1229  155432          7.906995
+Highest third        53     574   72706          7.894809
+```
+
+Babies born in the middle and highest-poverty thirds of counties die before
+their first birthday at a rate about a third higher than babies born in the
+lowest-poverty third. The lowest-poverty third holds most of the state's
+births, so it sets the state's rate.
+
+## What these figures can't tell
+
+- **Association, not causation.** Poverty is one of many ways counties
+  differ; nothing here says a county's poverty rate causes infant deaths.
+- **Counties are not families.** A county's poverty rate describes all of
+  its residents, not the families of the babies born there.
+- **Estimates carry error.** The ACS poverty rate is a survey estimate with
+  a margin of error, larger in small counties; a county near a group
+  boundary could sit in either.
+- **Small counts swing.** A county's rate on a few deaths says little on its
+  own; group and pool before comparing places.
+- **Infant mortality has many causes.** The dataset's `cause` and
+  `age_at_death` filters split deaths into prematurity, birth defects,
+  sudden infant death and others, which this article does not look at.
+
+
+---
+
+<!-- https://georgiacivicdata.org/py/articles/school-zones.md -->
+
+# School zones and places
+
+Georgia Civic Data publishes school attendance zones: the areas that assign
+a home to its zoned elementary, middle and high school. This article maps
+one district's zones, checks which schools have no zone and how precise the
+zones are, and finds the places a location falls in.
+
+The geometry functions return geopandas `GeoDataFrame`s, so install the
+`geo` extra (`pip install georgiacivicdata[geo]`) to map them. For plain
+tables, use `geometry=False`.
+
+```python
+import matplotlib.pyplot as plt
+import pandas as pd
+
+import georgiacivicdata as gcd
+```
+
+## Map one district's zones
+
+```python
+zones = gcd.school_zones(district="Atlanta Public Schools")
+zones.groupby(["zone_level", "method", "accuracy_class"]).size()
+```
+
+```text
+zone_level  method        accuracy_class      
+elementary  official_gis  authoritative_vector    45
+high        official_gis  authoritative_vector     9
+middle      official_gis  authoritative_vector    13
+dtype: int64
+```
+
+```python
+fig, axes = plt.subplots(1, 3, figsize=(9, 3.4))
+for ax, level in zip(axes, ["elementary", "middle", "high"]):
+    zones[zones["zone_level"] == level].plot(
+        ax=ax, column="school_name", cmap="tab20", edgecolor="white", linewidth=0.2
+    )
+    ax.set_title(level)
+    ax.set_axis_off()
+fig.suptitle("Atlanta Public Schools attendance zones, 2026-27")
+plt.show()
+```
+
+![image](../_images/bd8fd819ecb492b12491cf8401e64f2afc76a46d4600925705f3a0e7ac241642.png)
+
+Each colour is a school. The default `resolution="display"` returns
+simplified polygons for maps. `resolution="full"` returns the source
+polygons, which are much larger; filter to a district before asking for
+them.
+
+## Schools without a zone
+
+Charter, magnet, alternative and virtual schools have no attendance zone.
+`gcd.school_zone_status()` says which schools have one and why the others
+don't:
+
+```python
+status = gcd.school_zone_status(district="Atlanta Public Schools")
+status.groupby(["zone_status", "no_zone_category"], dropna=False).size()
+```
+
+```text
+zone_status  no_zone_category        
+no_zone      alternative                  1
+             charter                     16
+             closed_or_consolidated       2
+             magnet_or_choice             3
+             residential_or_treatment     1
+zoned        <NA>                        64
+dtype: int64
+```
+
+```python
+print(gcd.meta(status)["note"])
+```
+
+```text
+Whether each school has an attendance zone on this platform and, if not, why. zoned says only that a zone is published here, not that it covers every grade the school teaches. Not an official enrollment determination: confirm with the school district.
+```
+
+## How precise are the zones?
+
+Zones come from very different sources. Some are the district's official GIS
+layers; others are digitized from PDF maps, rebuilt from street lists, or
+are the whole district outline (in districts with one school per grade).
+Every zone says how it was built (`method`) and how exact it is
+(`accuracy_class`); treat them accordingly.
+
+```python
+coverage = gcd.school_zone_coverage()
+pd.crosstab(coverage["level_status"], coverage["zone_level"])
+```
+
+```text
+zone_level                elementary  high  middle
+level_status                                      
+not_available                     29     5      10
+one_school_per_grade              82   130     115
+partial                           10     6       9
+served_by_other_district           0     1       0
+zoned                             59    38      46
+```
+
+`gcd.school_zone_coverage()` gives one row per district and level, with the
+share of the district's land and 2020 population its zones cover, and the
+reason for anything short of complete:
+
+```python
+coverage.loc[
+    coverage["district_name"] == "Appling County",
+    ["zone_level", "level_status", "pct_population", "methods", "reason"],
+]
+```
+
+```text
+   zone_level          level_status  pct_population           methods  \
+0  elementary         not_available             NaN  district_outline   
+1      middle  one_school_per_grade             1.0  district_outline   
+2        high  one_school_per_grade             1.0  district_outline   
+
+                                                        reason  
+0  Elementary: The district has separate elementary attenda...  
+1  Elementary: The district has separate elementary attenda...  
+2  Elementary: The district has separate elementary attenda...  
+```
+
+## Locate a place
+
+`gcd.locate()` takes points (`lat`, `lon`) or street addresses and returns
+the county, Census tract and block group, school district and zoned schools
+each falls in, one row per place.
+
+```python
+landmarks = pd.DataFrame(
+    {
+        "landmark": [
+            "Georgia State Capitol",
+            "Stone Mountain Park",
+            "Okefenokee Swamp Park",
+            "Appling County Courthouse",
+        ],
+        "lat": [33.7490, 33.8053, 31.0558, 31.7782],
+        "lon": [-84.3880, -84.1455, -82.2701, -82.3482],
+    }
+)
+places = gcd.locate(lat=landmarks["lat"], lon=landmarks["lon"], id=landmarks["landmark"])
+places[["id", "geographic_type", "geographic_id", "geographic_name", "grades"]]
+```
+
+```text
+GCDAdvisory: A zone is the default assignment, not the only option: a Georgia student may attend another public school by transfer, or a charter, magnet or other choice school. See attendance_rules for the main ways.
+```
+
+```text
+                           id    geographic_type geographic_id  \
+0       Georgia State Capitol             county         13121   
+1       Georgia State Capitol              tract   13121003500   
+2       Georgia State Capitol        block_group  131210035001   
+3       Georgia State Capitol    school_district           761   
+4       Georgia State Capitol  elementary_school      761-0199   
+5       Georgia State Capitol      middle_school      761-0199   
+6       Georgia State Capitol        high_school      761-4560   
+7         Stone Mountain Park             county         13089   
+8         Stone Mountain Park              tract   13089021915   
+9         Stone Mountain Park        block_group  130890219153   
+10        Stone Mountain Park    school_district           644   
+11        Stone Mountain Park  elementary_school      644-2068   
+12        Stone Mountain Park      middle_school      644-0506   
+13        Stone Mountain Park        high_school      644-0276   
+14      Okefenokee Swamp Park             county         13299   
+15      Okefenokee Swamp Park              tract   13299950900   
+16      Okefenokee Swamp Park        block_group  132999509003   
+17      Okefenokee Swamp Park    school_district           748   
+18      Okefenokee Swamp Park  elementary_school      748-3050   
+19      Okefenokee Swamp Park      middle_school      748-0295   
+20      Okefenokee Swamp Park        high_school      748-0195   
+21  Appling County Courthouse             county         13001   
+22  Appling County Courthouse              tract   13001950301   
+23  Appling County Courthouse        block_group  130019503012   
+24  Appling County Courthouse    school_district           601   
+25  Appling County Courthouse  elementary_school          <NA>   
+26  Appling County Courthouse      middle_school      601-0195   
+27  Appling County Courthouse        high_school      601-0103   
+
+                                        geographic_name grades  
+0                                                Fulton   <NA>  
+1                                       Census Tract 35   <NA>  
+2         Block Group 1, Census Tract 35, Fulton County   <NA>  
+3                                Atlanta Public Schools   <NA>  
+4                          Centennial Academy (Charter)    K-5  
+5                          Centennial Academy (Charter)    6-8  
+6                                   Midtown High School   9-12  
+7                                                DeKalb   <NA>  
+8                                   Census Tract 219.15   <NA>  
+9     Block Group 3, Census Tract 219.15, DeKalb County   <NA>  
+10                                        DeKalb County   <NA>  
+11                     Stone Mountain Elementary School    K-5  
+12                         Stone Mountain Middle School    6-8  
+13                           Stone Mountain High School   9-12  
+14                                                 Ware   <NA>  
+15                                    Census Tract 9509   <NA>  
+16        Block Group 3, Census Tract 9509, Ware County   <NA>  
+17                                          Ware County   <NA>  
+18                     Memorial Drive Elementary School    K-5  
+19                               Waycross Middle School    6-8  
+20                              Ware County High School   9-12  
+21                                              Appling   <NA>  
+22                                 Census Tract 9503.01   <NA>  
+23  Block Group 2, Census Tract 9503.01, Appling County   <NA>  
+24                                       Appling County   <NA>  
+25                                                 <NA>   <NA>  
+26                         Appling County Middle School    6-8  
+27                           Appling County High School   9-12  
+```
+
+The output is long: filter it to the rows you need, such as
+`places[places["geographic_type"] == "high_school"]`. A school's
+`geographic_id` is its `"DISTRICT-SCHOOL"` code, the form `gcd.rows()` takes
+as `school_id`.
+
+The `note` column explains any row that is missing or needs care, such as a
+level with no zone collected yet:
+
+```python
+noted = places[places["note"].notna()]
+noted[["id", "geographic_type", "geographic_name"]]
+```
+
+```text
+                           id    geographic_type geographic_name
+25  Appling County Courthouse  elementary_school            <NA>
+```
+
+```python
+import textwrap
+
+for note in noted["note"]:
+    print(textwrap.fill(note, width=76), end="\n\n")
+```
+
+```text
+No elementary school zone has been collected for this district yet.
+Elementary: The district has separate elementary attendance zones (the
+Appling County Elementary Complex in Baxley, which is Appling County Primary
+for pre-K to grade 3 and Appling County Elementary for grades 4-5; Altamaha
+Elementary; and Fourth District Elementary in Surrency), but no map, street
+list or online lookup of them is published.
+```
+
+### Addresses
+
+Addresses are geocoded on your computer with the U.S. Census batch geocoder;
+only the resulting coordinates are sent to Georgia Civic Data. Give one-line
+addresses or a data frame with `street`, `city`, `state` and `zip`:
+
+```python
+capitol = gcd.locate(address="206 Washington St SW, Atlanta, GA 30334")
+capitol[["match_status", "matched_address", "geographic_type", "geographic_name", "grades"]]
+```
+
+```text
+i The server is busy (HTTP 502); retrying shortly.
+```
+
+```text
+  match_status                           matched_address    geographic_type  \
+0        match  206 WASHINGTON ST SW, ATLANTA, GA, 30334             county   
+1        match  206 WASHINGTON ST SW, ATLANTA, GA, 30334              tract   
+2        match  206 WASHINGTON ST SW, ATLANTA, GA, 30334        block_group   
+3        match  206 WASHINGTON ST SW, ATLANTA, GA, 30334    school_district   
+4        match  206 WASHINGTON ST SW, ATLANTA, GA, 30334  elementary_school   
+5        match  206 WASHINGTON ST SW, ATLANTA, GA, 30334      middle_school   
+6        match  206 WASHINGTON ST SW, ATLANTA, GA, 30334        high_school   
+
+                                 geographic_name grades  
+0                                         Fulton   <NA>  
+1                                Census Tract 35   <NA>  
+2  Block Group 1, Census Tract 35, Fulton County   <NA>  
+3                         Atlanta Public Schools   <NA>  
+4                   Centennial Academy (Charter)    K-5  
+5                   Centennial Academy (Charter)    6-8  
+6                            Midtown High School   9-12  
+```
+
+The same lookup for several buildings, from a data frame with one column per
+address part. `id` carries each building's name into the output:
+
+```python
+buildings = pd.DataFrame(
+    {
+        "building": ["Georgia State Capitol", "Savannah City Hall"],
+        "street": ["206 Washington St SW", "2 E Bay St"],
+        "city": ["Atlanta", "Savannah"],
+        "state": ["GA", "GA"],
+        "zip": ["30334", "31401"],
+    }
+)
+located = gcd.locate(address=buildings, id=buildings["building"], quiet=True)
+located.loc[
+    located["geographic_type"] == "high_school",
+    ["id", "match_status", "geographic_name", "grades"],
+]
+```
+
+```text
+                       id match_status                                 geographic_name grades
+6   Georgia State Capitol        match                             Midtown High School   9-12
+13     Savannah City Hall        match  The School Of Liberal Studies At Savannah High   9-12
+```
+
+### Overlapping school zones
+
+Some residences are zoned to one elementary school for the early grades and
+another for the later ones. In this case, a level has more than one school
+row and `grades` tells them apart. City Schools of Decatur, for example,
+splits elementary schools between K-2 and 3-5, so some homes in the district
+show two elementary schools:
+
+```python
+oakhurst = gcd.dimension(
+    "schools",
+    district_code="773",
+    q="Oakhurst",
+    active=True,
+    columns=["school_name", "latitude", "longitude"],
+)
+oakhurst
+```
+
+```text
+                  school_name  latitude  longitude
+0  Oakhurst Elementary School   33.7637    -84.306
+```
+
+```python
+split = gcd.locate(lat=oakhurst["latitude"], lon=oakhurst["longitude"], quiet=True)
+split.loc[
+    split["geographic_type"].str.endswith("_school"),
+    ["geographic_type", "geographic_id", "geographic_name", "grades"],
+]
+```
+
+```text
+     geographic_type geographic_id                       geographic_name grades
+4  elementary_school      773-0105            Oakhurst Elementary School    K-2
+5  elementary_school      773-0112  Fifth Avenue Upper Elementary School    3-5
+6      middle_school      773-1552             Beacon Hill Middle School    6-8
+7        high_school      773-3050                   Decatur High School   9-12
+```
+
+`grade` keeps only the school for one grade:
+
+```python
+one_grade = gcd.locate(lat=oakhurst["latitude"], lon=oakhurst["longitude"], grade=4, quiet=True)
+one_grade.loc[
+    one_grade["geographic_type"].str.endswith("_school"),
+    ["geographic_type", "geographic_name", "grades"],
+]
+```
+
+```text
+     geographic_type                       geographic_name grades
+4  elementary_school  Fifth Avenue Upper Elementary School    3-5
+```
+
+### The default assignment
+
+A zone is the default assignment, not the only option:
+
+```python
+print(gcd.meta(capitol)["assignment_note"])
+```
+
+```text
+A zone is the default assignment, not the only option: a Georgia student may attend another public school by transfer, or a charter, magnet or other choice school. See attendance_rules for the main ways.
+```
+
+Students can attend another public school by transfer, or a charter, magnet,
+or other choice school option. See Georgia Civic Data's article [School
+Zones and School Choice in
+Georgia](https://georgiacivicdata.org/stories/school-attendance-rules) for
+more information.
+
+
+---
+
+<!-- https://georgiacivicdata.org/py/coming-from-r.md -->
+
+# Coming from R
+
+The Python package mirrors the [R package](https://georgiacivicdata.org/r/):
+the same functions, arguments, output columns and rules. The Python names
+drop the `gcd_` prefix, because the import gives them one:
+`import georgiacivicdata as gcd`, then `gcd.rows()`.
+
+## The functions side by side
+
+| R                            | Python                                                                                                                                                   |
+|------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `gcd_datasets()`             | [`gcd.datasets()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.datasets.md#georgiacivicdata.datasets)                                     |
+| `gcd_search()`               | [`gcd.search()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.search.md#georgiacivicdata.search)                                           |
+| `gcd_describe()`             | [`gcd.describe()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.describe.md#georgiacivicdata.describe)                                     |
+| `gcd_columns()`              | [`gcd.columns()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.columns.md#georgiacivicdata.columns)                                        |
+| `gcd_contract()`             | [`gcd.contract()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.contract.md#georgiacivicdata.contract)                                     |
+| `gcd_rows()`                 | [`gcd.rows()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.rows.md#georgiacivicdata.rows)                                                 |
+| `gcd_values()`               | [`gcd.values()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.values.md#georgiacivicdata.values)                                           |
+| `gcd_dimension()`            | [`gcd.dimension()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.dimension.md#georgiacivicdata.dimension)                                  |
+| `gcd_school_zones()`         | [`gcd.school_zones()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.school_zones.md#georgiacivicdata.school_zones)                         |
+| `gcd_district_boundaries()`  | [`gcd.district_boundaries()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.district_boundaries.md#georgiacivicdata.district_boundaries)    |
+| `gcd_school_zone_status()`   | [`gcd.school_zone_status()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.school_zone_status.md#georgiacivicdata.school_zone_status)       |
+| `gcd_school_zone_coverage()` | [`gcd.school_zone_coverage()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.school_zone_coverage.md#georgiacivicdata.school_zone_coverage) |
+| `gcd_locate()`               | [`gcd.locate()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.locate.md#georgiacivicdata.locate)                                           |
+| `gcd_meta()`                 | [`gcd.meta()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.meta.md#georgiacivicdata.meta)                                                 |
+| `gcd_citation()`             | [`gcd.citation()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.citation.md#georgiacivicdata.citation)                                     |
+| `gcd_cache_clear()`          | [`gcd.cache_clear()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.cache_clear.md#georgiacivicdata.cache_clear)                            |
+| `options(gcd.quiet = TRUE)`  | `gcd.set_option("quiet", True)`                                                                                                                          |
+| `options(gcd.cache = TRUE)`  | `gcd.set_option("cache", True)`                                                                                                                          |
+
+## The same call in both
+
+```r
+gcd_rows(
+  "graduation_rate_4_year_cohort",
+  district = "Fulton County",
+  demographic = c("all", "black"),
+  year = 2020:2024
+)
+```
+
+```python
+gcd.rows(
+    "graduation_rate_4_year_cohort",
+    district="Fulton County",
+    demographic=["all", "black"],
+    year=range(2020, 2025),
+)
+```
+
+## What differs, and why
+
+- **Data frames.** R returns tibbles; Python returns pandas data frames by
+  default, or Polars with `backend="polars"` (per call) or
+  `gcd.set_option("backend", "polars")` (per session). pandas results use
+  nullable dtypes (`Int64`, `boolean`, `string`), so missing values stay
+  missing and codes stay text; floats are `float64` with `NaN`.
+- **Geometry.** R returns `sf` objects; Python returns geopandas
+  `GeoDataFrame`s, in WGS 84. `geometry=False` gives a plain table in
+  either.
+- **Years.** `range(2020, 2025)` is 2020 to 2024: Python ranges leave out
+  their end. A list such as `[2015, 2025]` asks for exact years, as `c()`
+  does in R.
+- **Missing values in filters.** A filter set to `None` is ignored, like
+  R's `NULL`. `None` *inside a list* (`assessment_type=[None]`) selects rows
+  where the column is empty, like `NA` in R.
+- **All rows.** `n_max=None` (the default) returns every row, like `Inf` in
+  R.
+- **Integers.** Every integer column is 64-bit; R switches to doubles past
+  its 32-bit limit.
+- **Messages.** The API's advisories are `GCDAdvisory` warnings, the Python
+  way to say "this result needs care"; progress notes go to standard error.
+  `quiet=True` silences both, as in R.
+- **Metadata.** R keeps metadata in attributes. Polars data frames have no
+  attributes, so `gcd.meta(df)` reads it from a registry kept beside each
+  result (pandas results also carry it in `df.attrs`). Read it from the
+  result as it came back: a new data frame derived from it doesn't carry
+  it. `gcd.meta()` also returns the notes of `gcd.search()`
+  (`confidence`), the zone functions and `gcd.locate()` (`note`,
+  `assignment_note`), which R keeps as attributes.
+- **Errors.** R raises classed conditions (`gcd_error_topic_not_found`);
+  Python raises [`GCDError`](https://georgiacivicdata.org/py/generated/georgiacivicdata.GCDError.md#georgiacivicdata.GCDError) and its subclasses, with
+  the same `code`, `status` and `details`.
+- **Ids from `gcd.locate()`.** Without `id`, inputs are numbered from 0, the
+  Python convention (R starts at 1).
+
+
+---
+
+<!-- https://georgiacivicdata.org/py/agents.md -->
+
+# For LLM agents
+
+This site is built to be read by language-model agents as well as people.
+
+## Markdown pages
+
+Every HTML page has a Markdown twin at the same address with `.md` in place
+of `.html`:
+
+| Page                                                                   | Markdown                                                             |
+|------------------------------------------------------------------------|----------------------------------------------------------------------|
+| `https://georgiacivicdata.org/py/index.html`                           | `https://georgiacivicdata.org/py/index.md`                           |
+| `https://georgiacivicdata.org/py/articles/analysis.html`               | `https://georgiacivicdata.org/py/articles/analysis.md`               |
+| `https://georgiacivicdata.org/py/generated/georgiacivicdata.rows.html` | `https://georgiacivicdata.org/py/generated/georgiacivicdata.rows.md` |
+
+Each HTML page also names its twin in its `<head>`:
+
+```html
+<link rel="alternate" type="text/markdown" href="analysis.md">
+```
+
+The Markdown pages hold the same text, code and outputs as the HTML pages,
+with tables as plain text.
+
+## llms.txt
+
+- [`llms.txt`](https://georgiacivicdata.org/py/llms.txt) lists every page's
+  Markdown address with a one-line description, following
+  [https://llmstxt.org](https://llmstxt.org).
+- [`llms-full.txt`](https://georgiacivicdata.org/py/llms-full.txt) holds
+  every page in one file.
+
+## Writing code with the package
+
+- Import it as `import georgiacivicdata as gcd`. There is no API key.
+- Find a dataset with `gcd.search("plain words")` or `gcd.datasets()`, read
+  it with `gcd.describe(name)` and `gcd.columns(name)`, then get rows with
+  `gcd.rows(name, **filters)`.
+- Filters are keyword arguments named after the API's parameters; the
+  `filters` table of `gcd.describe(name)` lists every one with its values.
+- A missing metric usually means the value was suppressed for privacy, not
+  zero. Never add the `all` total to its subgroups, and pool rates from their
+  counts instead of averaging them.
+- The API itself is documented at [https://georgiacivicdata.org/docs](https://georgiacivicdata.org/docs), and
+  Georgia Civic Data also runs an MCP server for agents; see the main site.
+
+
+---
+
+<!-- https://georgiacivicdata.org/py/reference.md -->
+
+# Reference
+
+Every function, grouped as in the R package. Import the package as
+`import georgiacivicdata as gcd`.
+
+## Find data
+
+| [`datasets`](https://georgiacivicdata.org/py/generated/georgiacivicdata.datasets.md#georgiacivicdata.datasets)   | List the datasets in the catalog.   |
+|------------------------------------------------------------------------------------------------------------------|-------------------------------------|
+| [`search`](https://georgiacivicdata.org/py/generated/georgiacivicdata.search.md#georgiacivicdata.search)         | Search the catalog.                 |
+
+## Understand a dataset
+
+| [`describe`](https://georgiacivicdata.org/py/generated/georgiacivicdata.describe.md#georgiacivicdata.describe)          | Describe a dataset or lookup table.                             |
+|-------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------|
+| [`columns`](https://georgiacivicdata.org/py/generated/georgiacivicdata.columns.md#georgiacivicdata.columns)             | Get a dataset's column dictionary.                              |
+| [`contract`](https://georgiacivicdata.org/py/generated/georgiacivicdata.contract.md#georgiacivicdata.contract)          | Get a dataset's data contract.                                  |
+| [`Description`](https://georgiacivicdata.org/py/generated/georgiacivicdata.Description.md#georgiacivicdata.Description) | Everything about one dataset, lookup table or geometry dataset. |
+
+## Get data
+
+| [`rows`](https://georgiacivicdata.org/py/generated/georgiacivicdata.rows.md#georgiacivicdata.rows)       | Get rows of a dataset.                          |
+|----------------------------------------------------------------------------------------------------------|-------------------------------------------------|
+| [`values`](https://georgiacivicdata.org/py/generated/georgiacivicdata.values.md#georgiacivicdata.values) | List the category combinations a filter covers. |
+
+## Lookup tables
+
+| [`dimension`](https://georgiacivicdata.org/py/generated/georgiacivicdata.dimension.md#georgiacivicdata.dimension)   | Get the rows of a lookup table.   |
+|---------------------------------------------------------------------------------------------------------------------|-----------------------------------|
+
+## Geography and school zones
+
+| [`school_zones`](https://georgiacivicdata.org/py/generated/georgiacivicdata.school_zones.md#georgiacivicdata.school_zones)                         | Get school attendance zones.                  |
+|----------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------|
+| [`district_boundaries`](https://georgiacivicdata.org/py/generated/georgiacivicdata.district_boundaries.md#georgiacivicdata.district_boundaries)    | Get school district boundaries.               |
+| [`school_zone_status`](https://georgiacivicdata.org/py/generated/georgiacivicdata.school_zone_status.md#georgiacivicdata.school_zone_status)       | Get each school's attendance-zone status.     |
+| [`school_zone_coverage`](https://georgiacivicdata.org/py/generated/georgiacivicdata.school_zone_coverage.md#georgiacivicdata.school_zone_coverage) | Get each district's attendance-zone coverage. |
+| [`locate`](https://georgiacivicdata.org/py/generated/georgiacivicdata.locate.md#georgiacivicdata.locate)                                           | Locate points or addresses.                   |
+
+## Utilities
+
+| [`meta`](https://georgiacivicdata.org/py/generated/georgiacivicdata.meta.md#georgiacivicdata.meta)                               | Get the metadata carried by a result.             |
+|----------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------|
+| [`citation`](https://georgiacivicdata.org/py/generated/georgiacivicdata.citation.md#georgiacivicdata.citation)                   | Cite a dataset.                                   |
+| [`cache_clear`](https://georgiacivicdata.org/py/generated/georgiacivicdata.cache_clear.md#georgiacivicdata.cache_clear)          | Clear the session cache and the disk cache.       |
+| [`set_option`](https://georgiacivicdata.org/py/generated/georgiacivicdata.set_option.md#georgiacivicdata.set_option)             | Set a package option for the rest of the session. |
+| [`get_option`](https://georgiacivicdata.org/py/generated/georgiacivicdata.get_option.md#georgiacivicdata.get_option)             | Get the value of a package option.                |
+| [`option_context`](https://georgiacivicdata.org/py/generated/georgiacivicdata.option_context.md#georgiacivicdata.option_context) | Set options temporarily, inside a `with` block.   |
+
+## Errors and advisories
+
+API errors keep the API's own `code` (such as `"TOPIC_NOT_FOUND"`), the
+HTTP `status` and the error's `details`. Catch `GCDError` for any of them,
+or a subclass for one kind of failure.
+
+| [`GCDError`](https://georgiacivicdata.org/py/generated/georgiacivicdata.GCDError.md#georgiacivicdata.GCDError)                                           | Base class of every error from the Georgia Civic Data API or this package.                                                               |
+|----------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------|
+| [`GCDNotFoundError`](https://georgiacivicdata.org/py/generated/georgiacivicdata.GCDNotFoundError.md#georgiacivicdata.GCDNotFoundError)                   | No such dataset, lookup table or path (HTTP 404).                                                                                        |
+| [`GCDUnavailableError`](https://georgiacivicdata.org/py/generated/georgiacivicdata.GCDUnavailableError.md#georgiacivicdata.GCDUnavailableError)          | The service couldn't answer: no connection, a timeout, a rate limit that outlasted the retries, or a server error (HTTP 5xx).            |
+| [`GCDPlaceNotFoundError`](https://georgiacivicdata.org/py/generated/georgiacivicdata.GCDPlaceNotFoundError.md#georgiacivicdata.GCDPlaceNotFoundError)    | A district, school or county name matched nothing.                                                                                       |
+| [`GCDPlaceAmbiguousError`](https://georgiacivicdata.org/py/generated/georgiacivicdata.GCDPlaceAmbiguousError.md#georgiacivicdata.GCDPlaceAmbiguousError) | A district, school or county name matched more than one place.                                                                           |
+| [`GCDCensusError`](https://georgiacivicdata.org/py/generated/georgiacivicdata.GCDCensusError.md#georgiacivicdata.GCDCensusError)                         | The U.S.                                                                                                                                 |
+| [`GCDAdvisory`](https://georgiacivicdata.org/py/generated/georgiacivicdata.GCDAdvisory.md#georgiacivicdata.GCDAdvisory)                                  | An advisory about a result: suppressed values, totals that must not be added to their subgroups, a search with no good match, and so on. |
+
+
+---
+
+<!-- https://georgiacivicdata.org/py/articles/index.md -->
+
+# Articles
+
+Longer worked examples, each run against the live API when the site is
+built and saved with its output.
+
+- [Analyzing Georgia data](https://georgiacivicdata.org/py/articles/analysis.md): put infant mortality and the
+  poverty rate side by side, check that two datasets share a key and years,
+  read a dataset's notes, and pool rates from their counts.
+- [School zones and places](https://georgiacivicdata.org/py/articles/school-zones.md): map a district's zones,
+  find schools without a zone, check how precise the zones are, and locate
+  points and addresses.
+
+The [Get started](https://georgiacivicdata.org/py/articles/get-started.md) article covers the basics: the
+catalog, names and filters, and the rules of the data.
+
+
+---
+
+<!-- https://georgiacivicdata.org/py/news.md -->
+
+# Changelog
+
+## georgiacivicdata 0.1.0 (unreleased)
+
+First version: the Python counterpart of the R package georgiacivicdata.
+
+### Features
+
+- Find data: `datasets()` lists the catalog and `search()` ranks datasets
+  from plain words, in English or Spanish.
+- Understand a dataset: `describe()` (with a readable printed summary),
+  `columns()` and `contract()`. `columns()` lists the joined name columns
+  `rows()` returns by default (`labels=True`), each after its code with
+  `role` `"label"`.
+- Get data: `rows()` returns typed data frames with place names beside
+  codes, every category the filters don't exclude, the API's advisories as
+  `GCDAdvisory` warnings, and metadata read by `meta()`; large results
+  download in full as CSV. `values()` lists the category combinations a
+  filter covers.
+- pandas or Polars: every table function takes `backend=`, and
+  `set_option("backend", "polars")` changes the default for the session.
+- Lookup tables: `dimension()` returns districts, schools, counties,
+  tracts, block groups and demographic groups.
+- Places by name: `district`, `school` and `county` arguments match names
+  exactly (ignoring case, accents and a trailing "County", and including
+  former names) and stop with candidates when a name is ambiguous.
+- Geography: `school_zones()`, `district_boundaries()`,
+  `school_zone_status()` and `school_zone_coverage()`, as geopandas
+  `GeoDataFrame`s or plain data frames.
+- `locate()` finds the county, tract, block group, school district and
+  zoned schools for points, or for addresses geocoded locally with the U.S.
+  Census batch geocoder (addresses never reach the Georgia Civic Data API).
+- Utilities: `meta()`, `citation()`, `cache_clear()` and the options
+  functions, with an opt-in disk cache of row downloads that revalidates
+  with the server's `ETag`.
+
+
+---
+
+<!-- https://georgiacivicdata.org/py/generated/georgiacivicdata.Description.md -->
+
+# georgiacivicdata.Description
+
+### *class* georgiacivicdata.Description(name, kind, title=None, summary=None, description=None, main_topic=None, source=None, source_url=None, update_frequency=None, updated_at=None, years=<factory>, year_gaps=<factory>, detail_levels=<factory>, default_detail=None, grain=<factory>, key_metric=None, primary_key=<factory>, search_columns=<factory>, crs=None, formats=<factory>, columns=None, filters=None, notes=<factory>, raw=<factory>, \_n_own=0, \_n_label=0, \_filter_params=<factory>, \_single=<factory>, \_column_names=<factory>)
+
+Everything about one dataset, lookup table or geometry dataset.
+
+Returned by [`describe()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.describe.md#georgiacivicdata.describe). `print()` (or the notebook display)
+shows a readable summary; the attributes hold the parts.
+
+* **Variables:**
+  * **description** (*name* *,* *kind* *,* *title* *,* *summary* *,*) -- What it is. `kind` is `"table"`, `"geometry"` or `"lookup"`.
+  * **update_frequency** (*main_topic* *,* *source* *,* *source_url* *,*) -- Where it comes from.
+  * **updated_at** (*datetime.datetime* *or* *None*) -- When the data last changed (UTC).
+  * **year_gaps** (*years* *,*) -- The years covered, and the years missing inside that span.
+  * **key_metric** (*detail_levels* *,* *default_detail* *,* *grain* *,*) -- The detail levels (and the default), the columns that identify a
+    row, and the headline metric.
+  * **search_columns** (*primary_key* *,*) -- For lookup tables: the key, and the columns `q` searches.
+  * **formats** (*crs* *,*) -- For geometry datasets: the coordinate system and download formats.
+  * **columns** (*DataFrame*) -- The column dictionary, as [`columns()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.columns.md#georgiacivicdata.columns) returns it by default.
+  * **filters** (*DataFrame*) -- Every filter parameter: `param`, `kind`, `values` (list
+    column), `multi_value`, `has_total`, `total_value`,
+    `requires_single_value` and `nullable`.
+  * **notes** (*dict*) -- The contract's declarations that are present, each a data frame, a
+    string or a dict (see [`describe()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.describe.md#georgiacivicdata.describe)).
+  * **raw** (*dict*) -- The full parsed schema response, without platform-internal fields.
+
+#### \_\_init_\_(name, kind, title=None, summary=None, description=None, main_topic=None, source=None, source_url=None, update_frequency=None, updated_at=None, years=<factory>, year_gaps=<factory>, detail_levels=<factory>, default_detail=None, grain=<factory>, key_metric=None, primary_key=<factory>, search_columns=<factory>, crs=None, formats=<factory>, columns=None, filters=None, notes=<factory>, raw=<factory>, \_n_own=0, \_n_label=0, \_filter_params=<factory>, \_single=<factory>, \_column_names=<factory>)
+
+### Methods
+
+| [`__init__`](#georgiacivicdata.Description.__init__)(name, kind[, title, summary, ...])   |                                                                  |
+|-------------------------------------------------------------------------------------------|------------------------------------------------------------------|
+| `format`([width])                                                                         | The summary as text, wrapped to `width` (default: the terminal). |
+| `lines`()                                                                                 | The summary as lines of text (unwrapped).                        |
+
+### Attributes
+
+| `columns`          |    |
+|--------------------|----|
+| `crs`              |    |
+| `default_detail`   |    |
+| `description`      |    |
+| `filters`          |    |
+| `key_metric`       |    |
+| `main_topic`       |    |
+| `source`           |    |
+| `source_url`       |    |
+| `summary`          |    |
+| `title`            |    |
+| `update_frequency` |    |
+| `updated_at`       |    |
+| `name`             |    |
+| `kind`             |    |
+| `years`            |    |
+| `year_gaps`        |    |
+| `detail_levels`    |    |
+| `grain`            |    |
+| `primary_key`      |    |
+| `search_columns`   |    |
+| `formats`          |    |
+| `notes`            |    |
+| `raw`              |    |
+
+
+---
+
+<!-- https://georgiacivicdata.org/py/generated/georgiacivicdata.GCDAdvisory.md -->
+
+# georgiacivicdata.GCDAdvisory
+
+### *exception* georgiacivicdata.GCDAdvisory
+
+An advisory about a result: suppressed values, totals that must not be
+added to their subgroups, a search with no good match, and so on.
+
+
+---
+
+<!-- https://georgiacivicdata.org/py/generated/georgiacivicdata.GCDCensusError.md -->
+
+# georgiacivicdata.GCDCensusError
+
+### *exception* georgiacivicdata.GCDCensusError(message, \*, code, status=None, details=None)
+
+The U.S. Census geocoder returned an error.
+
+
+---
+
+<!-- https://georgiacivicdata.org/py/generated/georgiacivicdata.GCDError.md -->
+
+# georgiacivicdata.GCDError
+
+### *exception* georgiacivicdata.GCDError(message, \*, code, status=None, details=None)
+
+Base class of every error from the Georgia Civic Data API or this package.
+
+* **Variables:**
+  * **message** (*str*) -- The full message.
+  * **code** (*str*) -- The API's error code (`"TOPIC_NOT_FOUND"`, `"UNSUPPORTED_FILTER"`,
+    ...) or the package's own (`"PLACE_NOT_FOUND"`, `"NOT_A_DATASET"`,
+    ...). Without an envelope, `"HTTP_<status>"`.
+  * **status** (*int* *or* *None*) -- The HTTP status, or `None` when no HTTP response was involved.
+  * **details** (*dict*) -- The error's details, such as `did_you_mean` suggestions.
+
+
+---
+
+<!-- https://georgiacivicdata.org/py/generated/georgiacivicdata.GCDNotFoundError.md -->
+
+# georgiacivicdata.GCDNotFoundError
+
+### *exception* georgiacivicdata.GCDNotFoundError(message, \*, code, status=None, details=None)
+
+No such dataset, lookup table or path (HTTP 404).
+
+
+---
+
+<!-- https://georgiacivicdata.org/py/generated/georgiacivicdata.GCDPlaceAmbiguousError.md -->
+
+# georgiacivicdata.GCDPlaceAmbiguousError
+
+### *exception* georgiacivicdata.GCDPlaceAmbiguousError(message, \*, code, status=None, details=None)
+
+A district, school or county name matched more than one place.
+
+
+---
+
+<!-- https://georgiacivicdata.org/py/generated/georgiacivicdata.GCDPlaceNotFoundError.md -->
+
+# georgiacivicdata.GCDPlaceNotFoundError
+
+### *exception* georgiacivicdata.GCDPlaceNotFoundError(message, \*, code, status=None, details=None)
+
+A district, school or county name matched nothing.
+
+
+---
+
+<!-- https://georgiacivicdata.org/py/generated/georgiacivicdata.GCDUnavailableError.md -->
+
+# georgiacivicdata.GCDUnavailableError
+
+### *exception* georgiacivicdata.GCDUnavailableError(message, \*, code, status=None, details=None)
+
+The service couldn't answer: no connection, a timeout, a rate limit
+that outlasted the retries, or a server error (HTTP 5xx).
+
+
+---
+
+<!-- https://georgiacivicdata.org/py/generated/georgiacivicdata.cache_clear.md -->
+
+# georgiacivicdata.cache_clear
+
+### georgiacivicdata.cache_clear()
+
+Clear the session cache and the disk cache.
+
+Empties the in-memory cache of metadata (the catalog, dataset schemas and
+lookup tables) kept for the Python session, and deletes the opt-in disk
+cache of row downloads (see the `cache` argument of [`rows()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.rows.md#georgiacivicdata.rows)).
+Location lookups are never cached, so there is nothing to clear for them.
+
+The disk cache lives in the standard user cache folder for
+`georgiacivicdata` (or the `cache_dir` option). It is only ever
+written when you ask for it, with `cache=True` or
+`set_option("cache", True)`.
+
+* **Returns:**
+  *None*
+
+#### SEE ALSO
+[`rows`](https://georgiacivicdata.org/py/generated/georgiacivicdata.rows.md#georgiacivicdata.rows)
+: the disk cache.
+
+### Examples
+
+```pycon
+>>> import georgiacivicdata as gcd
+>>> gcd.cache_clear()
+```
+
+
+---
+
+<!-- https://georgiacivicdata.org/py/generated/georgiacivicdata.citation.md -->
+
+# georgiacivicdata.citation
+
+### georgiacivicdata.citation(x)
+
+Cite a dataset.
+
+The citation for data from Georgia Civic Data, ready to paste:
+
+"{title}. Georgia Civic Data (georgiacivicdata.org), CC BY 4.0.
+{dataset URL}. Original source: {source}."
+
+**License and attribution.** The data is published under the Creative
+Commons Attribution 4.0 International license (CC BY 4.0,
+[https://creativecommons.org/licenses/by/4.0/](https://creativecommons.org/licenses/by/4.0/)). You may share and adapt it
+for any purpose, including commercially, as long as you give credit:
+name Georgia Civic Data (georgiacivicdata.org) and the original source,
+link the license, and say if you changed the data. The citation covers
+all three. The license covers Georgia Civic Data's cleaning,
+standardization, compilation and documentation; the source data stays
+under its original publisher's terms.
+
+* **Parameters:**
+  **x** (*DataFrame* *or* *str*) -- A result of [`rows()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.rows.md#georgiacivicdata.rows), or a dataset name.
+* **Returns:**
+  *str* -- The citation. For a result of [`rows()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.rows.md#georgiacivicdata.rows) it is the API's own
+  citation; for a name it is built from the dataset's schema in the
+  same format.
+
+#### SEE ALSO
+[`meta`](https://georgiacivicdata.org/py/generated/georgiacivicdata.meta.md#georgiacivicdata.meta)
+: all the metadata.
+
+### Examples
+
+```pycon
+>>> import georgiacivicdata as gcd
+>>> gcd.citation("graduation_rate_4_year_cohort")
+```
+
+
+---
+
+<!-- https://georgiacivicdata.org/py/generated/georgiacivicdata.columns.md -->
+
+# georgiacivicdata.columns
+
+### georgiacivicdata.columns(name, labels=True, \*, backend=None)
+
+Get a dataset's column dictionary.
+
+The columns of a dataset, lookup table or geometry dataset as a tidy
+table: what each column means, its type, its unit and, for metrics,
+whether it is a numerator or denominator. This is the place to check
+"what does `pct_proficient_learner_or_above` mean, and is it 0-1?".
+
+The dictionary lists every column a dataset can return. Which ones a
+given [`rows()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.rows.md#georgiacivicdata.rows) call returns also depends on its `detail` and
+`columns`: code columns that would be empty on every row (a county
+row's `tract_geoid`, a district row's `school_code`) are left out.
+
+* **Parameters:**
+  * **name** (*str*) -- A dataset, lookup table or geometry dataset name.
+  * **labels** (*bool* *,* *default True*) -- `True` also lists the name columns that [`rows()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.rows.md#georgiacivicdata.rows) joins in by
+    default (`district_name`, `county_name`, `demographic_label`,
+    ...), each right after its code, with `role` `"label"`.
+    `False` lists the dataset's own columns only, matching
+    `rows(labels=False)`. Labels come only with datasets; lookup tables
+    and geometry datasets ignore this argument.
+  * **backend** ( *{"pandas"* *,*  *"polars"}* *,* *optional*) -- The kind of data frame to return. Default: the `backend` option.
+* **Returns:**
+  *pandas.DataFrame or polars.DataFrame* -- One row per column, with columns:
+  - `column`: the column name.
+  - `label`: a short display name.
+  - `type`: `"integer"`, `"number"`, `"string"`, `"boolean"`
+    or `"date"`, which [`rows()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.rows.md#georgiacivicdata.rows) maps to integer, float, string,
+    boolean and date columns.
+  - `role`: `"year"`, a foreign key (`"fk_district"`,
+    `"fk_school"`, ...), `"categorical"`, `"metric"` or
+    `"label"` (a joined name column) for datasets; `"key"` or
+    `"attribute"` for lookup tables.
+  - `label_of`: for a `"label"` column, the code column it names
+    (`"district_code"`, `"demographic"`, ...); otherwise missing.
+  - `unit`: `"count"`, `"proportion"` (0-1 scale), a rate unit,
+    ...
+  - `is_key_metric`: boolean, true for the dataset's headline metric.
+  - `metric_component`: `"numerator"` or `"denominator"` for the
+    counts a rate is built from.
+  - `nullable`: boolean.
+  - `valid_values`: list column of a categorical column's values.
+  - `description`: the full definition.
+  - `null_meaning`: what a missing value means in this column.
+
+  Fields that don't apply (labels and units for lookup tables and
+  joined name columns, most fields for geometry datasets) are missing.
+  A joined name column's `description` and `nullable` come from its
+  lookup table; see [`dimension()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.dimension.md#georgiacivicdata.dimension).
+
+#### SEE ALSO
+[`describe`](https://georgiacivicdata.org/py/generated/georgiacivicdata.describe.md#georgiacivicdata.describe)
+: the whole schema.
+
+### Examples
+
+```pycon
+>>> import georgiacivicdata as gcd
+>>> gcd.columns("graduation_rate_4_year_cohort")
+>>> gcd.columns("graduation_rate_4_year_cohort", labels=False)
+>>> gcd.columns("schools")
+```
+
+
+---
+
+<!-- https://georgiacivicdata.org/py/generated/georgiacivicdata.contract.md -->
+
+# georgiacivicdata.contract
+
+### georgiacivicdata.contract(name, file=None)
+
+Get a dataset's data contract.
+
+The dataset's formal, versioned contract in the Open Data Contract
+Standard (ODCS v3.2): its schema, quality rules, `version` and
+`schema_hash`. For data engineers building pipelines and anyone citing
+the exact schema. Most users want [`describe()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.describe.md#georgiacivicdata.describe) instead.
+
+Datasets and the `school_attendance_zones` geometry dataset have
+contracts; lookup tables and `school_district_boundaries` do not.
+
+* **Parameters:**
+  * **name** (*str*) -- A dataset name.
+  * **file** (*str* *or* *path-like* *,* *optional*) -- If given, the contract is written there verbatim as YAML and the path
+    is returned. Default: return the contract as a dict.
+* **Returns:**
+  *dict or path* -- The contract as a nested dict (parsed from its JSON form), or, with
+  `file`, the path.
+
+#### SEE ALSO
+[`describe`](https://georgiacivicdata.org/py/generated/georgiacivicdata.describe.md#georgiacivicdata.describe)
+: a readable summary.
+
+### Examples
+
+```pycon
+>>> import georgiacivicdata as gcd
+>>> spec = gcd.contract("graduation_rate_4_year_cohort")
+>>> spec["version"]
+>>> gcd.contract("graduation_rate_4_year_cohort", file="contract.yaml")
+```
+
+
+---
+
+<!-- https://georgiacivicdata.org/py/generated/georgiacivicdata.datasets.md -->
+
+# georgiacivicdata.datasets
+
+### georgiacivicdata.datasets(main_topic=None, level=None, year=None, kind=None, details=False, \*, backend=None)
+
+List the datasets in the catalog.
+
+The catalog of everything the API publishes, one row per dataset. With
+no arguments it returns **every dataset**: all subject areas, detail
+levels and years, tables and geometry alike. Each argument only narrows
+the list (the filtering runs on the server). About 176 datasets: small
+enough to browse or filter locally.
+
+The six lookup tables (districts, schools, counties, tracts, block
+groups, demographics) are not datasets and are not listed; see
+[`dimension()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.dimension.md#georgiacivicdata.dimension).
+
+* **Parameters:**
+  * **main_topic** (*str* *,* *optional*) -- A single subject area: `"education"`, `"census"`, `"health"` or
+    `"immigration"`. Default: all.
+  * **level** (*str* *,* *optional*) -- Keep datasets that publish rows at this detail level, such as
+    `"schools"`, `"districts"`, `"counties"` or `"tracts"`.
+    Default: all.
+  * **year** (*int* *,* *optional*) -- Keep datasets that cover this year. Default: all.
+  * **kind** ( *{"table"* *,*  *"geometry"}* *,* *optional*) -- Default: both.
+  * **details** (*bool* *,* *default False*) -- `False` gives the compact catalog. `True` adds the long columns
+    (description, source, grain and more).
+  * **backend** ( *{"pandas"* *,*  *"polars"}* *,* *optional*) -- The kind of data frame to return. Default: the `backend` option.
+* **Returns:**
+  *pandas.DataFrame or polars.DataFrame* -- One row per dataset, with columns:
+  - `name`: the dataset's name, used by every other function.
+  - `title`, `summary`: what it holds.
+  - `kind`: `"table"` or `"geometry"`.
+  - `main_topic`: the subject area.
+  - `detail_levels`: list column of the levels it publishes.
+  - `year_min`, `year_max`: integers, the years covered.
+
+  With `details=True`, also: `description`, `source`,
+  `source_url`, `grain` (list column: the columns that identify a
+  row), `default_detail`, `year_gaps` (list column of missing
+  years), `update_frequency`, `search_aliases_en` and
+  `search_aliases_es` (list columns of everyday search phrases), and
+  `updated_at` (UTC timestamp). Geometry datasets have missing values
+  where a field doesn't apply.
+
+#### SEE ALSO
+[`search`](https://georgiacivicdata.org/py/generated/georgiacivicdata.search.md#georgiacivicdata.search)
+: rank datasets by plain words.
+
+[`describe`](https://georgiacivicdata.org/py/generated/georgiacivicdata.describe.md#georgiacivicdata.describe)
+: one dataset.
+
+### Examples
+
+```pycon
+>>> import georgiacivicdata as gcd
+>>> gcd.datasets()
+>>> gcd.datasets(main_topic="education", level="schools")
+>>> gcd.datasets(kind="geometry", details=True)
+```
+
+
+---
+
+<!-- https://georgiacivicdata.org/py/generated/georgiacivicdata.describe.md -->
+
+# georgiacivicdata.describe
+
+### georgiacivicdata.describe(name, \*, backend=None)
+
+Describe a dataset or lookup table.
+
+Everything about one dataset, lookup table or geometry dataset: what it
+holds, its source, years, detail levels, the columns that identify a row
+(the grain), its key metric, every filter, and the notes its data
+contract declares (limitations, series breaks, groups that must not be
+added up, and so on). Printing the result shows a readable summary.
+
+Read the **"Pick one value of"** line: it names categorical columns with
+no total (such as `grade_cluster`), whose values must not be mixed in
+one summary. [`rows()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.rows.md#georgiacivicdata.rows) returns every value of them unless you filter
+one.
+
+The `filters` table is also how to discover the filters that are not
+columns of the dataset: lookup-table attributes such as
+`district_type`, `school_level`, `locale` and
+`demographic_category`.
+
+* **Parameters:**
+  * **name** (*str*) -- A dataset, lookup table or geometry dataset name, such as
+    `"graduation_rate_4_year_cohort"`, `"schools"` or
+    `"school_attendance_zones"`. Names are unique across all three
+    kinds.
+  * **backend** ( *{"pandas"* *,*  *"polars"}* *,* *optional*) -- The kind of data frame for the `columns`, `filters` and table
+    `notes`. Default: the `backend` option.
+* **Returns:**
+  *Description* -- Attributes include `name`, `kind` (`"table"`, `"geometry"` or
+  `"lookup"`), `title`, `summary`, `description`, `source`,
+  `source_url`, `years`, `year_gaps`, `detail_levels`,
+  `default_detail`, `grain`, `key_metric`, and:
+  - `columns`: the column dictionary, as [`columns()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.columns.md#georgiacivicdata.columns) returns it
+    by default (for a dataset, the joined name columns included).
+  - `filters`: a data frame of every filter parameter: `param`,
+    `kind` (categorical, foreign_key, dimension_attribute,
+    metric_bound, year, detail, ...), `values` (list column of
+    allowed values), `multi_value`, `has_total`, `total_value`,
+    `requires_single_value` and `nullable`.
+  - `notes`: the contract's declarations that are present:
+    `limitations`, `year_meaning` (strings), `null_semantics` (a
+    dict), `series_breaks`, `non_additive`, `partitions`,
+    `pooled_rates`, `year_window`, `value_implications`,
+    `pooled_min_count` (data frames), and `assignment_note` for the
+    zones.
+  - `raw`: the full parsed schema response.
+
+#### SEE ALSO
+[`columns`](https://georgiacivicdata.org/py/generated/georgiacivicdata.columns.md#georgiacivicdata.columns)
+: the column table alone.
+
+[`values`](https://georgiacivicdata.org/py/generated/georgiacivicdata.values.md#georgiacivicdata.values)
+: the category values present under a filter.
+
+[`contract`](https://georgiacivicdata.org/py/generated/georgiacivicdata.contract.md#georgiacivicdata.contract)
+: the formal contract.
+
+### Examples
+
+```pycon
+>>> import georgiacivicdata as gcd
+>>> gcd.describe("graduation_rate_4_year_cohort")
+>>> gcd.describe("ccrpi_content_mastery").filters
+>>> gcd.describe("schools")
+```
+
+
+---
+
+<!-- https://georgiacivicdata.org/py/generated/georgiacivicdata.dimension.md -->
+
+# georgiacivicdata.dimension
+
+### georgiacivicdata.dimension(name, \*, district=None, school=None, county=None, q=None, columns=None, n_max=None, backend=None, \*\*filters)
+
+Get the rows of a lookup table.
+
+Returns one of the platform's six lookup tables, the reference lists
+every dataset's codes point to. They hold much more than names, and the
+API never adds it to dataset rows:
+
+- `"districts"`: district name, former names, type, Census id, county,
+  address, coordinates, active flag.
+- `"schools"`: school name, former names, level, grade span, county,
+  NCES id, address, phone, website, coordinates, locale (city, suburb,
+  town, rural), charter and active flags.
+- `"counties"`: the 159 county names (without "County").
+- `"tracts"`: 2020 Census tracts with county, land area and population.
+- `"block_groups"`: 2020 block groups with tract, county, land area,
+  population, housing units and households.
+- `"demographics"`: each demographic group's label and category.
+
+Use it to analyze results by locale, map schools, or browse what exists
+("every school in Fulton County"). Unfiltered tables are cached for the
+session.
+
+**Joining schools.** School codes repeat across districts, so join on
+`district_code` **and** `school_code` together:
+
+```default
+schools = gcd.dimension(
+    "schools", columns=["district_code", "school_code", "locale"]
+)
+grad.merge(schools, on=["district_code", "school_code"], how="left")
+```
+
+* **Parameters:**
+  * **name** (*str*) -- The lookup table: `"districts"`, `"schools"`, `"counties"`,
+    `"tracts"`, `"block_groups"` or `"demographics"`.
+  * **district** (*str* *or* *list* *of* *str* *,* *optional*) -- Places by name, matched exactly against current and former names
+    (ignoring case, accents and a trailing "County") and turned into
+    codes. Each applies only to tables with that code column.
+  * **school** (*str* *or* *list* *of* *str* *,* *optional*) -- Places by name, matched exactly against current and former names
+    (ignoring case, accents and a trailing "County") and turned into
+    codes. Each applies only to tables with that code column.
+  * **county** (*str* *or* *list* *of* *str* *,* *optional*) -- Places by name, matched exactly against current and former names
+    (ignoring case, accents and a trailing "County") and turned into
+    codes. Each applies only to tables with that code column.
+  * **q** (*str* *,* *optional*) -- Partial text search over the table's name columns, ignoring case and
+    accents (`q="eastside"`). Unlike the name arguments, it matches
+    part of a name and returns every hit, so it is the tool for browsing.
+  * **columns** (*str* *or* *list* *of* *str* *,* *optional*) -- The columns to return. Default: all.
+  * **n_max** (*int* *,* *optional*) -- The most rows to return. Default `None`: all.
+  * **backend** ( *{"pandas"* *,*  *"polars"}* *,* *optional*) -- The kind of data frame to return. Default: the `backend` option
+    (`"pandas"` unless changed with [`set_option()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.set_option.md#georgiacivicdata.set_option)).
+  * **\*\*filters** -- Named filters on the table's key, enum and boolean columns, and
+    `county_fips`, `district_code` or `tract_geoid` where the table
+    has them. Each takes a value or a list (values are OR'd; filters are
+    AND'd), for example `active=True`,
+    `district_type="state_charter"` or `county_fips="13121"`.
+* **Returns:**
+  *pandas.DataFrame or polars.DataFrame* -- One row per district, school, county, tract, block group or
+  demographic group, ordered by the table's primary key and typed from
+  its schema: codes (`district_code`, `school_code`,
+  `county_fips`, `tract_geoid`, `block_group_geoid`,
+  `demographic`) and text columns are strings, coordinates and areas
+  floats, counts and `directory_year` integers, `active` and
+  `charter` booleans. See [`columns()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.columns.md#georgiacivicdata.columns) for each table's columns.
+
+#### SEE ALSO
+[`columns`](https://georgiacivicdata.org/py/generated/georgiacivicdata.columns.md#georgiacivicdata.columns)
+: a table's column dictionary.
+
+[`rows`](https://georgiacivicdata.org/py/generated/georgiacivicdata.rows.md#georgiacivicdata.rows)
+: results carry these tables' names beside their codes.
+
+### Examples
+
+```pycon
+>>> import georgiacivicdata as gcd
+>>> gcd.dimension("counties")
+>>> gcd.dimension("schools", county="Fulton", active=True)
+>>> gcd.dimension("districts", district_type="state_charter")
+>>> gcd.dimension(
+...     "schools", q="eastside",
+...     columns=["district_code", "school_code", "school_name"],
+... )
+```
+
+
+---
+
+<!-- https://georgiacivicdata.org/py/generated/georgiacivicdata.district_boundaries.md -->
+
+# georgiacivicdata.district_boundaries
+
+### georgiacivicdata.district_boundaries(district_code=None, district=None, \*, geometry=True, backend=None)
+
+Get school district boundaries.
+
+The Census TIGER/Line outlines of Georgia's school districts, keyed to
+district codes: unified districts, the secondary-only pieces some
+districts serve (Fort Benning grades 9-12), and the Department of
+Defense districts (which have no district code).
+
+* **Parameters:**
+  * **district_code** (*str* *or* *list* *of* *str* *,* *optional*) -- District codes. Default: every district.
+  * **district** (*str* *or* *list* *of* *str* *,* *optional*) -- District names, matched to codes as in [`rows()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.rows.md#georgiacivicdata.rows).
+  * **geometry** (*bool* *,* *default True*) -- `True` returns a geopandas `GeoDataFrame`; `False` returns the
+    attributes as a plain data frame.
+  * **backend** ( *{"pandas"* *,*  *"polars"}* *,* *optional*) -- With `geometry=False`, the kind of data frame to return.
+* **Returns:**
+  *geopandas.GeoDataFrame or DataFrame* -- One row per district piece, with columns `district_code`,
+  `district_name` (for Department of Defense districts, the Census
+  name), `boundary_type` (`"unified"`, `"secondary_extension"` or
+  `"dodea"`), `district_census_id`, `nces_lea_id`, `grade_low`,
+  `grade_high`, `tiger_geoid`, `tiger_name`, `tiger_vintage`,
+  `land_area_sq_mi`, `area_sq_mi`, the bounding box and the
+  `geometry` (WGS 84).
+
+#### SEE ALSO
+[`school_zones`](https://georgiacivicdata.org/py/generated/georgiacivicdata.school_zones.md#georgiacivicdata.school_zones)
+: the zones inside each district.
+
+### Examples
+
+```pycon
+>>> import georgiacivicdata as gcd
+>>> gcd.district_boundaries(district="Clay County")
+>>> gcd.district_boundaries(geometry=False)
+```
+
+
+---
+
+<!-- https://georgiacivicdata.org/py/generated/georgiacivicdata.get_option.md -->
+
+# georgiacivicdata.get_option
+
+### georgiacivicdata.get_option(name)
+
+Get the value of a package option.
+
+* **Parameters:**
+  **name** (*str*) -- One of `"backend"`, `"quiet"`, `"cache"` or `"cache_dir"`
+  (see [`set_option()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.set_option.md#georgiacivicdata.set_option)).
+* **Returns:**
+  *Any* -- The option's current value.
+
+### Examples
+
+```pycon
+>>> import georgiacivicdata as gcd
+>>> gcd.get_option("backend")
+'pandas'
+```
+
+
+---
+
+<!-- https://georgiacivicdata.org/py/generated/georgiacivicdata.locate.md -->
+
+# georgiacivicdata.locate
+
+### georgiacivicdata.locate(lat=None, lon=None, address=None, id=None, grade=None, year=None, \*, quiet=False, backend=None)
+
+Locate points or addresses.
+
+The county, 2020 Census tract and block group, school district and zoned
+schools that points or street addresses fall in.
+
+Points are sent to the API's `POST /locate` route in batches of up to
+1,000, so coordinates never appear in URLs and nothing is cached.
+**Addresses never reach the Georgia Civic Data API**: the package
+geocodes them on your computer with the U.S. Census batch geocoder
+([https://geocoding.geo.census.gov/geocoder/](https://geocoding.geo.census.gov/geocoder/), benchmark
+`Public_AR_Current`, the address data the API's own search uses; up to
+10,000 addresses per upload), then sends the coordinates as points. An
+address the Census can't match is never sent. To geocode with another
+service, geocode first and pass `lat` and `lon`.
+
+A zone is the default assignment, not the only option: a student may
+attend another public school by transfer, or a charter, magnet or other
+choice school. This is not an official enrollment determination; confirm
+with the school district.
+
+**Output.** A long data frame: **for each input, one row per place it
+falls in.** A typical location gives seven rows: its county, tract, block
+group and school district, then one row per zoned school. Rows for each
+input come in a fixed order: county, tract, block group, district, then
+elementary, middle and high schools by grade.
+
+A level can have more than one school row: some homes are zoned to one
+elementary school for kindergarten to grade 2 and another for grades
+3-5. The `grades` column tells them apart; pass `grade` to keep only
+the school for one grade.
+
+The `note` column is missing normally, and one plain sentence
+otherwise, so a missing row is never silent:
+
+- a level with no zone collected yet, a gap between zones, or a level
+  served by another district gets a row with missing id, name and
+  grades, and a note saying why;
+- an input outside Georgia, a point the API rejects, or an address the
+  Census can't match gets one row with missing geographic columns and
+  the reason; one bad input never stops the batch;
+- in a Department of Defense district the district row has a missing id
+  and a note;
+- school rows whose zone has a known pending change, or which overlap
+  another school's zone, say so.
+
+* **Parameters:**
+  * **lat** (*float* *or* *sequence* *of* *float* *,* *optional*) -- Latitude and longitude in decimal degrees (WGS 84), of equal length.
+  * **lon** (*float* *or* *sequence* *of* *float* *,* *optional*) -- Latitude and longitude in decimal degrees (WGS 84), of equal length.
+  * **address** (*str* *,* *sequence* *of* *str* *, or* *DataFrame* *,* *optional*) -- Street addresses: one-line addresses
+    (`"206 Washington St SW, Atlanta, GA 30334"`), or a data frame
+    (pandas or Polars) or dict with columns `street`, `city`,
+    `state` and `zip`. Give either `lat` and `lon` or
+    `address`, not both.
+  * **id** (*sequence* *,* *optional*) -- Identifiers for the inputs, the same length, carried into the output
+    so results join back to your data. Default: each input's position,
+    starting at 0.
+  * **grade** (*str* *or* *int* *,* *optional*) -- Keep only school zones serving this grade (`"pk"`, `"k"`,
+    `"01"` to `"12"`; `"5"`, `5` and `"K"` are accepted).
+    Default: every grade.
+  * **year** (*int* *,* *optional*) -- The zones' school year as its ending year (2027 is 2026-27).
+    Default: the current zones.
+  * **quiet** (*bool* *,* *default False*) -- `True` silences the once-per-session note on the default
+    assignment.
+  * **backend** ( *{"pandas"* *,*  *"polars"}* *,* *optional*) -- The kind of data frame to return. Default: the `backend` option.
+* **Returns:**
+  *pandas.DataFrame or polars.DataFrame* -- Columns, in order:
+  1. `id`.
+  2. The input: `lat`, `lon` for points; for addresses
+     `address`, the geocoder's `match_status` (`"match"`,
+     `"no_match"`, `"tie"`), `match_type` (`"exact"`,
+     `"non_exact"`), `matched_address`, and the geocoded `lat`
+     and `lon`.
+  3. `geographic_type`: `"county"`, `"tract"`, `"block_group"`,
+     `"school_district"`, `"elementary_school"`,
+     `"middle_school"` or `"high_school"`.
+  4. `geographic_id`: county FIPS (`"13121"`), tract GEOID
+     (`"13121003500"`), block group GEOID (`"131210035001"`),
+     district code (`"761"`), or for a school `"DISTRICT-SCHOOL"`
+     (`"761-4560"`), the form [`rows()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.rows.md#georgiacivicdata.rows) takes as `school_id`.
+  5. `geographic_name`: the place's name.
+  6. `grades`: a school row's grade range (`"K-5"`, `"6-8"`,
+     `"9-12"`); missing on other rows.
+  7. `note`: missing, or why a row is missing or needs care.
+
+  [`meta()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.meta.md#georgiacivicdata.meta) on the result gives the API's `assignment_note` and
+  `note` on reading the zones.
+
+#### SEE ALSO
+[`school_zones`](https://georgiacivicdata.org/py/generated/georgiacivicdata.school_zones.md#georgiacivicdata.school_zones)
+: the zones' shapes and precision (`method`, `accuracy_class`).
+
+[`rows`](https://georgiacivicdata.org/py/generated/georgiacivicdata.rows.md#georgiacivicdata.rows)
+: with `school_id`, data on a located school.
+
+### Examples
+
+```pycon
+>>> import georgiacivicdata as gcd
+```
+
+The Georgia State Capitol, by coordinates and by address:
+
+```pycon
+>>> gcd.locate(lat=33.7490, lon=-84.3880)
+>>> gcd.locate(address="206 Washington St SW, Atlanta, GA 30334")
+```
+
+Only the school for one grade:
+
+```pycon
+>>> gcd.locate(lat=33.7490, lon=-84.3880, grade=9)
+```
+
+
+---
+
+<!-- https://georgiacivicdata.org/py/generated/georgiacivicdata.meta.md -->
+
+# georgiacivicdata.meta
+
+### georgiacivicdata.meta(x)
+
+Get the metadata carried by a result.
+
+Every data frame from [`rows()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.rows.md#georgiacivicdata.rows) carries the response's metadata: what
+the rows are, where they come from and how to cite them. `meta()`
+returns it. Results of [`search()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.search.md#georgiacivicdata.search), the zone functions and
+[`locate()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.locate.md#georgiacivicdata.locate) carry their notes the same way.
+
+Polars data frames have no attributes, so the package keeps the metadata
+beside the object itself: read it from the result as it came back, since
+a new data frame derived from it (a filter, a join) doesn't carry it.
+pandas results also hold it in `df.attrs["gcd_meta"]`, which pandas
+keeps through some operations. [`citation()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.citation.md#georgiacivicdata.citation) also accepts a dataset
+name.
+
+* **Parameters:**
+  **x** (*pandas.DataFrame* *or* *polars.DataFrame*) -- A result of [`rows()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.rows.md#georgiacivicdata.rows) (or of [`search()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.search.md#georgiacivicdata.search), a zone function or
+  [`locate()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.locate.md#georgiacivicdata.locate)).
+* **Returns:**
+  *dict* -- For [`rows()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.rows.md#georgiacivicdata.rows): `dataset` (the name), `title`, `detail`,
+  `key_metric`, `units` (each metric's unit), `null_semantics`
+  (what a missing value means), `source`, `source_url`,
+  `citation`, `license`, `schema` (the schema's path),
+  `advisories` (a list of `{"code", "message"}` dicts),
+  `year_meaning`, `omitted_columns` (columns left out because they
+  were empty), `data_version`, `updated_at` and `request_url`.
+  Fields the API didn't send are absent. For [`search()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.search.md#georgiacivicdata.search):
+  `confidence`, `retrieval` and `total_matches`; for the zone
+  functions and [`locate()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.locate.md#georgiacivicdata.locate): `note` (and `assignment_note`).
+
+#### SEE ALSO
+[`citation`](https://georgiacivicdata.org/py/generated/georgiacivicdata.citation.md#georgiacivicdata.citation)
+: cite the data.
+
+### Examples
+
+```pycon
+>>> import georgiacivicdata as gcd
+>>> grad = gcd.rows(
+...     "graduation_rate_4_year_cohort", district="Fulton County",
+...     year=2024, demographic="all",
+... )
+>>> gcd.meta(grad)["advisories"]
+```
+
+
+---
+
+<!-- https://georgiacivicdata.org/py/generated/georgiacivicdata.option_context.md -->
+
+# georgiacivicdata.option_context
+
+### georgiacivicdata.option_context(\*\*options)
+
+Set options temporarily, inside a `with` block.
+
+* **Parameters:**
+  **\*\*options** (*Any*) -- Options and their values, as in [`set_option()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.set_option.md#georgiacivicdata.set_option).
+* **Returns:**
+  *contextmanager* -- A context manager that restores the previous values on exit.
+
+### Examples
+
+```pycon
+>>> import georgiacivicdata as gcd
+>>> with gcd.option_context(backend="polars", quiet=True):
+...     gcd.get_option("backend")
+'polars'
+```
+
+
+---
+
+<!-- https://georgiacivicdata.org/py/generated/georgiacivicdata.rows.md -->
+
+# georgiacivicdata.rows
+
+### georgiacivicdata.rows(name, \*, year=None, detail=None, district=None, school=None, county=None, labels=True, columns=None, sort=None, n_max=None, cache=None, quiet=False, backend=None, \*\*filters)
+
+Get rows of a dataset.
+
+The core function: the rows of one dataset at one detail level, as a
+data frame typed from the dataset's schema, with place names beside
+their codes.
+
+**It returns every category and group the filters don't exclude.**
+Nothing is pinned by default: no single demographic group, no single
+subject. A call with only a dataset name returns the whole dataset at its
+default detail level.
+
+**Filters.** Give filters as keyword arguments; each value is one value
+or a list. Values within one filter are OR'd; different filters are
+AND'd. Accepted names:
+
+- any categorical column: `subject="mathematics"`,
+  `demographic=["all", "black"]`;
+- geography codes: `district_code`, `school_code`, `county_fips`,
+  `tract_geoid`, `block_group_geoid`;
+- `school_id`: schools as `"DISTRICT-SCHOOL"` codes
+  (`school_id=["761-0199", "660-0104"]`), the form [`locate()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.locate.md#georgiacivicdata.locate)
+  returns (a school code alone is not unique across districts);
+- lookup-table attributes: `district_type="state_charter"`,
+  `school_level="high"`, `locale="rural"`,
+  `demographic_category="race"`;
+- metric bounds: `graduation_rate_min=0.9`, `num_cohort_max=50`
+  (inclusive, in stored units).
+
+`None` inside a list selects rows where a nullable column is empty
+(`assessment_type=[None]`); a filter that is `None` itself is
+ignored. Booleans become `true` / `false`. The API validates every
+filter and its errors name what went wrong; [`describe()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.describe.md#georgiacivicdata.describe) lists each
+dataset's filters and their values.
+
+**Labels.** With `labels=True` (the default) the rows carry the API's
+joined name columns, each right after its code: `district_name`,
+`district_census_id` and `district_type` after `district_code`;
+`school_name` after `school_code`; `county_name`, `tract_name`
+and `block_group_name` after their codes; `demographic_label` and
+`demographic_category` after `demographic`. Codes are always kept:
+school names repeat across districts, names change over time, and joins
+run on codes. Categorical values (`subject`, `grade_cluster`) are
+readable snake_case codes already. Other lookup-table attributes (school
+addresses, locale, coordinates) are not joined; get them from
+[`dimension()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.dimension.md#georgiacivicdata.dimension) and merge. `labels=False` asks for the dataset's own
+columns only, for large pulls. Either way, code columns that would be
+empty on every row (a district row's `school_code`, a state row's
+geography codes) are left out, so both settings give the same shape.
+
+**Missing values and totals.** A missing metric usually means the value
+was **suppressed** to protect privacy (small counts), **not zero**; the
+schema's `null_semantics` says which ([`describe()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.describe.md#georgiacivicdata.describe)). Because
+nothing is pinned, results hold the `all` totals beside the subgroups:
+never add a total to its subgroups. The API's advisories say so when
+they apply, as [`GCDAdvisory`](https://georgiacivicdata.org/py/generated/georgiacivicdata.GCDAdvisory.md#georgiacivicdata.GCDAdvisory) warnings (`quiet=True` or
+`set_option("quiet", True)` silences them; they stay in
+`meta(df)["advisories"]`). Rates must be pooled from their counts,
+never averaged: `sum(num_graduates) / sum(num_cohort)`, not
+`mean(graduation_rate)`. [`columns()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.columns.md#georgiacivicdata.columns) shows each metric's
+numerator and denominator.
+
+**Large downloads and the disk cache.** Up to 10,000 rows come back as
+one JSON page. A larger result is downloaded in full as CSV in one
+response; the metadata and advisories then come from the first JSON page
+and describe its first 10,000 rows. With `cache=True` (or
+`set_option("cache", True)`), responses are kept in the user cache
+folder with their `ETag`. Repeating a request asks the server whether
+the data changed: an unchanged answer reuses the saved copy without
+downloading, and a new data release downloads afresh. A response the
+server marks fresh (for five minutes) is reused without asking. Clear it
+with [`cache_clear()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.cache_clear.md#georgiacivicdata.cache_clear).
+
+**Data license.** The data is CC BY 4.0: credit Georgia Civic Data and
+the original source, as [`citation()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.citation.md#georgiacivicdata.citation) writes.
+
+* **Parameters:**
+  * **name** (*str*) -- The dataset's name, such as `"graduation_rate_4_year_cohort"` (see
+    [`datasets()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.datasets.md#georgiacivicdata.datasets) and [`search()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.search.md#georgiacivicdata.search)).
+  * **year** (*int* *or* *list* *of* *int* *,* *optional*) -- Years to keep. A run of consecutive years (`range(2019, 2025)`) is
+    sent as a range; anything else (`[2019, 2024]`) as exact years.
+    Default: all years.
+  * **detail** (*str* *,* *optional*) -- The one level the rows describe, such as `"schools"`,
+    `"districts"`, `"states"`, `"counties"` or `"tracts"`.
+    Default: the dataset's default (the finest level, except Census
+    datasets, which default to counties). To combine levels, call once
+    per level and concatenate.
+  * **district** (*str* *or* *list* *of* *str* *,* *optional*) -- Places by name, such as `district="Fulton County"`,
+    `school="Roswell High School"`, `county=["Fulton", "DeKalb"]`.
+    Matched exactly against current and former names (ignoring case,
+    accents and a trailing "County"); an unknown or ambiguous name is an
+    error that lists suggestions or candidates. A school name found in
+    more than one district needs `district` too. For any one place,
+    give its code or its name, not both.
+  * **school** (*str* *or* *list* *of* *str* *,* *optional*) -- Places by name, such as `district="Fulton County"`,
+    `school="Roswell High School"`, `county=["Fulton", "DeKalb"]`.
+    Matched exactly against current and former names (ignoring case,
+    accents and a trailing "County"); an unknown or ambiguous name is an
+    error that lists suggestions or candidates. A school name found in
+    more than one district needs `district` too. For any one place,
+    give its code or its name, not both.
+  * **county** (*str* *or* *list* *of* *str* *,* *optional*) -- Places by name, such as `district="Fulton County"`,
+    `school="Roswell High School"`, `county=["Fulton", "DeKalb"]`.
+    Matched exactly against current and former names (ignoring case,
+    accents and a trailing "County"); an unknown or ambiguous name is an
+    error that lists suggestions or candidates. A school name found in
+    more than one district needs `district` too. For any one place,
+    give its code or its name, not both.
+  * **labels** (*bool* *,* *default True*) -- `True` adds place names beside codes; `False` returns codes only.
+  * **columns** (*str* *or* *list* *of* *str* *,* *optional*) -- Return only these columns. Default: all.
+  * **sort** (*str* *or* *list* *of* *str* *,* *optional*) -- Columns to sort by on the server; prefix `-` for descending
+    (`"-graduation_rate"`). Missing values sort last. Mostly useful
+    with `n_max` for a top N. Default: the dataset's own order (its
+    grain).
+  * **n_max** (*int* *,* *optional*) -- The most rows to return. Default `None`: all.
+  * **cache** (*bool* *,* *optional*) -- `True` to use the disk cache. Default: the `cache` option
+    (`False`).
+  * **quiet** (*bool* *,* *default False*) -- `True` silences the advisories.
+  * **backend** ( *{"pandas"* *,*  *"polars"}* *,* *optional*) -- The kind of data frame to return. Default: the `backend` option
+    (`"pandas"`).
+  * **\*\*filters** -- Named filters (see "Filters" above).
+* **Returns:**
+  *pandas.DataFrame or polars.DataFrame* -- Rows at one detail level, typed from the schema: codes and names are
+  strings (leading zeros kept), `year` and counts integers, rates and
+  proportions floats (proportions on the 0-1 scale), booleans boolean.
+  In pandas, integers are `Int64`, booleans `boolean` and text
+  `string` (nullable dtypes); floats are `float64`. Columns come in
+  grain order: `year`, each geography code followed by its names,
+  `demographic` and its labels, other categorical columns, then
+  metrics. [`columns()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.columns.md#georgiacivicdata.columns) describes each column. [`meta()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.meta.md#georgiacivicdata.meta) returns
+  the response's metadata: dataset, title, detail, key metric, units,
+  `null_semantics`, source, citation, license, advisories, data
+  version, `updated_at` and the request URL.
+
+#### SEE ALSO
+[`values`](https://georgiacivicdata.org/py/generated/georgiacivicdata.values.md#georgiacivicdata.values)
+: which category values exist under a filter.
+
+[`describe`](https://georgiacivicdata.org/py/generated/georgiacivicdata.describe.md#georgiacivicdata.describe), [`columns`](https://georgiacivicdata.org/py/generated/georgiacivicdata.columns.md#georgiacivicdata.columns)
+
+[`citation`](https://georgiacivicdata.org/py/generated/georgiacivicdata.citation.md#georgiacivicdata.citation)
+: cite it.
+
+### Examples
+
+```pycon
+>>> import georgiacivicdata as gcd
+```
+
+Names and codes (the default), one district by name:
+
+```pycon
+>>> grad = gcd.rows(
+...     "graduation_rate_4_year_cohort",
+...     district="Fulton County",
+...     demographic=["all", "black", "hispanic"],
+...     year=range(2020, 2025),
+... )
+```
+
+One school, by name within its district:
+
+```pycon
+>>> gcd.rows(
+...     "graduation_rate_4_year_cohort",
+...     district="Fulton County", school="Roswell High School",
+...     demographic="all",
+... )
+```
+
+Statewide schools, one subject, codes only, as Polars:
+
+```pycon
+>>> gcd.rows(
+...     "ccrpi_content_mastery", year=2025, detail="schools",
+...     grade_cluster="high", subject="mathematics", labels=False,
+...     backend="polars",
+... )
+```
+
+Top 10 counties by unemployment:
+
+```pycon
+>>> gcd.rows("employment", year=2024, sort="-unemployment_rate", n_max=10)
+```
+
+
+---
+
+<!-- https://georgiacivicdata.org/py/generated/georgiacivicdata.school_zone_coverage.md -->
+
+# georgiacivicdata.school_zone_coverage
+
+### georgiacivicdata.school_zone_coverage(district_code=None, district=None, \*, geometry=False, backend=None)
+
+Get each district's attendance-zone coverage.
+
+How completely each standard district's attendance zones were collected,
+one row per district and zone level: the source tier, the status of each
+level, the share of the district's land and 2020 population the zones
+cover, how they were built, and the reason for anything short of
+complete.
+
+The API returns one row per district with a column per level
+(`level_status_elementary`, `pct_population_middle`, ...); this
+function pivots those columns long. The district filter runs locally
+(the route takes no filters; the table has about 180 rows).
+
+* **Parameters:**
+  * **district_code** -- As in [`district_boundaries()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.district_boundaries.md#georgiacivicdata.district_boundaries).
+  * **district** -- As in [`district_boundaries()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.district_boundaries.md#georgiacivicdata.district_boundaries).
+  * **geometry** (*bool* *,* *default False*) -- `False` returns a data frame; `True` returns a `GeoDataFrame`
+    of the district outlines carrying the same fields.
+  * **backend** ( *{"pandas"* *,*  *"polars"}* *,* *optional*) -- With `geometry=False`, the kind of data frame to return.
+* **Returns:**
+  *DataFrame or geopandas.GeoDataFrame* -- One row per district and zone level, with columns `year`
+  (integer), `district_code`, `district_name`, `tier` (the source
+  tier, A to E or N), `status` (the district's overall status),
+  `zone_level`, `level_status` (`"zoned"`,
+  `"one_school_per_grade"`, `"partial"`, `"not_available"`,
+  `"served_by_other_district"`), `pct_land_area` and
+  `pct_population` (0-1, the share the level's zones cover),
+  `zone_count`, `methods`, `accuracy_classes`, `reason`, then
+  `levels_covered`, `currency_statuses`, `best_lead`,
+  `extension_note` and `served_elsewhere` (a list column of dicts:
+  the other district's school serving that level, with
+  `district_code`, `school_code` and `reason`).
+
+#### SEE ALSO
+[`school_zones`](https://georgiacivicdata.org/py/generated/georgiacivicdata.school_zones.md#georgiacivicdata.school_zones)
+: the zones.
+
+### Examples
+
+```pycon
+>>> import georgiacivicdata as gcd
+>>> gcd.school_zone_coverage(district="Clay County")
+>>> coverage = gcd.school_zone_coverage()
+>>> coverage.groupby(["zone_level", "level_status"]).size()
+```
+
+
+---
+
+<!-- https://georgiacivicdata.org/py/generated/georgiacivicdata.school_zone_status.md -->
+
+# georgiacivicdata.school_zone_status
+
+### georgiacivicdata.school_zone_status(district_code=None, school_code=None, district=None, school=None, zone_status=None, no_zone_category=None, \*, backend=None)
+
+Get each school's attendance-zone status.
+
+Whether each school of the standard districts has an attendance zone on
+the platform and, if not, why: a magnet or charter school with no zone, a
+district whose maps are not published yet, and so on. Answers "why
+doesn't this school have a zone?" without inferring it from a missing
+polygon.
+
+* **Parameters:**
+  * **district_code** -- As in [`school_zones()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.school_zones.md#georgiacivicdata.school_zones).
+  * **school_code** -- As in [`school_zones()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.school_zones.md#georgiacivicdata.school_zones).
+  * **district** -- As in [`school_zones()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.school_zones.md#georgiacivicdata.school_zones).
+  * **school** -- As in [`school_zones()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.school_zones.md#georgiacivicdata.school_zones).
+  * **zone_status** (*str* *or* *list* *of* *str* *,* *optional*) -- `"zoned"`, `"no_zone"` and/or `"not_yet_collected"`. Default:
+    all.
+  * **no_zone_category** (*str* *or* *list* *of* *str* *,* *optional*) -- Why a school has no zone (the API's categories, listed by
+    [`describe()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.describe.md#georgiacivicdata.describe) with `"school_attendance_zones"`). Default: all.
+  * **backend** ( *{"pandas"* *,*  *"polars"}* *,* *optional*) -- The kind of data frame to return. Default: the `backend` option.
+* **Returns:**
+  *pandas.DataFrame or polars.DataFrame* -- One row per school, with columns `year` (integer),
+  `district_code`, `district_name`, `school_code`,
+  `school_name`, `zone_status`, `zone_levels` (the levels it is
+  zoned for, as one string), `no_zone_category` and `reason`. The
+  API's note on reading the table is `meta(x)["note"]`.
+
+#### SEE ALSO
+[`school_zones`](https://georgiacivicdata.org/py/generated/georgiacivicdata.school_zones.md#georgiacivicdata.school_zones)
+: the zones.
+
+[`school_zone_coverage`](https://georgiacivicdata.org/py/generated/georgiacivicdata.school_zone_coverage.md#georgiacivicdata.school_zone_coverage)
+: each district's coverage.
+
+### Examples
+
+```pycon
+>>> import georgiacivicdata as gcd
+>>> gcd.school_zone_status(district="Atlanta Public Schools")
+>>> gcd.school_zone_status(zone_status="no_zone")
+```
+
+
+---
+
+<!-- https://georgiacivicdata.org/py/generated/georgiacivicdata.school_zones.md -->
+
+# georgiacivicdata.school_zones
+
+### georgiacivicdata.school_zones(district_code=None, school_code=None, district=None, school=None, zone_level=None, grade=None, year=None, resolution='display', \*, geometry=True, backend=None)
+
+Get school attendance zones.
+
+Attendance-zone polygons: the areas that assign a home to its zoned
+elementary, middle and high school, one polygon per school, level and
+grade run, for the current school year.
+
+**Zones differ in precision.** Some are the district's official GIS
+layers; others are digitized from PDF maps, rebuilt from street lists,
+or are the whole district outline (districts with one school per grade).
+Read `method` and `accuracy_class` before treating zones as equally
+exact, and see [`school_zone_coverage()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.school_zone_coverage.md#georgiacivicdata.school_zone_coverage) for how completely each
+district was collected. A zone is the default assignment, not an
+official enrollment determination: confirm with the district.
+
+**A statewide pull is large**, especially at `resolution="full"`.
+Filter to a district and keep the `"display"` default for maps.
+
+* **Parameters:**
+  * **district_code** (*str* *or* *list* *of* *str* *,* *optional*) -- Codes.
+  * **school_code** (*str* *or* *list* *of* *str* *,* *optional*) -- Codes.
+  * **district** (*str* *or* *list* *of* *str* *,* *optional*) -- Names, matched to codes as in [`rows()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.rows.md#georgiacivicdata.rows). A school name found in
+    more than one district needs `district` too.
+  * **school** (*str* *or* *list* *of* *str* *,* *optional*) -- Names, matched to codes as in [`rows()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.rows.md#georgiacivicdata.rows). A school name found in
+    more than one district needs `district` too.
+  * **zone_level** (*str* *or* *list* *of* *str* *,* *optional*) -- `"elementary"`, `"middle"` and/or `"high"`. Default: all.
+  * **grade** (*str* *or* *int* *,* *optional*) -- One grade: keep zones serving it (`"pk"`, `"k"`, `"01"` to
+    `"12"`; `"5"`, `5` and `"K"` are accepted). Default: all.
+  * **year** (*int* *,* *optional*) -- The zones' school year as its ending year (2027 is 2026-27).
+    Default: the current zones.
+  * **resolution** ( *{"display"* *,*  *"full"}* *,* *default "display"*) -- `"display"`: simplified polygons for maps, much smaller;
+    `"full"`: the source polygons the point lookup uses.
+  * **geometry** (*bool* *,* *default True*) -- `True` returns a geopandas `GeoDataFrame` (needs the `geo`
+    extra: `pip install georgiacivicdata[geo]`); `False` returns the
+    attributes as a plain data frame.
+  * **backend** ( *{"pandas"* *,*  *"polars"}* *,* *optional*) -- With `geometry=False`, the kind of data frame to return (default:
+    the `backend` option). Geometry is always a `GeoDataFrame`.
+* **Returns:**
+  *geopandas.GeoDataFrame or DataFrame* -- One row per zone, with columns `year` (integer), `district_code`,
+  `district_name`, `school_code`, `school_name`, `zone_level`,
+  `grade_low`, `grade_high` (`"pk"`, `"k"`, `"01"` ...
+  `"12"`), `method` (how the zone was built), `accuracy_class`,
+  `currency_status`, `boundary_vintage`, `source_url`,
+  `retrieved_on` (date), `area_sq_mi`, the bounding box
+  (`bbox_xmin`, `bbox_ymin`, `bbox_xmax`, `bbox_ymax`),
+  `source_school_name` (the name as the district's map spells it),
+  then `positional_rmse_m`, `currency_note`, `source_publisher`,
+  `nces_school_id`, `district_census_id`, `nces_lea_id` and the
+  `geometry` (WGS 84). The API's disclaimer is `meta(x)["note"]`.
+
+#### SEE ALSO
+[`locate`](https://georgiacivicdata.org/py/generated/georgiacivicdata.locate.md#georgiacivicdata.locate)
+: the zones a point falls in.
+
+[`school_zone_status`](https://georgiacivicdata.org/py/generated/georgiacivicdata.school_zone_status.md#georgiacivicdata.school_zone_status)
+: schools without a zone.
+
+[`describe`](https://georgiacivicdata.org/py/generated/georgiacivicdata.describe.md#georgiacivicdata.describe)
+: with `"school_attendance_zones"`, every field.
+
+### Examples
+
+```pycon
+>>> import georgiacivicdata as gcd
+>>> zones = gcd.school_zones(
+...     district="Atlanta Public Schools", zone_level="high"
+... )
+>>> zones.plot(column="school_name")
+>>> gcd.school_zones(district_code="630", geometry=False)
+```
+
+
+---
+
+<!-- https://georgiacivicdata.org/py/generated/georgiacivicdata.search.md -->
+
+# georgiacivicdata.search
+
+### georgiacivicdata.search(query, main_topic=None, level=None, year=None, n=20, \*, quiet=False, backend=None)
+
+Search the catalog.
+
+Ranked dataset search from plain words, in English or Spanish ("jobless
+rate", "kids missing school", "desempleo"). Use it when you know what
+you are looking for but not what the dataset is called.
+
+Search is hybrid: keyword matching plus matching by meaning. The query
+text is sent to the Georgia Civic Data API, which embeds it with Voyage
+AI for the meaning half and never logs it. This is the one function
+whose results can't be reproduced by filtering [`datasets()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.datasets.md#georgiacivicdata.datasets)
+locally, and the ranking can change between releases of the platform.
+
+* **Parameters:**
+  * **query** (*str*) -- Plain words.
+  * **main_topic** (*optional*) -- The same filters as [`datasets()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.datasets.md#georgiacivicdata.datasets): a subject area, a detail level
+    and a year. Default: no filter.
+  * **level** (*optional*) -- The same filters as [`datasets()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.datasets.md#georgiacivicdata.datasets): a subject area, a detail level
+    and a year. Default: no filter.
+  * **year** (*optional*) -- The same filters as [`datasets()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.datasets.md#georgiacivicdata.datasets): a subject area, a detail level
+    and a year. Default: no filter.
+  * **n** (*int* *,* *default 20*) -- The number of matches to return, 1 to 100.
+  * **quiet** (*bool* *,* *default False*) -- `True` silences the notes on the search (see Returns).
+  * **backend** ( *{"pandas"* *,*  *"polars"}* *,* *optional*) -- The kind of data frame to return. Default: the `backend` option.
+* **Returns:**
+  *pandas.DataFrame or polars.DataFrame* -- One row per match, best first, with columns:
+  - `rank`: integer, 1 is the best match.
+  - `name`, `title`, `summary`, `main_topic`: the dataset.
+  - `detail_levels`: list column of the levels it publishes.
+  - `year_min`, `year_max`: integers, the years covered.
+  - `score`: float, the match score.
+  - `matched_on`: list column of what matched (aliases, columns,
+    summary, ...).
+  - `matched_columns`: list column of the dataset's columns that
+    matched.
+
+  [`meta()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.meta.md#georgiacivicdata.meta) on the result gives `confidence` (`"high"`,
+  `"medium"` or `"low"`), `retrieval` (a dict: `mode` and
+  `reranked`) and `total_matches`. On low confidence the function
+  advises that nothing in the catalog may fit; it also names any lookup
+  tables that matched.
+
+#### SEE ALSO
+[`datasets`](https://georgiacivicdata.org/py/generated/georgiacivicdata.datasets.md#georgiacivicdata.datasets)
+: the full catalog.
+
+[`describe`](https://georgiacivicdata.org/py/generated/georgiacivicdata.describe.md#georgiacivicdata.describe), [`columns`](https://georgiacivicdata.org/py/generated/georgiacivicdata.columns.md#georgiacivicdata.columns)
+
+### Examples
+
+```pycon
+>>> import georgiacivicdata as gcd
+>>> gcd.search("high school graduation")
+>>> gcd.search("desempleo", n=5)
+>>> gcd.search("chronic absence", level="districts")
+```
+
+
+---
+
+<!-- https://georgiacivicdata.org/py/generated/georgiacivicdata.set_option.md -->
+
+# georgiacivicdata.set_option
+
+### georgiacivicdata.set_option(name, value)
+
+Set a package option for the rest of the session.
+
+* **Parameters:**
+  * **name** (*str*) -- 
+
+    The option:
+    - `"backend"`: `"pandas"` (default) or `"polars"`, the kind of
+      data frame every table function returns when its `backend`
+      argument is not given.
+    - `"quiet"`: `True` silences the advisories of [`rows()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.rows.md#georgiacivicdata.rows) and
+      the notes of the search and zone functions. Default `False`.
+    - `"cache"`: `True` turns on the disk cache of [`rows()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.rows.md#georgiacivicdata.rows) (see
+      that function). Default `False`.
+    - `"cache_dir"`: where the disk cache lives. Default `None`: the
+      standard user cache folder for `georgiacivicdata`.
+  * **value** (*Any*) -- The new value.
+* **Returns:**
+  *None*
+
+### Examples
+
+```pycon
+>>> import georgiacivicdata as gcd
+>>> gcd.set_option("backend", "polars")
+>>> gcd.set_option("backend", "pandas")
+```
+
+
+---
+
+<!-- https://georgiacivicdata.org/py/generated/georgiacivicdata.values.md -->
+
+# georgiacivicdata.values
+
+### georgiacivicdata.values(name, columns, \*, year=None, detail=None, district=None, school=None, county=None, backend=None, \*\*filters)
+
+List the category combinations a filter covers.
+
+Which combinations of category values exist, and how many rows each has,
+under the same filters as [`rows()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.rows.md#georgiacivicdata.rows). It answers "which subjects exist
+in 2016 at district level?" or "which demographic groups does this county
+have rows for?" without downloading the rows. The schema's
+`valid_values` list every value a column has ever used; `values()`
+lists what exists **for this filter**, which is what you need when a
+filter returns zero rows.
+
+The API returns at most 500 combinations; the function warns when that
+cap is reached.
+
+* **Parameters:**
+  * **name** (*str*) -- The dataset's name.
+  * **columns** (*str* *or* *list* *of* *str*) -- One or more categorical columns (or `"demographic"`), such as
+    `"subject"` or `["subject", "grade_cluster"]`.
+  * **year** -- Exactly as in [`rows()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.rows.md#georgiacivicdata.rows).
+  * **detail** -- Exactly as in [`rows()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.rows.md#georgiacivicdata.rows).
+  * **district** -- Exactly as in [`rows()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.rows.md#georgiacivicdata.rows).
+  * **school** -- Exactly as in [`rows()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.rows.md#georgiacivicdata.rows).
+  * **county** -- Exactly as in [`rows()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.rows.md#georgiacivicdata.rows).
+  * **backend** ( *{"pandas"* *,*  *"polars"}* *,* *optional*) -- The kind of data frame to return. Default: the `backend` option.
+  * **\*\*filters** -- Named filters, exactly as in [`rows()`](https://georgiacivicdata.org/py/generated/georgiacivicdata.rows.md#georgiacivicdata.rows).
+* **Returns:**
+  *pandas.DataFrame or polars.DataFrame* -- Most rows first, one column per requested column (typed from the
+  schema; missing where the column is empty for those rows) and
+  `n_rows` (integer), the number of rows with that combination.
+
+#### SEE ALSO
+[`rows`](https://georgiacivicdata.org/py/generated/georgiacivicdata.rows.md#georgiacivicdata.rows)
+: the rows themselves.
+
+[`describe`](https://georgiacivicdata.org/py/generated/georgiacivicdata.describe.md#georgiacivicdata.describe)
+: every filter and its allowed values.
+
+### Examples
+
+```pycon
+>>> import georgiacivicdata as gcd
+>>> gcd.values(
+...     "ccrpi_content_mastery", "subject", year=2016, detail="districts"
+... )
+>>> gcd.values(
+...     "graduation_rate_4_year_cohort", "demographic",
+...     district="Fulton County", year=2024,
+... )
+```

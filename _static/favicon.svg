@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Georgia Civic Data">
+  <!-- Favicon: the banner mark inside a deep-red (red-700) rounded-square badge so the
+       cream silhouette + gold bar stay legible on a light browser tab. -->
+  <rect x="0" y="0" width="200" height="200" rx="24" fill="#82171e"/>
+  <g transform="translate(100 100) scale(0.84) translate(-100 -100)">
+    <path fill="#fef4f5" d="M32.2 25.3 L69.8 25.3 L103.9 25 L119.9 60.8 L138 89.8 L152.9 108.5 L167.8 126.2 L160.6 142.6 L150.3 170.9 L118.5 175 L85.8 173.3 L52 171.2 L49.7 134.1 L47.7 109.5 L41.1 76.1 Z"/>
+    <g stroke="#82171e" stroke-width="5" stroke-linejoin="round">
+      <rect x="70" y="120" width="17" height="32" rx="2.5" fill="#fef4f5"/>
+      <rect x="92" y="104" width="17" height="48" rx="2.5" fill="#fef4f5"/>
+      <rect x="114" y="86" width="17" height="66" rx="2.5" fill="#a97c2d"/>
+    </g>
+  </g>
+</svg>

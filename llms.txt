@@ -1,0 +1,47 @@
+# georgiacivicdata
+
+> The Python client for the Georgia Civic Data REST API (https://georgiacivicdata.org/api/v1): cleaned public data about Georgia (education, Census, health, immigration) as pandas or Polars data frames, school attendance zones as geopandas GeoDataFrames, and point and address lookups. No API key. `import georgiacivicdata as gcd`.
+
+Every page of this site has a Markdown twin: add `.md` to its address (`.../articles/analysis.html` -> `.../articles/analysis.md`). `llms-full.txt` holds every page in one file. The R package with the same functions is documented at https://georgiacivicdata.org/r/.
+
+## Guides
+
+- [Home](https://georgiacivicdata.org/py/index.md): what the package does, installation and a first walkthrough
+- [Get started](https://georgiacivicdata.org/py/articles/get-started.md): the catalog, names and filters, and the rules of the data
+- [Analyzing Georgia data](https://georgiacivicdata.org/py/articles/analysis.md): joining two datasets and pooling rates from counts
+- [School zones and places](https://georgiacivicdata.org/py/articles/school-zones.md): maps, zone status and locating points and addresses
+- [Coming from R](https://georgiacivicdata.org/py/coming-from-r.md): the R and Python functions side by side, and how they differ
+- [For LLM agents](https://georgiacivicdata.org/py/agents.md): the Markdown pages and llms.txt
+- [Reference](https://georgiacivicdata.org/py/reference.md): every function, grouped by task
+- [Articles](https://georgiacivicdata.org/py/articles/index.md): the list of worked examples
+- [Changelog](https://georgiacivicdata.org/py/news.md): what changed in each version
+
+## Functions
+
+- [Description](https://georgiacivicdata.org/py/generated/georgiacivicdata.Description.md): Everything about one dataset, lookup table or geometry dataset.
+- [GCDAdvisory](https://georgiacivicdata.org/py/generated/georgiacivicdata.GCDAdvisory.md): An advisory about a result: suppressed values, totals that must not be added to their subgroups, a search with no good match, and so on.
+- [GCDCensusError](https://georgiacivicdata.org/py/generated/georgiacivicdata.GCDCensusError.md): The U.S. Census geocoder returned an error.
+- [GCDError](https://georgiacivicdata.org/py/generated/georgiacivicdata.GCDError.md): Base class of every error from the Georgia Civic Data API or this package.
+- [GCDNotFoundError](https://georgiacivicdata.org/py/generated/georgiacivicdata.GCDNotFoundError.md): No such dataset, lookup table or path (HTTP 404).
+- [GCDPlaceAmbiguousError](https://georgiacivicdata.org/py/generated/georgiacivicdata.GCDPlaceAmbiguousError.md): A district, school or county name matched more than one place.
+- [GCDPlaceNotFoundError](https://georgiacivicdata.org/py/generated/georgiacivicdata.GCDPlaceNotFoundError.md): A district, school or county name matched nothing.
+- [GCDUnavailableError](https://georgiacivicdata.org/py/generated/georgiacivicdata.GCDUnavailableError.md): The service couldn't answer: no connection, a timeout, a rate limit that outlasted the retries, or a server error (HTTP 5xx).
+- [cache_clear](https://georgiacivicdata.org/py/generated/georgiacivicdata.cache_clear.md): Clear the session cache and the disk cache.
+- [citation](https://georgiacivicdata.org/py/generated/georgiacivicdata.citation.md): Cite a dataset.
+- [columns](https://georgiacivicdata.org/py/generated/georgiacivicdata.columns.md): Get a dataset's column dictionary.
+- [contract](https://georgiacivicdata.org/py/generated/georgiacivicdata.contract.md): Get a dataset's data contract.
+- [datasets](https://georgiacivicdata.org/py/generated/georgiacivicdata.datasets.md): List the datasets in the catalog.
+- [describe](https://georgiacivicdata.org/py/generated/georgiacivicdata.describe.md): Describe a dataset or lookup table.
+- [dimension](https://georgiacivicdata.org/py/generated/georgiacivicdata.dimension.md): Get the rows of a lookup table.
+- [district_boundaries](https://georgiacivicdata.org/py/generated/georgiacivicdata.district_boundaries.md): Get school district boundaries.
+- [get_option](https://georgiacivicdata.org/py/generated/georgiacivicdata.get_option.md): Get the value of a package option.
+- [locate](https://georgiacivicdata.org/py/generated/georgiacivicdata.locate.md): Locate points or addresses.
+- [meta](https://georgiacivicdata.org/py/generated/georgiacivicdata.meta.md): Get the metadata carried by a result.
+- [option_context](https://georgiacivicdata.org/py/generated/georgiacivicdata.option_context.md): Set options temporarily, inside a `with` block.
+- [rows](https://georgiacivicdata.org/py/generated/georgiacivicdata.rows.md): Get rows of a dataset.
+- [school_zone_coverage](https://georgiacivicdata.org/py/generated/georgiacivicdata.school_zone_coverage.md): Get each district's attendance-zone coverage.
+- [school_zone_status](https://georgiacivicdata.org/py/generated/georgiacivicdata.school_zone_status.md): Get each school's attendance-zone status.
+- [school_zones](https://georgiacivicdata.org/py/generated/georgiacivicdata.school_zones.md): Get school attendance zones.
+- [search](https://georgiacivicdata.org/py/generated/georgiacivicdata.search.md): Search the catalog.
+- [set_option](https://georgiacivicdata.org/py/generated/georgiacivicdata.set_option.md): Set a package option for the rest of the session.
+- [values](https://georgiacivicdata.org/py/generated/georgiacivicdata.values.md): List the category combinations a filter covers.

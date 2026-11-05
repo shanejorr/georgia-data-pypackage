@@ -1,0 +1,1696 @@
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="alternate" type="text/markdown" href="get-started.md" title="Markdown">
+    <title>Get started &#8212; georgiacivicdata</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Figtree:wght@500;700&family=Inter:wght@400;600&family=JetBrains+Mono&display=swap" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=e5d7e656" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=75c7c72ae941e8b558d8"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
+
+    <script src="../_static/documentation_options.js?v=2caa9db7"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'articles/get-started';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://georgiacivicdata.org/py/articles/get-started.html" />
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Reference" href="../reference.html" />
+    <link rel="prev" title="georgiacivicdata" href="../index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.1.0" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation" aria-expanded="false" aria-controls="pst-primary-sidebar-modal">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class=" navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">georgiacivicdata</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class=" navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#" aria-current="page">
+    Get started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../reference.html">
+    Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="index.html">
+    Articles
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../coming-from-r.html">
+    Coming from R
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../agents.html">
+    For LLM agents
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../news.html">
+    Changelog
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-external" href="https://georgiacivicdata.org">
+    Georgia Civic Data
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-external" href="https://georgiacivicdata.org/docs">
+    API docs
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-external" href="https://georgiacivicdata.org/r/">
+    R package
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/shanejorr/georgia-data-pypackage" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page" aria-expanded="false" aria-controls="pst-secondary-sidebar-modal">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal" tabindex="-1"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#" aria-current="page">
+    Get started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../reference.html">
+    Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="index.html">
+    Articles
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../coming-from-r.html">
+    Coming from R
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../agents.html">
+    For LLM agents
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../news.html">
+    Changelog
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://georgiacivicdata.org">
+    Georgia Civic Data
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://georgiacivicdata.org/docs">
+    API docs
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://georgiacivicdata.org/r/">
+    R package
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/shanejorr/georgia-data-pypackage" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button type="button" id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar">
+  <svg class="pst-icon" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
+        <div class="sidebar-primary-item">
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"></div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-house"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Get started</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="get-started">
+<h1>Get started<a class="headerlink" href="#get-started" title="Link to this heading">#</a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">georgiacivicdata</span></code> reads the <a class="reference external" href="https://georgiacivicdata.org">Georgia Civic Data</a>
+API: cleaned public data about Georgia's schools and communities. The
+<a class="reference internal" href="../index.html"><span class="std std-doc">home page</span></a> walks through the basic workflow (search for a
+dataset, read its columns, get its rows, plot them and cite them) with
+Fulton County's graduation rate. This article covers what that example
+leaves out: how to narrow the catalog, how names and filters work, and the
+rules of the data that are easy to get wrong.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">georgiacivicdata</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gcd</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="browse-the-catalog">
+<h2>Browse the catalog<a class="headerlink" href="#browse-the-catalog" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">gcd.datasets()</span></code> is the whole catalog, one row per dataset. Every argument
+narrows it on the server:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">catalog</span> <span class="o">=</span> <span class="n">gcd</span><span class="o">.</span><span class="n">datasets</span><span class="p">()</span>
+<span class="n">catalog</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">"main_topic"</span><span class="p">,</span> <span class="s2">"kind"</span><span class="p">])</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>main_topic   kind    
+census       table       28
+education    geometry     2
+             table       61
+health       table       62
+immigration  table       23
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gcd</span><span class="o">.</span><span class="n">datasets</span><span class="p">(</span><span class="n">main_topic</span><span class="o">=</span><span class="s2">"education"</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="s2">"districts"</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="mi">2025</span><span class="p">)[[</span><span class="s2">"name"</span><span class="p">,</span> <span class="s2">"title"</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>title</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>ccrpi_content_mastery</td>
+      <td>CCRPI Content Mastery</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>ccrpi_graduation_rate</td>
+      <td>High School Graduation Rates</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>ccrpi_progress</td>
+      <td>CCRPI Progress</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>ccrpi_readiness</td>
+      <td>CCRPI Readiness</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>ccrpi_scoring_by_component</td>
+      <td>CCRPI Scores and Components</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>enrollment_by_grade</td>
+      <td>Enrollment by Grade Level (Fall and Spring)</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>enrollment_march_gender_race_ethnicity</td>
+      <td>March Enrollment by Race and Gender</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>enrollment_october_disability</td>
+      <td>Special Education Enrollment by Disability</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>enrollment_october_gender_race_ethnicity</td>
+      <td>October Enrollment by Race and Gender</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>free_reduced_lunch</td>
+      <td>Free and Reduced-Price Lunch Eligibility</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>georgia_milestones_end_of_course</td>
+      <td>Georgia Milestones End-of-Course (EOC) Re...</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>georgia_milestones_end_of_grade</td>
+      <td>Georgia Milestones End-of-Grade (EOG) Res...</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>pathway_completion_advanced_academic</td>
+      <td>Pathway Completer Graduation Rate: Advanc...</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>pathway_completion_ctae</td>
+      <td>Pathway Completer Graduation Rate: CTAE</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>pathway_completion_fine_arts</td>
+      <td>Pathway Completer Graduation Rate: Fine Arts</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>pathway_completion_world_language</td>
+      <td>Pathway Completer Graduation Rate: World ...</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>act_scores</td>
+      <td>ACT College Readiness Test Scores</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>advanced_placement_scores</td>
+      <td>Advanced Placement (AP) Exam Scores</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>attendance</td>
+      <td>Student Attendance and Chronic Absenteeism</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>certified_personnel_compensation</td>
+      <td>Certified Personnel Compensation (Salarie...</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>certified_personnel_composition</td>
+      <td>Certified Personnel Composition (Staff Ch...</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>certified_personnel_experience</td>
+      <td>Certified Personnel Years of Experience</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>direct_certification</td>
+      <td>Direct Certification for Free School Meals</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>dropout_rate_7_12</td>
+      <td>Grade 7-12 Dropout Rates</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>dropout_rate_9_12</td>
+      <td>Grades 9-12 Dropout Rates</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>educator_qualifications_emergency_and_pro...</td>
+      <td>Emergency-Credentialed Teachers</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>educator_qualifications_inexperienced_tea...</td>
+      <td>Inexperienced Teachers and Leaders</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>educator_qualifications_out_of_field_teac...</td>
+      <td>Out-of-Field Teachers</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>english_learner_exit_rate</td>
+      <td>English Learner Program Exit Rate</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>enrollment_demographic_shares</td>
+      <td>Enrollment Demographic Shares</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>enrollment_program_participation</td>
+      <td>Enrollment Program Participation</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>financial_efficiency_star_rating</td>
+      <td>Financial Efficiency Star Rating (FESR)</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>georgia_alternate_assessment</td>
+      <td>Georgia Alternate Assessment (GAA)</td>
+    </tr>
+    <tr>
+      <th>33</th>
+      <td>georgia_milestones_end_of_course_by_grade...</td>
+      <td>Georgia Milestones End-of-Course (EOC) Re...</td>
+    </tr>
+    <tr>
+      <th>34</th>
+      <td>georgia_milestones_end_of_course_lexile</td>
+      <td>Georgia Milestones EOC Lexile Reading Scores</td>
+    </tr>
+    <tr>
+      <th>35</th>
+      <td>georgia_milestones_end_of_grade_by_grade_...</td>
+      <td>Georgia Milestones End-of-Grade Assessmen...</td>
+    </tr>
+    <tr>
+      <th>36</th>
+      <td>georgia_milestones_end_of_grade_lexile</td>
+      <td>Georgia Milestones End-of-Grade Lexile Re...</td>
+    </tr>
+    <tr>
+      <th>37</th>
+      <td>graduation_rate_4_year_cohort</td>
+      <td>Four-Year Cohort Graduation Rate</td>
+    </tr>
+    <tr>
+      <th>38</th>
+      <td>high_school_completers</td>
+      <td>High School Completers</td>
+    </tr>
+    <tr>
+      <th>39</th>
+      <td>hope_eligible_graduates</td>
+      <td>HOPE-Eligible Graduates</td>
+    </tr>
+    <tr>
+      <th>40</th>
+      <td>k12_expenditures</td>
+      <td>K-12 Expenditures by Spending Function</td>
+    </tr>
+    <tr>
+      <th>41</th>
+      <td>k12_revenues</td>
+      <td>K-12 Revenues by Funding Source</td>
+    </tr>
+    <tr>
+      <th>42</th>
+      <td>per_pupil_expenditure</td>
+      <td>Per-Pupil Expenditure (FESR)</td>
+    </tr>
+    <tr>
+      <th>43</th>
+      <td>retained_students</td>
+      <td>Retained (Held-Back) K-12 Students</td>
+    </tr>
+    <tr>
+      <th>44</th>
+      <td>salaries_and_benefits</td>
+      <td>District Salaries and Benefits</td>
+    </tr>
+    <tr>
+      <th>45</th>
+      <td>sat_scores_highest</td>
+      <td>SAT Scores (Highest Section Score)</td>
+    </tr>
+    <tr>
+      <th>46</th>
+      <td>sat_scores_recent</td>
+      <td>SAT Scores (Most Recent Administration)</td>
+    </tr>
+    <tr>
+      <th>47</th>
+      <td>student_mobility_rate</td>
+      <td>Student Mobility Rates</td>
+    </tr>
+    <tr>
+      <th>48</th>
+      <td>state_charter_academic_comparison</td>
+      <td>State Charter Academic Comparison</td>
+    </tr>
+    <tr>
+      <th>49</th>
+      <td>state_charter_accountability_designations</td>
+      <td>State Charter Accountability Designations</td>
+    </tr>
+    <tr>
+      <th>50</th>
+      <td>state_charter_financial_performance</td>
+      <td>State Charter Financial Performance</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="read-a-dataset-s-notes">
+<h2>Read a dataset's notes<a class="headerlink" href="#read-a-dataset-s-notes" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">gcd.describe()</span></code> prints what a dataset holds, where it comes from, its years
+and detail levels, the columns that identify a row (its <em>grain</em>) and the
+notes its data contract declares:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gcd</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="s2">"graduation_rate_4_year_cohort"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-- Four-Year Cohort Graduation Rate (graduation_rate_4_year_cohort) ------------
+Share of the four-year high school cohort that graduated, by school, district,
+and state and demographic subgroup, 2004-2025.
+
+Source: Governor's Office of Education and Workforce Strategy (GOEWS, formerly
+GOSA)
+Years: 2004-2025
+Detail levels: districts, schools (default), states
+Grain: year, district_code, school_code, demographic
+Key metric: graduation_rate
+Columns: 7, plus 6 joined name columns (see .columns); filters: 18 (see
+.filters)
+
+-- Notes -----------------------------------------------------------------------
+* Missing values: missing means suppressed (small counts), not zero; zeros are
+  real from 2010 on.
+* Limitations: 2004-2010 figures predate Georgia's adoption of the federal four-
+  year adjusted-cohort methodology (ACGR, first reported 2011) and use the
+  state's earlier leaver-based rate; the 2010-&gt;2011 state rate drop (~81% to
+  ~67%) is a methodology break, not a real decline — do not trend across it.
+  Suppressed cells are NULL (not zero) from 2010 onward, but 2004-2009 sources
+  use literal ZEROS for suppressed cells — a zero rate/count in those years may
+  be real or suppressed and cannot be distinguished; treat very small cohorts in
+  2004-2009 with caution. num_cohort is NULL for every row in 2012-2016 (the
+  source publishes no denominator in those years). The 2004 file lists every
+  public school, including elementary and middle schools with no graduating
+  cohort, so 1,703 of its 2,037 all-students school rows have no graduate count
+  or rate; from 2005 only schools with a graduating cohort are listed (344 in
+  2005). School rows do not always sum to the published district row: of the
+  42,815 district rows (all subgroups) with a published num_graduates and at
+  least one published school value, 468 publish a district num_graduates below
+  the sum of its school rows, 49 of them among the 4,039 all-students rows
+  (source-published, 2005-2025; e.g. 2016 Whitfield 709 vs 810, 2014 Richmond
+  economically_disadvantaged 582 vs 1,286) — use the official district/state
+  rows for rollups rather than summing school rows. economically_disadvantaged
+  is not a like-for-like group across years. Statewide it is 55-56% of the
+  cohort in 2017-2021, then 47% (2022), 53% (2023), 61% (2024) and 66% (2025),
+  and district coding shifts: Cobb County puts 98% of its 2021 cohort in the
+  group (36-38% in 2017-2020 and 2023, 20% in 2022) and under 2% of its
+  graduates in 2011, 2012 and 2014, and districts with 100+ graduates that
+  report 10% or less of them in the group or suppress it number 6-11 a year in
+  2021-2023 (0-2 a year in 2016-2020). GOEWS does not document these shifts. The
+  group's graduation rate moves when its membership does, so check its share of
+  the cohort before comparing it across years or districts. The race axis uses
+  the combined asian_pacific_islander bucket — not comparable row-for-row with
+  split-convention topics without aggregating those topics' asian +
+  pacific_islander rows at query time. State rows have NULL district_code and
+  school_code; district rows have NULL school_code.
+* Series break in 2011: From 2011 Georgia reports the federal four-year
+  adjusted-cohort graduation rate, while 2004-2010 use the state's earlier
+  leaver-based count, so the state rate falls from 0.808 (2010) to 0.675 (2011)
+  and the cohort rises from 113,364 to 131,012 because the method changed, not
+  because fewer students graduated.
+</pre></div>
+</div>
+</div>
+</div>
+<p>Some categorical columns have no total. <code class="docutils literal notranslate"><span class="pre">gcd.describe()</span></code> lists them under
+<strong>&quot;Pick one value of&quot;</strong>: for example, <code class="docutils literal notranslate"><span class="pre">grade_cluster</span></code> and <code class="docutils literal notranslate"><span class="pre">subject</span></code> in
+<code class="docutils literal notranslate"><span class="pre">ccrpi_content_mastery</span></code>, whose values must not be mixed in one summary. The
+result's <code class="docutils literal notranslate"><span class="pre">filters</span></code> table shows every filter:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d</span> <span class="o">=</span> <span class="n">gcd</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="s2">"ccrpi_content_mastery"</span><span class="p">)</span>
+<span class="n">d</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">d</span><span class="o">.</span><span class="n">filters</span><span class="p">[</span><span class="s2">"kind"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"categorical"</span><span class="p">,</span> <span class="p">[</span><span class="s2">"param"</span><span class="p">,</span> <span class="s2">"has_total"</span><span class="p">,</span> <span class="s2">"requires_single_value"</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>param</th>
+      <th>has_total</th>
+      <th>requires_single_value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>8</th>
+      <td>grade_cluster</td>
+      <td>False</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>assessment_type</td>
+      <td>False</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>subject</td>
+      <td>False</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>ccrpi_flag</td>
+      <td>False</td>
+      <td>False</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="filter-by-name-or-by-code">
+<h2>Filter by name or by code<a class="headerlink" href="#filter-by-name-or-by-code" title="Link to this heading">#</a></h2>
+<p>Name a district, school or county and the package turns it into a code.
+Names match exactly, ignoring case, accents and a trailing &quot;County&quot;, and
+former names work too:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gcd</span><span class="o">.</span><span class="n">rows</span><span class="p">(</span>
+    <span class="s2">"graduation_rate_4_year_cohort"</span><span class="p">,</span>
+    <span class="n">district</span><span class="o">=</span><span class="s2">"Fulton County"</span><span class="p">,</span>
+    <span class="n">school</span><span class="o">=</span><span class="s2">"Riverwood High School"</span><span class="p">,</span>  <span class="c1"># a former name</span>
+    <span class="n">demographic</span><span class="o">=</span><span class="s2">"all"</span><span class="p">,</span>
+    <span class="n">year</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span> <span class="mi">2026</span><span class="p">),</span>
+    <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)[[</span><span class="s2">"year"</span><span class="p">,</span> <span class="s2">"district_code"</span><span class="p">,</span> <span class="s2">"school_code"</span><span class="p">,</span> <span class="s2">"school_name"</span><span class="p">,</span> <span class="s2">"graduation_rate"</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>year</th>
+      <th>district_code</th>
+      <th>school_code</th>
+      <th>school_name</th>
+      <th>graduation_rate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2021</td>
+      <td>660</td>
+      <td>3066</td>
+      <td>Riverwood International Charter School</td>
+      <td>0.9345</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2022</td>
+      <td>660</td>
+      <td>3066</td>
+      <td>Riverwood International Charter School</td>
+      <td>0.9753</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2023</td>
+      <td>660</td>
+      <td>3066</td>
+      <td>Riverwood International Charter School</td>
+      <td>0.9693</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2024</td>
+      <td>660</td>
+      <td>3066</td>
+      <td>Riverwood International Charter School</td>
+      <td>0.9877</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2025</td>
+      <td>660</td>
+      <td>3066</td>
+      <td>Riverwood International Charter School</td>
+      <td>0.9708</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>A name that matches more than one place stops with the candidates instead
+of guessing. &quot;Eastside Elementary School&quot; is in several districts, and
+Fulton County has an old and a new &quot;Milton High School&quot;. The error is a
+<code class="docutils literal notranslate"><span class="pre">GCDPlaceAmbiguousError</span></code>, so a script can catch it:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
+    <span class="n">gcd</span><span class="o">.</span><span class="n">rows</span><span class="p">(</span><span class="s2">"graduation_rate_4_year_cohort"</span><span class="p">,</span> <span class="n">school</span><span class="o">=</span><span class="s2">"Milton High School"</span><span class="p">,</span> <span class="n">district</span><span class="o">=</span><span class="s2">"Fulton County"</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">gcd</span><span class="o">.</span><span class="n">GCDPlaceAmbiguousError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>'Milton High School' matches more than one school.
+  Use `school_id` with one 'DISTRICT-SCHOOL' code.
+  * 660-0106: Milton High School (Fulton County, active)
+  * 660-2060: Milton High School (Fulton County, inactive)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Codes work everywhere names do. A school is identified by its district and
+school codes together, written <code class="docutils literal notranslate"><span class="pre">&quot;DISTRICT-SCHOOL&quot;</span></code> in <code class="docutils literal notranslate"><span class="pre">school_id</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gcd</span><span class="o">.</span><span class="n">rows</span><span class="p">(</span>
+    <span class="s2">"graduation_rate_4_year_cohort"</span><span class="p">,</span>
+    <span class="n">school_id</span><span class="o">=</span><span class="s2">"660-0106"</span><span class="p">,</span>
+    <span class="n">demographic</span><span class="o">=</span><span class="s2">"all"</span><span class="p">,</span>
+    <span class="n">year</span><span class="o">=</span><span class="mi">2025</span><span class="p">,</span>
+    <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)[[</span><span class="s2">"year"</span><span class="p">,</span> <span class="s2">"school_code"</span><span class="p">,</span> <span class="s2">"school_name"</span><span class="p">,</span> <span class="s2">"num_graduates"</span><span class="p">,</span> <span class="s2">"num_cohort"</span><span class="p">,</span> <span class="s2">"graduation_rate"</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>year</th>
+      <th>school_code</th>
+      <th>school_name</th>
+      <th>num_graduates</th>
+      <th>num_cohort</th>
+      <th>graduation_rate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2025</td>
+      <td>0106</td>
+      <td>Milton High School</td>
+      <td>502</td>
+      <td>522</td>
+      <td>0.9617</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="years-and-detail-levels">
+<h2>Years and detail levels<a class="headerlink" href="#years-and-detail-levels" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">year=range(2021,</span> <span class="pre">2026)</span></code> asks for 2021 to 2025 (a Python range leaves out its
+end); <code class="docutils literal notranslate"><span class="pre">year=[2015,</span> <span class="pre">2025]</span></code> asks for those two years only. Each call returns
+one <strong>detail level</strong>: schools, districts, states, counties or tracts,
+whatever the dataset publishes. The default is the finest level (counties
+for Census datasets). Columns that would be empty at a level are left out:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gcd</span><span class="o">.</span><span class="n">rows</span><span class="p">(</span>
+    <span class="s2">"graduation_rate_4_year_cohort"</span><span class="p">,</span>
+    <span class="n">detail</span><span class="o">=</span><span class="s2">"states"</span><span class="p">,</span>
+    <span class="n">demographic</span><span class="o">=</span><span class="s2">"all"</span><span class="p">,</span>
+    <span class="n">year</span><span class="o">=</span><span class="p">[</span><span class="mi">2015</span><span class="p">,</span> <span class="mi">2025</span><span class="p">],</span>
+    <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>year</th>
+      <th>demographic</th>
+      <th>demographic_label</th>
+      <th>demographic_category</th>
+      <th>num_graduates</th>
+      <th>num_cohort</th>
+      <th>graduation_rate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2015</td>
+      <td>all</td>
+      <td>All</td>
+      <td>aggregate</td>
+      <td>98465</td>
+      <td>&lt;NA&gt;</td>
+      <td>0.7884</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2025</td>
+      <td>all</td>
+      <td>All</td>
+      <td>aggregate</td>
+      <td>123911</td>
+      <td>142070</td>
+      <td>0.8722</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>To combine levels, call once per level and concatenate the rows
+(<code class="docutils literal notranslate"><span class="pre">pd.concat</span></code>).</p>
+</section>
+<section id="what-a-missing-value-means">
+<h2>What a missing value means<a class="headerlink" href="#what-a-missing-value-means" title="Link to this heading">#</a></h2>
+<p>A missing metric usually means the value was <strong>suppressed</strong> to protect
+privacy (small counts), <strong>not zero</strong>. The schema's <code class="docutils literal notranslate"><span class="pre">null_semantics</span></code> says
+which, and <code class="docutils literal notranslate"><span class="pre">gcd.rows()</span></code> passes on the API's advisory when a result holds
+suppressed values:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">small</span> <span class="o">=</span> <span class="n">gcd</span><span class="o">.</span><span class="n">rows</span><span class="p">(</span>
+    <span class="s2">"graduation_rate_4_year_cohort"</span><span class="p">,</span>
+    <span class="n">district</span><span class="o">=</span><span class="s2">"Appling County"</span><span class="p">,</span>
+    <span class="n">year</span><span class="o">=</span><span class="mi">2024</span><span class="p">,</span>
+    <span class="n">detail</span><span class="o">=</span><span class="s2">"districts"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">small</span><span class="p">[[</span><span class="s2">"demographic"</span><span class="p">,</span> <span class="s2">"num_graduates"</span><span class="p">,</span> <span class="s2">"num_cohort"</span><span class="p">,</span> <span class="s2">"graduation_rate"</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>GCDAdvisory: This result contains NULL metric cells, which mean the value was SUPPRESSED (small counts), not zero — do not report or chart a NULL as 0 (see null_semantics and each column's null_meaning).
+GCDAdvisory: Demographic groups overlap across categories and may overlap within a category (active_duty can be a subset of military_connected). Read the dataset's definitions and non_additive declarations. Use the published `all` total when available, never add it to its subgroups. Counts reconcile only for complete, disjoint groups; subgroup rates generally do not add to the overall rate.
+GCDAdvisory: `district_census_id` is a 5-digit Census school-district code, NOT a county FIPS, and a district is not 1:1 with a county — do not map these district rows as counties.
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>demographic</th>
+      <th>num_graduates</th>
+      <th>num_cohort</th>
+      <th>graduation_rate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>active_duty</td>
+      <td>&lt;NA&gt;</td>
+      <td>&lt;NA&gt;</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>all</td>
+      <td>225</td>
+      <td>240</td>
+      <td>0.9375</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>asian_pacific_islander</td>
+      <td>&lt;NA&gt;</td>
+      <td>&lt;NA&gt;</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>black</td>
+      <td>57</td>
+      <td>62</td>
+      <td>0.9194</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>economically_disadvantaged</td>
+      <td>225</td>
+      <td>240</td>
+      <td>0.9375</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>english_learners</td>
+      <td>13</td>
+      <td>14</td>
+      <td>0.9286</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>female</td>
+      <td>111</td>
+      <td>114</td>
+      <td>0.9737</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>foster_care</td>
+      <td>&lt;NA&gt;</td>
+      <td>&lt;NA&gt;</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>hispanic</td>
+      <td>42</td>
+      <td>44</td>
+      <td>0.9545</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>homeless</td>
+      <td>&lt;NA&gt;</td>
+      <td>&lt;NA&gt;</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>male</td>
+      <td>114</td>
+      <td>126</td>
+      <td>0.9048</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>migrant</td>
+      <td>18</td>
+      <td>20</td>
+      <td>0.9000</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>multiracial</td>
+      <td>&lt;NA&gt;</td>
+      <td>&lt;NA&gt;</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>native_american</td>
+      <td>&lt;NA&gt;</td>
+      <td>&lt;NA&gt;</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>not_economically_disadvantaged</td>
+      <td>&lt;NA&gt;</td>
+      <td>&lt;NA&gt;</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>students_with_disabilities</td>
+      <td>25</td>
+      <td>31</td>
+      <td>0.8065</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>students_without_disabilities</td>
+      <td>200</td>
+      <td>209</td>
+      <td>0.9570</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>white</td>
+      <td>119</td>
+      <td>127</td>
+      <td>0.9370</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>The advisories are <code class="docutils literal notranslate"><span class="pre">GCDAdvisory</span></code> warnings. They stay with the result in
+<code class="docutils literal notranslate"><span class="pre">gcd.meta(small)[&quot;advisories&quot;]</span></code>; <code class="docutils literal notranslate"><span class="pre">quiet=True</span></code> (or
+<code class="docutils literal notranslate"><span class="pre">gcd.set_option(&quot;quiet&quot;,</span> <span class="pre">True)</span></code>) silences them, and the usual
+<a class="reference external" href="https://docs.python.org/3/library/warnings.html"><code class="docutils literal notranslate"><span class="pre">warnings</span></code></a> filters work too:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">a</span><span class="p">[</span><span class="s2">"code"</span><span class="p">]</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">gcd</span><span class="o">.</span><span class="n">meta</span><span class="p">(</span><span class="n">small</span><span class="p">)[</span><span class="s2">"advisories"</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>['suppressed_values_present',
+ 'demographic_non_additive',
+ 'district_not_county']
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="totals-beside-subgroups">
+<h2>Totals beside subgroups<a class="headerlink" href="#totals-beside-subgroups" title="Link to this heading">#</a></h2>
+<p>Nothing is pinned by default, so a result holds the <code class="docutils literal notranslate"><span class="pre">all</span></code> total beside every
+subgroup, and subgroups from different categories overlap (a student is in a
+race group, a gender group and an economic group at once). Never add them
+up:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fulton</span> <span class="o">=</span> <span class="n">gcd</span><span class="o">.</span><span class="n">rows</span><span class="p">(</span>
+    <span class="s2">"graduation_rate_4_year_cohort"</span><span class="p">,</span>
+    <span class="n">district</span><span class="o">=</span><span class="s2">"Fulton County"</span><span class="p">,</span>
+    <span class="n">detail</span><span class="o">=</span><span class="s2">"districts"</span><span class="p">,</span>
+    <span class="n">year</span><span class="o">=</span><span class="mi">2025</span><span class="p">,</span>
+    <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">"published_total"</span><span class="p">:</span> <span class="n">fulton</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">fulton</span><span class="p">[</span><span class="s2">"demographic"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"all"</span><span class="p">,</span> <span class="s2">"num_cohort"</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="s2">"sum_of_every_row"</span><span class="p">:</span> <span class="n">fulton</span><span class="p">[</span><span class="s2">"num_cohort"</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>published_total      7934
+sum_of_every_row    39902
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>Use the published <code class="docutils literal notranslate"><span class="pre">all</span></code> row for totals, and filter one category
+(<code class="docutils literal notranslate"><span class="pre">demographic_category=&quot;race&quot;</span></code>) to compare groups.</p>
+</section>
+<section id="which-values-exist-gcd-values">
+<h2>Which values exist: <code class="docutils literal notranslate"><span class="pre">gcd.values()</span></code><a class="headerlink" href="#which-values-exist-gcd-values" title="Link to this heading">#</a></h2>
+<p>When a filter returns nothing, <code class="docutils literal notranslate"><span class="pre">gcd.values()</span></code> shows which combinations exist
+under the other filters, with row counts, without downloading rows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gcd</span><span class="o">.</span><span class="n">values</span><span class="p">(</span><span class="s2">"ccrpi_content_mastery"</span><span class="p">,</span> <span class="p">[</span><span class="s2">"grade_cluster"</span><span class="p">,</span> <span class="s2">"subject"</span><span class="p">],</span> <span class="n">year</span><span class="o">=</span><span class="mi">2025</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="s2">"districts"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>grade_cluster</th>
+      <th>subject</th>
+      <th>n_rows</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>elementary</td>
+      <td>english_language_arts</td>
+      <td>2340</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>elementary</td>
+      <td>mathematics</td>
+      <td>2340</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>elementary</td>
+      <td>science</td>
+      <td>2340</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>high</td>
+      <td>english_language_arts</td>
+      <td>2340</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>high</td>
+      <td>mathematics</td>
+      <td>2340</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>high</td>
+      <td>science</td>
+      <td>2340</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>high</td>
+      <td>social_studies</td>
+      <td>2340</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>middle</td>
+      <td>english_language_arts</td>
+      <td>2340</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>middle</td>
+      <td>mathematics</td>
+      <td>2340</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>middle</td>
+      <td>science</td>
+      <td>2340</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>middle</td>
+      <td>social_studies</td>
+      <td>2340</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="lookup-tables">
+<h2>Lookup tables<a class="headerlink" href="#lookup-tables" title="Link to this heading">#</a></h2>
+<p>There are six lookup tables: <code class="docutils literal notranslate"><span class="pre">districts</span></code>, <code class="docutils literal notranslate"><span class="pre">schools</span></code>, <code class="docutils literal notranslate"><span class="pre">counties</span></code>, <code class="docutils literal notranslate"><span class="pre">tracts</span></code>,
+<code class="docutils literal notranslate"><span class="pre">block_groups</span></code> and <code class="docutils literal notranslate"><span class="pre">demographics</span></code>. <code class="docutils literal notranslate"><span class="pre">gcd.dimension()</span></code> returns any of them.
+<strong>School codes repeat across districts</strong>, so join schools on
+<code class="docutils literal notranslate"><span class="pre">district_code</span></code> and <code class="docutils literal notranslate"><span class="pre">school_code</span></code> together, never <code class="docutils literal notranslate"><span class="pre">school_code</span></code> alone:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">schools</span> <span class="o">=</span> <span class="n">gcd</span><span class="o">.</span><span class="n">dimension</span><span class="p">(</span><span class="s2">"schools"</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">"district_code"</span><span class="p">,</span> <span class="s2">"school_code"</span><span class="p">])</span>
+<span class="n">schools</span><span class="p">[</span><span class="s2">"school_code"</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>school_code
+8010    198
+8012    175
+8013    166
+Name: count, dtype: int64[pyarrow]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="pandas-or-polars">
+<h2>pandas or Polars<a class="headerlink" href="#pandas-or-polars" title="Link to this heading">#</a></h2>
+<p>pandas is the default. Pass <code class="docutils literal notranslate"><span class="pre">backend=&quot;polars&quot;</span></code> to any table function, or set
+it for the session:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gcd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">"backend"</span><span class="p">,</span> <span class="s2">"polars"</span><span class="p">)</span>
+<span class="n">gcd</span><span class="o">.</span><span class="n">dimension</span><span class="p">(</span><span class="s2">"counties"</span><span class="p">,</span> <span class="n">n_max</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (3, 2)</small><table border="1" class="dataframe"><thead><tr><th>county_fips</th><th>county_name</th></tr><tr><td>str</td><td>str</td></tr></thead><tbody><tr><td>&quot;13001&quot;</td><td>&quot;Appling&quot;</td></tr><tr><td>&quot;13003&quot;</td><td>&quot;Atkinson&quot;</td></tr><tr><td>&quot;13005&quot;</td><td>&quot;Bacon&quot;</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gcd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">"backend"</span><span class="p">,</span> <span class="s2">"pandas"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>pandas results use nullable dtypes: integers are <code class="docutils literal notranslate"><span class="pre">Int64</span></code>, booleans
+<code class="docutils literal notranslate"><span class="pre">boolean</span></code> and text <code class="docutils literal notranslate"><span class="pre">string</span></code>, so a missing value is <code class="docutils literal notranslate"><span class="pre">&lt;NA&gt;</span></code> and codes keep
+their leading zeros; floats stay <code class="docutils literal notranslate"><span class="pre">float64</span></code>, with <code class="docutils literal notranslate"><span class="pre">NaN</span></code> for missing. Polars
+results get the same types natively. Geometry always comes back as a
+geopandas <code class="docutils literal notranslate"><span class="pre">GeoDataFrame</span></code>; use <code class="docutils literal notranslate"><span class="pre">geometry=False</span></code> for a Polars table of the
+attributes.</p>
+</section>
+<section id="caching">
+<h2>Caching<a class="headerlink" href="#caching" title="Link to this heading">#</a></h2>
+<p>Metadata (the catalog, schemas and lookup tables) is cached for the Python
+session. Rows can also be cached on disk, if you ask:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gcd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">"cache"</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>   <span class="c1"># or cache=True in gcd.rows()</span>
+</pre></div>
+</div>
+<p>Cached responses are kept with their <code class="docutils literal notranslate"><span class="pre">ETag</span></code> in the user cache folder, and
+each repeat asks the server whether the data changed: an unchanged answer
+reuses the saved copy without downloading, and a new data release downloads
+afresh (a response the server marks fresh, for five minutes, is reused
+without asking). <code class="docutils literal notranslate"><span class="pre">gcd.cache_clear()</span></code> empties both caches.</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal" tabindex="-1"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#browse-the-catalog">Browse the catalog</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-a-dataset-s-notes">Read a dataset's notes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filter-by-name-or-by-code">Filter by name or by code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#years-and-detail-levels">Years and detail levels</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-a-missing-value-means">What a missing value means</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#totals-beside-subgroups">Totals beside subgroups</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#which-values-exist-gcd-values">Which values exist: <code class="docutils literal notranslate"><span class="pre">gcd.values()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lookup-tables">Lookup tables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-or-polars">pandas or Polars</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#caching">Caching</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+<div class="tocsection markdown-link">
+  <a href="get-started.md" title="This page as Markdown, for LLM agents and plain-text readers">
+    <i class="fa-brands fa-markdown"></i> View as Markdown
+  </a>
+</div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2026, Shane Orr. Data: Georgia Civic Data (georgiacivicdata.org), CC BY 4.0.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="data-license">
+  Data: <a href="https://georgiacivicdata.org">Georgia Civic Data</a>,
+  <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
+  Docs for LLM agents: <a href="../llms.txt">llms.txt</a>.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

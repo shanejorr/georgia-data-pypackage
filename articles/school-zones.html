@@ -1,0 +1,1542 @@
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="alternate" type="text/markdown" href="school-zones.md" title="Markdown">
+    <title>School zones and places &#8212; georgiacivicdata</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Figtree:wght@500;700&family=Inter:wght@400;600&family=JetBrains+Mono&display=swap" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=e5d7e656" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=75c7c72ae941e8b558d8"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
+
+    <script src="../_static/documentation_options.js?v=2caa9db7"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'articles/school-zones';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://georgiacivicdata.org/py/articles/school-zones.html" />
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Coming from R" href="../coming-from-r.html" />
+    <link rel="prev" title="Analyzing Georgia data" href="analysis.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.1.0" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation" aria-expanded="false" aria-controls="pst-primary-sidebar-modal">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class=" navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">georgiacivicdata</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class=" navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="get-started.html">
+    Get started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../reference.html">
+    Reference
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    Articles
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../coming-from-r.html">
+    Coming from R
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../agents.html">
+    For LLM agents
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../news.html">
+    Changelog
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-external" href="https://georgiacivicdata.org">
+    Georgia Civic Data
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-external" href="https://georgiacivicdata.org/docs">
+    API docs
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-external" href="https://georgiacivicdata.org/r/">
+    R package
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/shanejorr/georgia-data-pypackage" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page" aria-expanded="false" aria-controls="pst-secondary-sidebar-modal">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal" tabindex="-1"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="get-started.html">
+    Get started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../reference.html">
+    Reference
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    Articles
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../coming-from-r.html">
+    Coming from R
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../agents.html">
+    For LLM agents
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../news.html">
+    Changelog
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://georgiacivicdata.org">
+    Georgia Civic Data
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://georgiacivicdata.org/docs">
+    API docs
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://georgiacivicdata.org/r/">
+    R package
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/shanejorr/georgia-data-pypackage" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button type="button" id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar">
+  <svg class="pst-icon" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
+        <div class="sidebar-primary-item">
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="analysis.html">Analyzing Georgia data</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">School zones and places</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-house"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Articles</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">School zones and places</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="school-zones-and-places">
+<h1>School zones and places<a class="headerlink" href="#school-zones-and-places" title="Link to this heading">#</a></h1>
+<p>Georgia Civic Data publishes school attendance zones: the areas that assign
+a home to its zoned elementary, middle and high school. This article maps
+one district's zones, checks which schools have no zone and how precise the
+zones are, and finds the places a location falls in.</p>
+<p>The geometry functions return geopandas <code class="docutils literal notranslate"><span class="pre">GeoDataFrame</span></code>s, so install the
+<code class="docutils literal notranslate"><span class="pre">geo</span></code> extra (<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">georgiacivicdata[geo]</span></code>) to map them. For plain
+tables, use <code class="docutils literal notranslate"><span class="pre">geometry=False</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">georgiacivicdata</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gcd</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="map-one-district-s-zones">
+<h2>Map one district's zones<a class="headerlink" href="#map-one-district-s-zones" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">zones</span> <span class="o">=</span> <span class="n">gcd</span><span class="o">.</span><span class="n">school_zones</span><span class="p">(</span><span class="n">district</span><span class="o">=</span><span class="s2">"Atlanta Public Schools"</span><span class="p">)</span>
+<span class="n">zones</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">"zone_level"</span><span class="p">,</span> <span class="s2">"method"</span><span class="p">,</span> <span class="s2">"accuracy_class"</span><span class="p">])</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>zone_level  method        accuracy_class      
+elementary  official_gis  authoritative_vector    45
+high        official_gis  authoritative_vector     9
+middle      official_gis  authoritative_vector    13
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mf">3.4</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">level</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="p">[</span><span class="s2">"elementary"</span><span class="p">,</span> <span class="s2">"middle"</span><span class="p">,</span> <span class="s2">"high"</span><span class="p">]):</span>
+    <span class="n">zones</span><span class="p">[</span><span class="n">zones</span><span class="p">[</span><span class="s2">"zone_level"</span><span class="p">]</span> <span class="o">==</span> <span class="n">level</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="s2">"school_name"</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"tab20"</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">"white"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.2</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">"Atlanta Public Schools attendance zones, 2026-27"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/bd8fd819ecb492b12491cf8401e64f2afc76a46d4600925705f3a0e7ac241642.png" src="../_images/bd8fd819ecb492b12491cf8401e64f2afc76a46d4600925705f3a0e7ac241642.png" />
+</div>
+</div>
+<p>Each colour is a school. The default <code class="docutils literal notranslate"><span class="pre">resolution=&quot;display&quot;</span></code> returns
+simplified polygons for maps. <code class="docutils literal notranslate"><span class="pre">resolution=&quot;full&quot;</span></code> returns the source
+polygons, which are much larger; filter to a district before asking for
+them.</p>
+</section>
+<section id="schools-without-a-zone">
+<h2>Schools without a zone<a class="headerlink" href="#schools-without-a-zone" title="Link to this heading">#</a></h2>
+<p>Charter, magnet, alternative and virtual schools have no attendance zone.
+<code class="docutils literal notranslate"><span class="pre">gcd.school_zone_status()</span></code> says which schools have one and why the others
+don't:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">status</span> <span class="o">=</span> <span class="n">gcd</span><span class="o">.</span><span class="n">school_zone_status</span><span class="p">(</span><span class="n">district</span><span class="o">=</span><span class="s2">"Atlanta Public Schools"</span><span class="p">)</span>
+<span class="n">status</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">"zone_status"</span><span class="p">,</span> <span class="s2">"no_zone_category"</span><span class="p">],</span> <span class="n">dropna</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>zone_status  no_zone_category        
+no_zone      alternative                  1
+             charter                     16
+             closed_or_consolidated       2
+             magnet_or_choice             3
+             residential_or_treatment     1
+zoned        &lt;NA&gt;                        64
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">gcd</span><span class="o">.</span><span class="n">meta</span><span class="p">(</span><span class="n">status</span><span class="p">)[</span><span class="s2">"note"</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Whether each school has an attendance zone on this platform and, if not, why. zoned says only that a zone is published here, not that it covers every grade the school teaches. Not an official enrollment determination: confirm with the school district.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="how-precise-are-the-zones">
+<h2>How precise are the zones?<a class="headerlink" href="#how-precise-are-the-zones" title="Link to this heading">#</a></h2>
+<p>Zones come from very different sources. Some are the district's official GIS
+layers; others are digitized from PDF maps, rebuilt from street lists, or
+are the whole district outline (in districts with one school per grade).
+Every zone says how it was built (<code class="docutils literal notranslate"><span class="pre">method</span></code>) and how exact it is
+(<code class="docutils literal notranslate"><span class="pre">accuracy_class</span></code>); treat them accordingly.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coverage</span> <span class="o">=</span> <span class="n">gcd</span><span class="o">.</span><span class="n">school_zone_coverage</span><span class="p">()</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">coverage</span><span class="p">[</span><span class="s2">"level_status"</span><span class="p">],</span> <span class="n">coverage</span><span class="p">[</span><span class="s2">"zone_level"</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>zone_level</th>
+      <th>elementary</th>
+      <th>high</th>
+      <th>middle</th>
+    </tr>
+    <tr>
+      <th>level_status</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>not_available</th>
+      <td>29</td>
+      <td>5</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <th>one_school_per_grade</th>
+      <td>82</td>
+      <td>130</td>
+      <td>115</td>
+    </tr>
+    <tr>
+      <th>partial</th>
+      <td>10</td>
+      <td>6</td>
+      <td>9</td>
+    </tr>
+    <tr>
+      <th>served_by_other_district</th>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>zoned</th>
+      <td>59</td>
+      <td>38</td>
+      <td>46</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">gcd.school_zone_coverage()</span></code> gives one row per district and level, with the
+share of the district's land and 2020 population its zones cover, and the
+reason for anything short of complete:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coverage</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
+    <span class="n">coverage</span><span class="p">[</span><span class="s2">"district_name"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"Appling County"</span><span class="p">,</span>
+    <span class="p">[</span><span class="s2">"zone_level"</span><span class="p">,</span> <span class="s2">"level_status"</span><span class="p">,</span> <span class="s2">"pct_population"</span><span class="p">,</span> <span class="s2">"methods"</span><span class="p">,</span> <span class="s2">"reason"</span><span class="p">],</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>zone_level</th>
+      <th>level_status</th>
+      <th>pct_population</th>
+      <th>methods</th>
+      <th>reason</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>elementary</td>
+      <td>not_available</td>
+      <td>NaN</td>
+      <td>district_outline</td>
+      <td>Elementary: The district has separate elementary attenda...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>middle</td>
+      <td>one_school_per_grade</td>
+      <td>1.0</td>
+      <td>district_outline</td>
+      <td>Elementary: The district has separate elementary attenda...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>high</td>
+      <td>one_school_per_grade</td>
+      <td>1.0</td>
+      <td>district_outline</td>
+      <td>Elementary: The district has separate elementary attenda...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="locate-a-place">
+<h2>Locate a place<a class="headerlink" href="#locate-a-place" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">gcd.locate()</span></code> takes points (<code class="docutils literal notranslate"><span class="pre">lat</span></code>, <code class="docutils literal notranslate"><span class="pre">lon</span></code>) or street addresses and returns
+the county, Census tract and block group, school district and zoned schools
+each falls in, one row per place.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">landmarks</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">"landmark"</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">"Georgia State Capitol"</span><span class="p">,</span>
+            <span class="s2">"Stone Mountain Park"</span><span class="p">,</span>
+            <span class="s2">"Okefenokee Swamp Park"</span><span class="p">,</span>
+            <span class="s2">"Appling County Courthouse"</span><span class="p">,</span>
+        <span class="p">],</span>
+        <span class="s2">"lat"</span><span class="p">:</span> <span class="p">[</span><span class="mf">33.7490</span><span class="p">,</span> <span class="mf">33.8053</span><span class="p">,</span> <span class="mf">31.0558</span><span class="p">,</span> <span class="mf">31.7782</span><span class="p">],</span>
+        <span class="s2">"lon"</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">84.3880</span><span class="p">,</span> <span class="o">-</span><span class="mf">84.1455</span><span class="p">,</span> <span class="o">-</span><span class="mf">82.2701</span><span class="p">,</span> <span class="o">-</span><span class="mf">82.3482</span><span class="p">],</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="n">places</span> <span class="o">=</span> <span class="n">gcd</span><span class="o">.</span><span class="n">locate</span><span class="p">(</span><span class="n">lat</span><span class="o">=</span><span class="n">landmarks</span><span class="p">[</span><span class="s2">"lat"</span><span class="p">],</span> <span class="n">lon</span><span class="o">=</span><span class="n">landmarks</span><span class="p">[</span><span class="s2">"lon"</span><span class="p">],</span> <span class="nb">id</span><span class="o">=</span><span class="n">landmarks</span><span class="p">[</span><span class="s2">"landmark"</span><span class="p">])</span>
+<span class="n">places</span><span class="p">[[</span><span class="s2">"id"</span><span class="p">,</span> <span class="s2">"geographic_type"</span><span class="p">,</span> <span class="s2">"geographic_id"</span><span class="p">,</span> <span class="s2">"geographic_name"</span><span class="p">,</span> <span class="s2">"grades"</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>GCDAdvisory: A zone is the default assignment, not the only option: a Georgia student may attend another public school by transfer, or a charter, magnet or other choice school. See attendance_rules for the main ways.
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>geographic_type</th>
+      <th>geographic_id</th>
+      <th>geographic_name</th>
+      <th>grades</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Georgia State Capitol</td>
+      <td>county</td>
+      <td>13121</td>
+      <td>Fulton</td>
+      <td>&lt;NA&gt;</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Georgia State Capitol</td>
+      <td>tract</td>
+      <td>13121003500</td>
+      <td>Census Tract 35</td>
+      <td>&lt;NA&gt;</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Georgia State Capitol</td>
+      <td>block_group</td>
+      <td>131210035001</td>
+      <td>Block Group 1, Census Tract 35, Fulton County</td>
+      <td>&lt;NA&gt;</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Georgia State Capitol</td>
+      <td>school_district</td>
+      <td>761</td>
+      <td>Atlanta Public Schools</td>
+      <td>&lt;NA&gt;</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Georgia State Capitol</td>
+      <td>elementary_school</td>
+      <td>761-0199</td>
+      <td>Centennial Academy (Charter)</td>
+      <td>K-5</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Georgia State Capitol</td>
+      <td>middle_school</td>
+      <td>761-0199</td>
+      <td>Centennial Academy (Charter)</td>
+      <td>6-8</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Georgia State Capitol</td>
+      <td>high_school</td>
+      <td>761-4560</td>
+      <td>Midtown High School</td>
+      <td>9-12</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Stone Mountain Park</td>
+      <td>county</td>
+      <td>13089</td>
+      <td>DeKalb</td>
+      <td>&lt;NA&gt;</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Stone Mountain Park</td>
+      <td>tract</td>
+      <td>13089021915</td>
+      <td>Census Tract 219.15</td>
+      <td>&lt;NA&gt;</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Stone Mountain Park</td>
+      <td>block_group</td>
+      <td>130890219153</td>
+      <td>Block Group 3, Census Tract 219.15, DeKalb County</td>
+      <td>&lt;NA&gt;</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>Stone Mountain Park</td>
+      <td>school_district</td>
+      <td>644</td>
+      <td>DeKalb County</td>
+      <td>&lt;NA&gt;</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>Stone Mountain Park</td>
+      <td>elementary_school</td>
+      <td>644-2068</td>
+      <td>Stone Mountain Elementary School</td>
+      <td>K-5</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>Stone Mountain Park</td>
+      <td>middle_school</td>
+      <td>644-0506</td>
+      <td>Stone Mountain Middle School</td>
+      <td>6-8</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>Stone Mountain Park</td>
+      <td>high_school</td>
+      <td>644-0276</td>
+      <td>Stone Mountain High School</td>
+      <td>9-12</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>Okefenokee Swamp Park</td>
+      <td>county</td>
+      <td>13299</td>
+      <td>Ware</td>
+      <td>&lt;NA&gt;</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>Okefenokee Swamp Park</td>
+      <td>tract</td>
+      <td>13299950900</td>
+      <td>Census Tract 9509</td>
+      <td>&lt;NA&gt;</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>Okefenokee Swamp Park</td>
+      <td>block_group</td>
+      <td>132999509003</td>
+      <td>Block Group 3, Census Tract 9509, Ware County</td>
+      <td>&lt;NA&gt;</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>Okefenokee Swamp Park</td>
+      <td>school_district</td>
+      <td>748</td>
+      <td>Ware County</td>
+      <td>&lt;NA&gt;</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>Okefenokee Swamp Park</td>
+      <td>elementary_school</td>
+      <td>748-3050</td>
+      <td>Memorial Drive Elementary School</td>
+      <td>K-5</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>Okefenokee Swamp Park</td>
+      <td>middle_school</td>
+      <td>748-0295</td>
+      <td>Waycross Middle School</td>
+      <td>6-8</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>Okefenokee Swamp Park</td>
+      <td>high_school</td>
+      <td>748-0195</td>
+      <td>Ware County High School</td>
+      <td>9-12</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>Appling County Courthouse</td>
+      <td>county</td>
+      <td>13001</td>
+      <td>Appling</td>
+      <td>&lt;NA&gt;</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>Appling County Courthouse</td>
+      <td>tract</td>
+      <td>13001950301</td>
+      <td>Census Tract 9503.01</td>
+      <td>&lt;NA&gt;</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>Appling County Courthouse</td>
+      <td>block_group</td>
+      <td>130019503012</td>
+      <td>Block Group 2, Census Tract 9503.01, Appling County</td>
+      <td>&lt;NA&gt;</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>Appling County Courthouse</td>
+      <td>school_district</td>
+      <td>601</td>
+      <td>Appling County</td>
+      <td>&lt;NA&gt;</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>Appling County Courthouse</td>
+      <td>elementary_school</td>
+      <td>&lt;NA&gt;</td>
+      <td>&lt;NA&gt;</td>
+      <td>&lt;NA&gt;</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>Appling County Courthouse</td>
+      <td>middle_school</td>
+      <td>601-0195</td>
+      <td>Appling County Middle School</td>
+      <td>6-8</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>Appling County Courthouse</td>
+      <td>high_school</td>
+      <td>601-0103</td>
+      <td>Appling County High School</td>
+      <td>9-12</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>The output is long: filter it to the rows you need, such as
+<code class="docutils literal notranslate"><span class="pre">places[places[&quot;geographic_type&quot;]</span> <span class="pre">==</span> <span class="pre">&quot;high_school&quot;]</span></code>. A school's
+<code class="docutils literal notranslate"><span class="pre">geographic_id</span></code> is its <code class="docutils literal notranslate"><span class="pre">&quot;DISTRICT-SCHOOL&quot;</span></code> code, the form <code class="docutils literal notranslate"><span class="pre">gcd.rows()</span></code> takes
+as <code class="docutils literal notranslate"><span class="pre">school_id</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">note</span></code> column explains any row that is missing or needs care, such as a
+level with no zone collected yet:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">noted</span> <span class="o">=</span> <span class="n">places</span><span class="p">[</span><span class="n">places</span><span class="p">[</span><span class="s2">"note"</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()]</span>
+<span class="n">noted</span><span class="p">[[</span><span class="s2">"id"</span><span class="p">,</span> <span class="s2">"geographic_type"</span><span class="p">,</span> <span class="s2">"geographic_name"</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>geographic_type</th>
+      <th>geographic_name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>25</th>
+      <td>Appling County Courthouse</td>
+      <td>elementary_school</td>
+      <td>&lt;NA&gt;</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">textwrap</span>
+
+<span class="k">for</span> <span class="n">note</span> <span class="ow">in</span> <span class="n">noted</span><span class="p">[</span><span class="s2">"note"</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">textwrap</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">note</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">76</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s2">"</span><span class="se">\n\n</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>No elementary school zone has been collected for this district yet.
+Elementary: The district has separate elementary attendance zones (the
+Appling County Elementary Complex in Baxley, which is Appling County Primary
+for pre-K to grade 3 and Appling County Elementary for grades 4-5; Altamaha
+Elementary; and Fourth District Elementary in Surrency), but no map, street
+list or online lookup of them is published.
+</pre></div>
+</div>
+</div>
+</div>
+<section id="addresses">
+<h3>Addresses<a class="headerlink" href="#addresses" title="Link to this heading">#</a></h3>
+<p>Addresses are geocoded on your computer with the U.S. Census batch geocoder;
+only the resulting coordinates are sent to Georgia Civic Data. Give one-line
+addresses or a data frame with <code class="docutils literal notranslate"><span class="pre">street</span></code>, <code class="docutils literal notranslate"><span class="pre">city</span></code>, <code class="docutils literal notranslate"><span class="pre">state</span></code> and <code class="docutils literal notranslate"><span class="pre">zip</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">capitol</span> <span class="o">=</span> <span class="n">gcd</span><span class="o">.</span><span class="n">locate</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="s2">"206 Washington St SW, Atlanta, GA 30334"</span><span class="p">)</span>
+<span class="n">capitol</span><span class="p">[[</span><span class="s2">"match_status"</span><span class="p">,</span> <span class="s2">"matched_address"</span><span class="p">,</span> <span class="s2">"geographic_type"</span><span class="p">,</span> <span class="s2">"geographic_name"</span><span class="p">,</span> <span class="s2">"grades"</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>i The server is busy (HTTP 502); retrying shortly.
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>match_status</th>
+      <th>matched_address</th>
+      <th>geographic_type</th>
+      <th>geographic_name</th>
+      <th>grades</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>match</td>
+      <td>206 WASHINGTON ST SW, ATLANTA, GA, 30334</td>
+      <td>county</td>
+      <td>Fulton</td>
+      <td>&lt;NA&gt;</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>match</td>
+      <td>206 WASHINGTON ST SW, ATLANTA, GA, 30334</td>
+      <td>tract</td>
+      <td>Census Tract 35</td>
+      <td>&lt;NA&gt;</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>match</td>
+      <td>206 WASHINGTON ST SW, ATLANTA, GA, 30334</td>
+      <td>block_group</td>
+      <td>Block Group 1, Census Tract 35, Fulton County</td>
+      <td>&lt;NA&gt;</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>match</td>
+      <td>206 WASHINGTON ST SW, ATLANTA, GA, 30334</td>
+      <td>school_district</td>
+      <td>Atlanta Public Schools</td>
+      <td>&lt;NA&gt;</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>match</td>
+      <td>206 WASHINGTON ST SW, ATLANTA, GA, 30334</td>
+      <td>elementary_school</td>
+      <td>Centennial Academy (Charter)</td>
+      <td>K-5</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>match</td>
+      <td>206 WASHINGTON ST SW, ATLANTA, GA, 30334</td>
+      <td>middle_school</td>
+      <td>Centennial Academy (Charter)</td>
+      <td>6-8</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>match</td>
+      <td>206 WASHINGTON ST SW, ATLANTA, GA, 30334</td>
+      <td>high_school</td>
+      <td>Midtown High School</td>
+      <td>9-12</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>The same lookup for several buildings, from a data frame with one column per
+address part. <code class="docutils literal notranslate"><span class="pre">id</span></code> carries each building's name into the output:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">buildings</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">"building"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"Georgia State Capitol"</span><span class="p">,</span> <span class="s2">"Savannah City Hall"</span><span class="p">],</span>
+        <span class="s2">"street"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"206 Washington St SW"</span><span class="p">,</span> <span class="s2">"2 E Bay St"</span><span class="p">],</span>
+        <span class="s2">"city"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"Atlanta"</span><span class="p">,</span> <span class="s2">"Savannah"</span><span class="p">],</span>
+        <span class="s2">"state"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"GA"</span><span class="p">,</span> <span class="s2">"GA"</span><span class="p">],</span>
+        <span class="s2">"zip"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"30334"</span><span class="p">,</span> <span class="s2">"31401"</span><span class="p">],</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="n">located</span> <span class="o">=</span> <span class="n">gcd</span><span class="o">.</span><span class="n">locate</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="n">buildings</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">buildings</span><span class="p">[</span><span class="s2">"building"</span><span class="p">],</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">located</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
+    <span class="n">located</span><span class="p">[</span><span class="s2">"geographic_type"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"high_school"</span><span class="p">,</span>
+    <span class="p">[</span><span class="s2">"id"</span><span class="p">,</span> <span class="s2">"match_status"</span><span class="p">,</span> <span class="s2">"geographic_name"</span><span class="p">,</span> <span class="s2">"grades"</span><span class="p">],</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>match_status</th>
+      <th>geographic_name</th>
+      <th>grades</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>6</th>
+      <td>Georgia State Capitol</td>
+      <td>match</td>
+      <td>Midtown High School</td>
+      <td>9-12</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>Savannah City Hall</td>
+      <td>match</td>
+      <td>The School Of Liberal Studies At Savannah High</td>
+      <td>9-12</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="overlapping-school-zones">
+<h3>Overlapping school zones<a class="headerlink" href="#overlapping-school-zones" title="Link to this heading">#</a></h3>
+<p>Some residences are zoned to one elementary school for the early grades and
+another for the later ones. In this case, a level has more than one school
+row and <code class="docutils literal notranslate"><span class="pre">grades</span></code> tells them apart. City Schools of Decatur, for example,
+splits elementary schools between K-2 and 3-5, so some homes in the district
+show two elementary schools:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">oakhurst</span> <span class="o">=</span> <span class="n">gcd</span><span class="o">.</span><span class="n">dimension</span><span class="p">(</span>
+    <span class="s2">"schools"</span><span class="p">,</span>
+    <span class="n">district_code</span><span class="o">=</span><span class="s2">"773"</span><span class="p">,</span>
+    <span class="n">q</span><span class="o">=</span><span class="s2">"Oakhurst"</span><span class="p">,</span>
+    <span class="n">active</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">"school_name"</span><span class="p">,</span> <span class="s2">"latitude"</span><span class="p">,</span> <span class="s2">"longitude"</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="n">oakhurst</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>school_name</th>
+      <th>latitude</th>
+      <th>longitude</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Oakhurst Elementary School</td>
+      <td>33.7637</td>
+      <td>-84.306</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">split</span> <span class="o">=</span> <span class="n">gcd</span><span class="o">.</span><span class="n">locate</span><span class="p">(</span><span class="n">lat</span><span class="o">=</span><span class="n">oakhurst</span><span class="p">[</span><span class="s2">"latitude"</span><span class="p">],</span> <span class="n">lon</span><span class="o">=</span><span class="n">oakhurst</span><span class="p">[</span><span class="s2">"longitude"</span><span class="p">],</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">split</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
+    <span class="n">split</span><span class="p">[</span><span class="s2">"geographic_type"</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">"_school"</span><span class="p">),</span>
+    <span class="p">[</span><span class="s2">"geographic_type"</span><span class="p">,</span> <span class="s2">"geographic_id"</span><span class="p">,</span> <span class="s2">"geographic_name"</span><span class="p">,</span> <span class="s2">"grades"</span><span class="p">],</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>geographic_type</th>
+      <th>geographic_id</th>
+      <th>geographic_name</th>
+      <th>grades</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>4</th>
+      <td>elementary_school</td>
+      <td>773-0105</td>
+      <td>Oakhurst Elementary School</td>
+      <td>K-2</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>elementary_school</td>
+      <td>773-0112</td>
+      <td>Fifth Avenue Upper Elementary School</td>
+      <td>3-5</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>middle_school</td>
+      <td>773-1552</td>
+      <td>Beacon Hill Middle School</td>
+      <td>6-8</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>high_school</td>
+      <td>773-3050</td>
+      <td>Decatur High School</td>
+      <td>9-12</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">grade</span></code> keeps only the school for one grade:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">one_grade</span> <span class="o">=</span> <span class="n">gcd</span><span class="o">.</span><span class="n">locate</span><span class="p">(</span><span class="n">lat</span><span class="o">=</span><span class="n">oakhurst</span><span class="p">[</span><span class="s2">"latitude"</span><span class="p">],</span> <span class="n">lon</span><span class="o">=</span><span class="n">oakhurst</span><span class="p">[</span><span class="s2">"longitude"</span><span class="p">],</span> <span class="n">grade</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">one_grade</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
+    <span class="n">one_grade</span><span class="p">[</span><span class="s2">"geographic_type"</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">"_school"</span><span class="p">),</span>
+    <span class="p">[</span><span class="s2">"geographic_type"</span><span class="p">,</span> <span class="s2">"geographic_name"</span><span class="p">,</span> <span class="s2">"grades"</span><span class="p">],</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>geographic_type</th>
+      <th>geographic_name</th>
+      <th>grades</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>4</th>
+      <td>elementary_school</td>
+      <td>Fifth Avenue Upper Elementary School</td>
+      <td>3-5</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="the-default-assignment">
+<h3>The default assignment<a class="headerlink" href="#the-default-assignment" title="Link to this heading">#</a></h3>
+<p>A zone is the default assignment, not the only option:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">gcd</span><span class="o">.</span><span class="n">meta</span><span class="p">(</span><span class="n">capitol</span><span class="p">)[</span><span class="s2">"assignment_note"</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>A zone is the default assignment, not the only option: a Georgia student may attend another public school by transfer, or a charter, magnet or other choice school. See attendance_rules for the main ways.
+</pre></div>
+</div>
+</div>
+</div>
+<p>Students can attend another public school by transfer, or a charter, magnet,
+or other choice school option. See Georgia Civic Data's article <a class="reference external" href="https://georgiacivicdata.org/stories/school-attendance-rules">School
+Zones and School Choice in
+Georgia</a> for
+more information.</p>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal" tabindex="-1"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#map-one-district-s-zones">Map one district's zones</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#schools-without-a-zone">Schools without a zone</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-precise-are-the-zones">How precise are the zones?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#locate-a-place">Locate a place</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#addresses">Addresses</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overlapping-school-zones">Overlapping school zones</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-default-assignment">The default assignment</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+<div class="tocsection markdown-link">
+  <a href="school-zones.md" title="This page as Markdown, for LLM agents and plain-text readers">
+    <i class="fa-brands fa-markdown"></i> View as Markdown
+  </a>
+</div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2026, Shane Orr. Data: Georgia Civic Data (georgiacivicdata.org), CC BY 4.0.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="data-license">
+  Data: <a href="https://georgiacivicdata.org">Georgia Civic Data</a>,
+  <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
+  Docs for LLM agents: <a href="../llms.txt">llms.txt</a>.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
