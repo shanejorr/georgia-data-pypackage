@@ -216,7 +216,7 @@ fig.text(0.99, 0.01, "Source: Georgia Civic Data (GOEWS)", ha="right", fontsize=
 plt.show()
 ```
 
-![image](_images/ec9fa6fe02c79a1243e157d3ab1deeb66ad8ce75e6d86a29260a8673bffc75e1.png)
+![image](https://georgiacivicdata.org/py/_images/ec9fa6fe02c79a1243e157d3ab1deeb66ad8ce75e6d86a29260a8673bffc75e1.png)
 
 ### pandas or Polars
 
@@ -342,7 +342,7 @@ ax.set_axis_off()
 plt.show()
 ```
 
-![image](_images/47552da58dffa94b5a31f617b02f0cca4971c0152c598c4b9d45f2cf63b17d6b.png)
+![image](https://georgiacivicdata.org/py/_images/47552da58dffa94b5a31f617b02f0cca4971c0152c598c4b9d45f2cf63b17d6b.png)
 
 `gcd.locate()` goes the other way: give it an address or a point, and it
 returns the places that contain it, including the county, Census tract,
@@ -1075,7 +1075,7 @@ ax.spines[["top", "right"]].set_visible(False)
 plt.show()
 ```
 
-![image](../_images/524694862e7415905a2bd439fe9a332f57cddcd8bcd5573939212ca060909359.png)
+![image](https://georgiacivicdata.org/py/_images/524694862e7415905a2bd439fe9a332f57cddcd8bcd5573939212ca060909359.png)
 
 Each point is a county with at least five infant deaths in 2020-2024, sized
 by its births; the line is a straight-line fit weighted by births.
@@ -1187,7 +1187,7 @@ fig.suptitle("Atlanta Public Schools attendance zones, 2026-27")
 plt.show()
 ```
 
-![image](../_images/bd8fd819ecb492b12491cf8401e64f2afc76a46d4600925705f3a0e7ac241642.png)
+![image](https://georgiacivicdata.org/py/_images/bd8fd819ecb492b12491cf8401e64f2afc76a46d4600925705f3a0e7ac241642.png)
 
 Each colour is a school. The default `resolution="display"` returns
 simplified polygons for maps. `resolution="full"` returns the source
