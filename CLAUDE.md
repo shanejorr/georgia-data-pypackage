@@ -219,8 +219,11 @@ file.
   `.head()`, or filter it to 5 rows or fewer first.
 - Deployed by `.github/workflows/docs.yml` to the `gh-pages` branch, GitHub
   Pages at `https://shanejorr.github.io/georgia-data-pypackage/`, served at
-  `https://georgiacivicdata.org/py/` through a rewrite in the main site
-  (Shane's, like `/r/`). `html_baseurl` sets canonical links to `/py/`.
+  `https://georgiacivicdata.org/py/` by the main site (`~/projects/georgia-data`,
+  Vercel), like the R docs at `/r/`: a rewrite in `web/next.config.ts`
+  proxies `/py/*` to GitHub Pages, and `web/src/proxy.ts` redirects `/py` to
+  `/py/`. The pages use relative links, so they only work with the trailing
+  slash. `html_baseurl` sets canonical links to `/py/`.
 - No custom domain on GitHub Pages and no `CNAME` on `gh-pages`: a custom
   domain would redirect `github.io` and break the rewrite.
 - `CLAUDE.md` and `AGENTS.md` are not part of the site (`exclude_patterns`).
